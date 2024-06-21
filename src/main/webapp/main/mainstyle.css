@@ -1,0 +1,15 @@
+table {
+	width: 100%;
+	text-align: center;
+}
+
+#maindiv {
+	background-image: url("../image/mainphotosample.jpeg");
+	height: 100%;
+	background-size: cover;
+	color: white;
+}
+
+input {
+	border: none;
+}

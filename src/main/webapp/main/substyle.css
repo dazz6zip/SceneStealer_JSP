@@ -1,0 +1,28 @@
+table {
+	width: 100%;
+	text-align: center;
+	height: 100%;
+}
+
+html, body {
+	height: 100%
+}
+
+#subpicdiv {
+	background-image: url("../image/mainphotosample.jpeg");
+	height: 100%;
+	background-size: cover;
+	color: white;
+}
+
+input {
+	border: none;
+}
+
+#picLeft{
+	text-align: left;
+}
+
+#picRight{
+	text-align: right;
+}

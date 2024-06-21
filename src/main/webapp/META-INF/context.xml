@@ -1,0 +1,6 @@
+<Context>
+	<Resource name="jdbc_maria" auth="Container"
+		type="javax.sql.DataSource" driverClassName="org.mariadb.jdbc.Driver"
+		loginTimeout="10" maxWait="5000" username="root" password="0205"
+		testOnBorrow="true" url="jdbc:mariadb://localhost:3306/sample" />
+</Context>
