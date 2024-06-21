@@ -9,6 +9,9 @@
 <jsp:useBean id="sdto" class="pack.main.StyleDto"></jsp:useBean>
 <jsp:useBean id="idto" class="pack.main.ItemDto"></jsp:useBean>
 <%
+String id = (String)session.getAttribute("idKey");
+
+
 String series_num = request.getParameter("series_num");
 if (series_num == null) {
 	series_num = "1";
@@ -34,6 +37,7 @@ ArrayList<StyleDto> slist = mgr.getStyleData(cdto.getNum());
 <link rel="stylesheet" type="text/css" href="substyle.css">
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 <script type="text/javascript" src="../js/sub.js"></script>
+
 <style type="text/css">
 .itemSelect {
     position: relative;
@@ -77,10 +81,24 @@ ArrayList<StyleDto> slist = mgr.getStyleData(cdto.getNum());
 						<td colspan="2" id="characterName"><%=character_name%></td>
 					</tr>
 					<tr>
-						<td colspan="2" id="characterLike">하트 이미지</td>
+						<td colspan="2" id="characterLike">
+						<%
+						String heart = "";
+						if(mgr.getScrapCheck(id, character_name)){
+							heart = "../image/heart1.png";
+						}else {
+							heart = "../image/heart2.png";
+						}
+						%>
+							<img src="<%= heart %>" width="20px">
+						</td>
 					</tr>
 					<tr>
-						<td colspan="2" id="characterLikeCount"><%=cdto.getLike()%></td>
+						<td colspan="2" id="characterLikeCount">
+						<%
+							
+						%>
+						</td>
 					</tr>
 
 					<tr>
@@ -137,6 +155,25 @@ ArrayList<StyleDto> slist = mgr.getStyleData(cdto.getNum());
 
 	<script>
 	$(document).ready(function() {
+		
+		
+		 $(this).on('click', '.characterLike', function() {
+			 <%
+				boolean c = mgr.getScrapCheck(id, character_name);
+				if (c) {
+					mgr.delScrap(character_name, id);
+					%>
+					alert("스크랩 취소");
+					<%
+				} else {
+					mgr.newScrap(character_name, id);
+					%>
+					alert("스크랩 성공");
+					<%
+				}
+				%>
+        });
+		
         $('.character-btn').click(function(e) { // character-btn 클래스 클릭시
             e.preventDefault(); // 버튼의 본래 이벤트를 제거
             let characterName = $(this).data('character'); // character-btn에 저장된 모든 값들이 JSON 형식으로 리턴

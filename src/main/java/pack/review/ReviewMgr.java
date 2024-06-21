@@ -7,7 +7,11 @@ import java.util.ArrayList;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
+
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 
 
@@ -102,6 +106,148 @@ public class ReviewMgr {
 			}
 		}
 		
+		return b;
+	}
+	public ArrayList<ReviewDto> reviewAll(){
+		ArrayList<ReviewDto> list = new ArrayList<ReviewDto>();
+		try {
+			conn = ds.getConnection();
+			String sql = "select * from review";
+			pstmt = conn.prepareStatement(sql);
+			rs=pstmt.executeQuery();
+			while(rs.next()) {
+				ReviewDto dto = new ReviewDto();
+				dto.setUser(rs.getString(1));
+				dto.setProduct(rs.getString(2));
+				dto.setContents(rs.getString(3));
+				dto.setPic(rs.getString(4));
+				dto.setDate(rs.getString(5));
+			
+				
+				list.add(dto);
+			}
+			
+		} catch (Exception e) {
+			System.out.println("reviewAll() err : " + e);
+		} finally {
+			try {
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+			} catch (Exception e2) { }
+		}
+		return list;
+    }
+    public int newNum() {
+        int num = 0;
+        try {
+           conn = ds.getConnection();
+           String sql = "select max(review_num) from review";
+           pstmt = conn.prepareStatement(sql);
+           rs = pstmt.executeQuery();
+           if(rs.next()) num = rs.getInt(1);
+        } catch (Exception e) {
+           System.out.println("newNum err: " + e);
+        } finally {
+           try {
+              if (rs != null) rs.close();
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+           } catch (Exception e) {
+              System.out.println("cannot close: " + e);
+           }
+        }
+        return num + 1;
+     }
+    public boolean insertProduct(HttpServletRequest request) {
+        boolean isInserted = false;
+        String uploadDir = "/Users/bohyunkim/work/bobo123123/src/main/webapp/upload";
+        int maxFileSize = 5 * 1024 * 1024; // 5MB
+
+        try {
+            MultipartRequest multi = new MultipartRequest(request, uploadDir, maxFileSize, "UTF-8", new DefaultFileRenamePolicy());
+
+            conn = ds.getConnection();
+            String sql = "INSERT INTO review(review_num, user_id, product_name, review_contents, review_pic, review_date) " +
+                    "VALUES (?, ?, ?, ?, ?, now())";
+            pstmt = conn.prepareStatement(sql);
+
+          
+            
+            pstmt.setInt(1, Integer.parseInt(multi.getParameter("newNum")));
+
+            pstmt.setString(2, multi.getParameter("user"));
+            pstmt.setString(3, multi.getParameter("product"));
+            pstmt.setString(4, multi.getParameter("contents"));
+            pstmt.setString(5, multi.getParameter("date"));
+
+            // 이미지 파일이 업로드되지 않은 경우 기본 이미지 설정
+            String pic = multi.getFilesystemName("pic") == null ? "ready.gif" : multi.getFilesystemName("pic");
+            pstmt.setString(6, pic);
+
+            if (pstmt.executeUpdate() > 0) isInserted = true;
+        } catch (Exception e) {
+            System.out.println("insertProduct() err : " + e);
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (Exception e2) {
+                System.out.println("리소스 해제 중 오류 발생: " + e2);
+            }
+        }
+        return isInserted;
+    }
+
+    public boolean updatetProduct(HttpServletRequest request) {
+		boolean b = false;
+		try {
+			//업로드할 이미지 경로 : upload 폴더(절대 경로)
+	        String uploadDir = "/Users/bohyunkim/work/bobo123123/src/main/webapp/upload";
+			MultipartRequest multi = new MultipartRequest(request, uploadDir,
+								5 * 1014 * 1024, "UTF-8",new DefaultFileRenamePolicy());
+	
+			conn=ds.getConnection();
+			if(multi.getFilesystemName("pic") == null) {
+				
+			String sql = "update review set user_id=?,product_name=?,review_contents=?,review_date=? where review_num=?"; 
+			pstmt = conn.prepareStatement(sql);
+			
+			
+            pstmt.setString(1, multi.getParameter(("user")));
+           
+            pstmt.setString(2, multi.getParameter("product"));
+            pstmt.setString(3, multi.getParameter("contents"));
+            pstmt.setString(4, multi.getParameter("date"));
+            pstmt.setInt(5, Integer.parseInt(multi.getParameter("newNum")));
+				
+			
+			}else {
+				
+				String sql ="update review set user_id=?,product_name=?,review_contents=?,review_date=?,review_pic=?where review_num=?"; 
+				pstmt = conn.prepareStatement(sql);
+				pstmt = conn.prepareStatement(sql);
+			
+				pstmt.setString(1, multi.getParameter(("user")));
+		           
+	            pstmt.setString(2, multi.getParameter("product"));
+	            pstmt.setString(3, multi.getParameter("contents"));
+	            pstmt.setString(4, multi.getParameter("date"));
+	            pstmt.setInt(5, Integer.parseInt(multi.getParameter("newNum")));
+				pstmt.setString(6, multi.getFilesystemName("pic"));
+					}
+			if(pstmt.executeUpdate() > 0) b = true;
+		} catch (Exception e) {
+			// TODO: handle exception
+		}finally {
+			try {
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close(); 
+			
+				if(conn != null) conn.close();
+			} catch (Exception e2) { }
+		}
 		return b;
 	}
 }

@@ -82,7 +82,7 @@ String searchword = request.getParameter("searchword");
                     <td>
                         <table class="cysSelect">
                             <tr>
-                                <th><a href="../sub/sub.jsp?series_num=<%=sdto.getNum()%>&series_title=<%=sdto.getTitle()%>"><img src="<%=sdto.getPic()%>" class="series-pic"></a></th>
+                                <th><a href="sub.jsp?series_num=<%=sdto.getNum()%>&series_title=<%=sdto.getTitle()%>"><img src="<%=sdto.getPic()%>" class="series-pic"></a></th>
                             </tr>
                             <tr>
                                 <td><%=sdto.getTitle()%></td>

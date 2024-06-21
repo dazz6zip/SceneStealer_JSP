@@ -18,6 +18,8 @@ public class MainMgr {
 	private PreparedStatement pstmt;
 	private ResultSet rs;
 	private DataSource ds;
+	
+	
 
 	// DB 연결을 위한 생성자
 	public MainMgr() {
@@ -309,6 +311,113 @@ public class MainMgr {
 		}
 		
 		return dto;
+	}
+	
+	public boolean getScrapCheck(String id, String cname) {
+		boolean b = false;
+		
+		try {
+			conn = ds.getConnection();
+			String sql = "SELECT * FROM scrap WHERE user_id = ? AND character_num = (SELECT character_num FROM `character` WHERE character_name = ?)";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			pstmt.setString(2, cname);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				b = true;
+			}
+		} catch (Exception e) {
+			System.out.println("getScrapCheck() ERROR : " + e);
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e2) {
+				System.out.println("getScrapCheck() - finally ERROR : " + e2.getMessage());
+			}
+		}
+		
+		return b;
+	}
+	
+	public void newScrap(String cname, String id) {
+		String character_num;
+		try {
+			conn = ds.getConnection();
+			String sql = "SELECT character_num FROM `character` WHERE character_name = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, cname);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				character_num = rs.getString(1);
+				sql = "INSERT INTO scrap VALUES (?, ?)";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, character_num);
+				pstmt.setString(2, id);
+				if(pstmt.executeUpdate() > 0) {
+					sql = "UPDATE `character` SET character_like = (character_like + 1) WHERE character_name = ?";
+					pstmt = conn.prepareStatement(sql);
+					pstmt.setString(1, cname);
+					pstmt.executeUpdate();
+				}
+			}
+			
+			
+		} catch (Exception e) {
+			System.out.println("newScrap() ERROR : " + e);
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e2) {
+				System.out.println("newScrap() - finally ERROR : " + e2.getMessage());
+			}
+		}
+	
+	}
+	
+	public void delScrap(String cname, String id) {
+		
+		try {
+			conn = ds.getConnection();
+			String sql = "DELETE FROM scrap WHERE character_num = (SELECT character_num FROM `character` WHERE character_name = ?) AND user_id = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, cname);
+			pstmt.setString(2, id);
+			pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			System.out.println("newScrap() ERROR : " + e);
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e2) {
+				System.out.println("newScrap() - finally ERROR : " + e2.getMessage());
+			}
+		}
+	
 	}
 	
 	

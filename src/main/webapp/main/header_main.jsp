@@ -6,7 +6,7 @@ String id = (String)session.getAttribute("idKey");
 String log = "";
 
 if (id == null) {
-	log = "<a href='login.jsp'>로그인</a>";
+	log = "<a href='../user/loginForm.jsp'>로그인</a>";
 } else {
 	log = "<a href='logout.jsp'>로그아웃</a>";
 }
@@ -58,11 +58,14 @@ window.onload = () => {
 	}
 }
 </script>
-<img src="../image/logo-01.png" width="5%">
-<a href="main.jsp">HOME</a>
-<a href="productlist.jsp">SHOP</a>
+<table style="height: 10px;">
+<tr>
+<td><img src="../image/logo-01.png" width="15px"></td>
+<td><a href="main.jsp">HOME</a></td>
+<td><a href="../shop/productlist.jsp">SHOP</a></td>
+<td>
 <form action="../main/main_search.jsp">
-<div id="searchFrm">
+<div id="searchFrm" align="right">
 <select name="searchSelect">
 	<option value="series" selected="selected">작품 제목</option>
 	<option value="actor">배우</option>
@@ -78,4 +81,7 @@ if (val != null) {
 </div>
 <input type="button" id="showSearch" value="search">
 </form>
-<a href=""><%= log %></a>
+</td>
+<td><a href=""><%= log %></a></td>
+</tr>
+</table>

@@ -39,7 +39,6 @@ ArrayList<CharacterDto> clist = mgr.getScrapCharacter(id);
 			</td>
 			<%
 		}
-		
 		%>
 	</tr>
 </table>
