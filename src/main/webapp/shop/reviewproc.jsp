@@ -1,4 +1,4 @@
-<%@page import="pack.product.ProductMgr"%>
+<%@page import="pack.product.ProductMgr_u"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <jsp:useBean id="reviewMgr" class="pack.review.ReviewMgr" />

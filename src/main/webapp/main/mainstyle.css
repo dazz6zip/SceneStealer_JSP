@@ -1,15 +1,82 @@
-table {
-	width: 100%;
-	text-align: center;
+/* General Styles */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    color: #fff;
 }
 
+table {
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+th, td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+/* Header and Main Div Styles */
 #maindiv {
-	background-image: url("../image/mainphotosample.jpeg");
-	height: 100%;
-	background-size: cover;
-	color: white;
+    background-image: url("../image/mainphotosample.jpeg");
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    color: white;
+    text-align: center;
+    padding: 50px 20px;
+}
+
+#maindiv h2 {
+    font-size: 3em;
+    margin-bottom: 20px;
+}
+
+/* Form and Table Styles */
+form {
+    margin: 20px auto;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    max-width: 80%;
 }
 
 input {
-	border: none;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #555;
+    color: white;
+}
+
+
+
+/* Review Section Styles */
+#main_rv th {
+    font-size: 1.5em;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+}
+
+#main_rv td {
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    #maindiv h2 {
+        font-size: 2em;
+    }
+
+    .series-pic {
+        max-width: 150px;
+    }
 }

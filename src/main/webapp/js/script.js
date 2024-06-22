@@ -398,8 +398,9 @@ function cartUpdate(form){
 }
 
 function cartDelete(form){
+	
 	form.flag.value = "del";
-	form.submit;
+	form.submit();
 }
 
 //Question 부분

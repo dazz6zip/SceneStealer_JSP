@@ -3,7 +3,7 @@
 <% request.setCharacterEncoding("utf-8"); %>
 <jsp:useBean id="qdto" class="pack.question.QuestionDto" />
 <jsp:setProperty property="*" name="qdto"/>
-<jsp:useBean id="qmgr" class="pack.question.QuestionMgr" />
+<jsp:useBean id="qmgr" class="pack.question.QuestionMgr_u" />
 
 <%
 

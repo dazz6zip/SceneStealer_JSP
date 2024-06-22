@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<jsp:useBean id="qmgr" class="pack.question.QuestionMgr" />
+<jsp:useBean id="qmgr" class="pack.question.QuestionMgr_u" />
 <jsp:useBean id="qdto" class="pack.question.QuestionDto" />
 
 <%

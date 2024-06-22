@@ -36,7 +36,7 @@ public class MainMgr {
 		ArrayList<SeriesDto> list = new ArrayList<SeriesDto>();
 		try {
 			conn = ds.getConnection();
-			String sql = "SELECT s.series_title, s.series_pic, s.series_num, sum(c.character_like) AS cl FROM series AS s INNER JOIN `character` AS c ON s.series_num = c.series_num GROUP BY series_title ORDER BY cl DESC";
+			String sql = "SELECT s.series_num, s.series_title, s.series_pic, s.series_title, COUNT(sc.character_num) AS cou FROM series AS s INNER JOIN `character` AS c ON s.series_num = c.series_num LEFT OUTER JOIN scrap AS sc ON c.character_num = sc.character_num GROUP BY s.series_num, s.series_title ORDER BY cou DESC";
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 
@@ -84,6 +84,7 @@ public class MainMgr {
 				dto.setProduct(rs.getString("product_name"));
 				dto.setContents(rs.getString("review_contents"));
 				dto.setPic(rs.getString("review_pic"));
+				dto.setNum(rs.getInt("review_num"));
 				list.add(dto);
 			}
 		}catch (Exception e) {
@@ -158,8 +159,7 @@ public class MainMgr {
 	// 시리즈 번호로 캐릭터 정보 받아오기
 	public ArrayList<CharacterDto> getCharacterData(String series_num) {
 		ArrayList<CharacterDto> list = new ArrayList<CharacterDto>();
-		
-		
+
 		try {
 			conn = ds.getConnection();
 			String sql = "SELECT * FROM `character` WHERE series_num = ?";
@@ -362,14 +362,14 @@ public class MainMgr {
 				pstmt.setString(1, character_num);
 				pstmt.setString(2, id);
 				if(pstmt.executeUpdate() > 0) {
-					sql = "UPDATE `character` SET character_like = (character_like + 1) WHERE character_name = ?";
+					sql = "UPDATE `character` SET character_like = (SELECT COUNT(*) FROM scrap WHERE character_num = ?) WHERE character_name = ?";
 					pstmt = conn.prepareStatement(sql);
-					pstmt.setString(1, cname);
+					pstmt.setString(1, character_num);
+					pstmt.setString(2, id);
+					pstmt.setString(3, cname);
 					pstmt.executeUpdate();
 				}
 			}
-			
-			
 		} catch (Exception e) {
 			System.out.println("newScrap() ERROR : " + e);
 		} finally {
@@ -418,6 +418,41 @@ public class MainMgr {
 			}
 		}
 	
+	}
+	
+	public String getLikeCount(int cnum) {
+		int likeCount = 0;
+		
+		try {
+			conn = ds.getConnection();
+			String sql = "SELECT COUNT(*) FROM scrap WHERE character_num = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, cnum);
+			rs = pstmt.executeQuery();
+			
+			if (rs.next()) {
+				likeCount = Integer.parseInt(rs.getString(1));
+			}
+			
+		} catch (Exception e) {
+			System.out.println("getLikeCount() ERROR : " + e);
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e2) {
+				System.out.println("getLikeCount() - finally ERROR : " + e2.getMessage());
+			}
+		}
+		
+		return Integer.toString(likeCount);
 	}
 	
 	

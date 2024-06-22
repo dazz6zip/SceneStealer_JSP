@@ -13,12 +13,13 @@ import javax.sql.DataSource;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
+import pack.main.SeriesDto;
 import pack.orders.Order_productBean;
 import pack.orders.Order_productDto;
 
 
 
-public class ProductMgr {
+public class ProductMgr_u {
 	private Connection conn;
 	private PreparedStatement pstmt;
 	private ResultSet rs;
@@ -27,7 +28,7 @@ public class ProductMgr {
  	private int pList = 10;      // 페이지 당 출력 행 수 
  	private int pageSu;         // 전체 페이지 수 
 	
-	public ProductMgr() {
+	public ProductMgr_u() {
 		try { //DB연결 fooling사용
 			Context context = new InitialContext();
 			ds = (DataSource)context.lookup("java:comp/env/jdbc_maria");
@@ -197,6 +198,7 @@ public class ProductMgr {
 	        return isInserted;
 	    }
 	    public ProductDto getProduct(String name) {
+	    	
 			ProductDto dto = null;
 			try {
 				conn = ds.getConnection();
@@ -215,8 +217,7 @@ public class ProductMgr {
 					dto.setDate(rs.getString("product_date"));
 					dto.setCategory(rs.getString("product_category"));
 					dto.setPic(rs.getString("product_pic"));
-					
-					
+
 				}
 				
 			} catch (Exception e) {
@@ -473,7 +474,118 @@ public class ProductMgr {
 			if(rectot % pList > 0) pageSu++; //자투리가 있으면 페이지 하나 플러스
 			return pageSu;
 		}
-	
+		
+		public ArrayList<ProductDto> productSeacrh(String searchword) {
+			ArrayList<ProductDto> list = new ArrayList<ProductDto>();
+			
+			try {
+				String sql = null;
+				conn = ds.getConnection();
+				sql = "SELECT * FROM product WHERE product_name LIKE ?";				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, "%" + searchword + "%");
+				rs = pstmt.executeQuery();
+				
+				while (rs.next()) {
+					ProductDto dto = new ProductDto();
+					dto.setName(rs.getString("product_name"));
+					dto.setPic(rs.getString("product_pic"));
+					dto.setPrice(rs.getInt("product_price"));
+					list.add(dto);
+				}
+				
+			}catch (Exception e) {
+				System.out.println("searchSeries() ERROR : " + e);
+				list = null;
+			} finally {
+				try {
+					if (rs != null) {
+						rs.close();
+					}
+					if (pstmt != null) {
+						pstmt.close();
+					}
+					if (conn != null) {
+						conn.close();
+					}
+				} catch (Exception e2) {
+					System.out.println("searchSeries() - finally ERROR : " + e2.getMessage());
+				}
+			}
+			
+			return list;
+		}
+		
+		public int maxnum() {
+			int newnum = 0;
+			
+			try {
+				String sql = null;
+				conn = ds.getConnection();
+				sql = "SELECT MAX(orders_num) FROM orders";				
+				pstmt = conn.prepareStatement(sql);
+				rs = pstmt.executeQuery();
+				
+				if (rs.next()) {
+					newnum = Integer.parseInt(rs.getString(1));
+				}
+				
+			}catch (Exception e) {
+				System.out.println("maxnum() ERROR : " + e);
+			} finally {
+				try {
+					if (rs != null) {
+						rs.close();
+					}
+					if (pstmt != null) {
+						pstmt.close();
+					}
+					if (conn != null) {
+						conn.close();
+					}
+				} catch (Exception e2) {
+					System.out.println("maxnum() - finally ERROR : " + e2.getMessage());
+				}
+			}
+			
+			return newnum + 1;
+		}
+		
+		public void insertCart(Order_productDto opdto, String id) {
+			int orders_num = maxnum();
+			try {
+				conn = ds.getConnection();
+				String sql = "INSERT INTO orders (orders_num, user_id) VALUES (?, ?)"; 
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, orders_num);
+				pstmt.setString(2, id);
+				if (pstmt.executeUpdate() > 0) {
+					pstmt.close();
+					sql = "INSERT INTO order_product VALUES (?, ?, ?)";				
+					pstmt = conn.prepareStatement(sql);
+					pstmt.setInt(1, orders_num);
+					pstmt.setString(2, opdto.getName());
+					pstmt.setInt(3, opdto.getQuantity());
+					pstmt.executeUpdate();
+				}
+			}catch (Exception e) {
+				System.out.println("insertCart() ERROR : " + e);
+			} finally {
+				try {
+					if (rs != null) {
+						rs.close();
+					}
+					if (pstmt != null) {
+						pstmt.close();
+					}
+					if (conn != null) {
+						conn.close();
+					}
+				} catch (Exception e2) {
+					System.out.println("insertCart() - finally ERROR : " + e2.getMessage());
+				}
+			}
+		}
 	
 }
 

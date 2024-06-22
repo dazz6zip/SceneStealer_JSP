@@ -21,7 +21,7 @@ String id = (String)session.getAttribute("idKey");
 <script src="../js/script.js"></script>
 </head>
 <body>
-
+<jsp:include page="header_user.jsp" />
 <%
 if(id != null){		// 로그인 한 상태
 %>

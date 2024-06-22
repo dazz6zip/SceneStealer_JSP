@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,6 +13,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
 <!-- ======= -->
 <body>
+<jsp:include page="header_user.jsp" />
 <h1>success!</h1>
 
 <button type="button" class="btnRegister btn-16" id = "user_input" onclick="location.href='loginForm.jsp'">로그인</button>

@@ -8,7 +8,7 @@ String log = "";
 if (id == null) {
 	log = "<a href='../user/loginForm.jsp'>로그인</a>";
 } else {
-	log = "<a href='logout.jsp'>로그아웃</a>";
+	log = "<a href='../user/logout.jsp'>로그아웃</a>&emsp;<a href=''>프로필사진</a>";
 }
 
 

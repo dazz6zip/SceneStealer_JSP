@@ -11,7 +11,7 @@ import javax.sql.DataSource;
 
 import pack.notice.NoticeDto;
 
-public class QuestionMgr {
+public class QuestionMgr_u {
 	private Connection conn;
 	private PreparedStatement pstmt;
 	private ResultSet rs;
@@ -22,7 +22,7 @@ public class QuestionMgr {
 	private int pList = 6;
 	private int pageSu;
 	
-	public QuestionMgr() {
+	public QuestionMgr_u() {
 		try { //DB연결 
 			Context context = new InitialContext();
 			ds = (DataSource)context.lookup("java:comp/env/jdbc_maria");

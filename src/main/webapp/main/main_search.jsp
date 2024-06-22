@@ -37,7 +37,7 @@ if (searchword == null && searchSelect == null) {
 	return;
 }
 
-ArrayList<SeriesDto> list = mgr.searchSeries(searchword, searchSelect);	
+ArrayList<SeriesDto> list = mgr.searchSeries(searchword.replaceAll(" ", ""), searchSelect.replaceAll(" ", ""));	
 if (list != null && !list.isEmpty()) {
 %>
 

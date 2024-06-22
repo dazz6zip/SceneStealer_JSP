@@ -38,6 +38,7 @@ window.onload = function(){
 
 </head>
 <body>
+<jsp:include page="header_user.jsp" />
 <form action="userInfoProc.jsp" name="updateForm" id="updateForm" method="post">
 
 <div id="userId">@<%=bean.getId() %></div>

@@ -52,7 +52,7 @@ session.removeAttribute("idKey");
     
     // close 버튼 클릭 시 main.jsp로 이동
     $("#closeBtn").click(function(){
-    	location.href = "main.jsp";
+    	location.href = "../main/main.jsp";
     })
   </script>
 	</body>

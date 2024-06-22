@@ -6,7 +6,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
-<jsp:useBean id="productMgr" class="pack.product.ProductMgr" />
+<jsp:useBean id="productMgr" class="pack.product.ProductMgr_u" />
 <jsp:useBean id="reviewMgr" class="pack.review.ReviewMgr"></jsp:useBean>
 
 
@@ -33,6 +33,7 @@ int start, end;
 
 </head>
 <body>
+<jsp:include page="header_shop.jsp" />
 	<h1>*SS쇼핑*</h1>
 
 	<table>

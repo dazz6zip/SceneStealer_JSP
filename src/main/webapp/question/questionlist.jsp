@@ -3,14 +3,14 @@
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<jsp:useBean id="qmgr" class="pack.question.QuestionMgr" />
+<jsp:useBean id="qmgr" class="pack.question.QuestionMgr_u" />
 <jsp:useBean id="qdto" class="pack.question.QuestionDto" />
 <jsp:useBean id="ndto" class="pack.notice.NoticeDto" />
 
 <%
 int spage = 1, pageSu = 0; //페이징을 하기 위한 변수
 int start, end;
-String id = "user1";
+String id = (String)session.getAttribute("idKey");
 %>
 <!DOCTYPE html>
 <html>

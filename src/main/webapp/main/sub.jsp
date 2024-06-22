@@ -81,26 +81,30 @@ ArrayList<StyleDto> slist = mgr.getStyleData(cdto.getNum());
 						<td colspan="2" id="characterName"><%=character_name%></td>
 					</tr>
 					<tr>
-						<td colspan="2" id="characterLike">
+						<td colspan="2">
 						<%
 						String heart = "";
-						if(mgr.getScrapCheck(id, character_name)){
-							heart = "../image/heart1.png";
-						}else {
-							heart = "../image/heart2.png";
+						boolean scrapCheck = false;
+						if (id == null) {
+							heart = "<img src='../image/heart2.png' id='logoutscrap' width='20px'>";
+						} else {							
+							if(mgr.getScrapCheck(id, character_name)){
+								heart = "<img src='../image/heart1.png' id='characterLike' width='20px'>";
+								scrapCheck = true;
+							}else {
+								heart = "<img src='../image/heart2.png' id='characterLike' width='20px'>";
+							}
 						}
+						out.print(heart);
 						%>
-							<img src="<%= heart %>" width="20px">
 						</td>
 					</tr>
 					<tr>
 						<td colspan="2" id="characterLikeCount">
-						<%
-							
-						%>
+						<%= mgr.getLikeCount(cdto.getNum()) %>
 						</td>
 					</tr>
-
+ 
 					<tr>
 						<%
 						for (int i = 0; i < clist.size(); i++) {
@@ -155,28 +159,9 @@ ArrayList<StyleDto> slist = mgr.getStyleData(cdto.getNum());
 
 	<script>
 	$(document).ready(function() {
-		
-		
-		 $(this).on('click', '.characterLike', function() {
-			 <%
-				boolean c = mgr.getScrapCheck(id, character_name);
-				if (c) {
-					mgr.delScrap(character_name, id);
-					%>
-					alert("스크랩 취소");
-					<%
-				} else {
-					mgr.newScrap(character_name, id);
-					%>
-					alert("스크랩 성공");
-					<%
-				}
-				%>
-        });
-		
-        $('.character-btn').click(function(e) { // character-btn 클래스 클릭시
-            e.preventDefault(); // 버튼의 본래 이벤트를 제거
-            let characterName = $(this).data('character'); // character-btn에 저장된 모든 값들이 JSON 형식으로 리턴
+        $('.character-btn').click(function(e) {
+            e.preventDefault();
+            let characterName = $(this).data('character');
             let seriesNum = '<%= series_num %>'; 
 
             $.ajax({
@@ -199,15 +184,15 @@ ArrayList<StyleDto> slist = mgr.getStyleData(cdto.getNum());
                         row.append('<td width="30%">' + style.pic + '</td>');
 
                         $.each(style.items, function(i, item) {
-                            row.append(`
-                                <td class="itemSelect">
-                                    ${item.pic}
-                                    <div class="overlay-link">
-                                        <a href="#">유사 상품 보러 가기</a>
-                                        <a href="#">같은 상품 보러 가기</a>
-                                    </div>
-                                </td>
-                            `);
+                            row.append(
+                                '<td class="itemSelect">' +
+                                    item.pic +
+                                    '<div class="overlay-link">' +
+                                        '<a href="#">유사 상품 보러 가기</a>' +
+                                        '<a href="#">같은 상품 보러 가기</a>' +
+                                    '</div>' +
+                                '</td>'
+                            );
                         });
 
                         styleItemTable.append(row);
@@ -215,27 +200,36 @@ ArrayList<StyleDto> slist = mgr.getStyleData(cdto.getNum());
                 }
             });
         });
+        
+        $('#characterLike').click(function() {
+			if (<%= scrapCheck %>) {
+				location.href = "subscrapproc.jsp?flag=delete&cname=<%= character_name %>";
+			} else {
+				location.href = "subscrapproc.jsp?flag=insert&cname=<%= character_name %>";
+			}
+
+        });
+        
+        $('#logoutscrap').click(function() {
+			location.href = '../user/loginForm.jsp';
+
+        });
 
         $('#styleItemTable').on('mouseover', '.itemSelect', function() {
             $(this).addClass('enlarged');
         });
 
         $('#styleItemTable').on('click', '.itemSelect', function() {
-        	$(this).toggleClass('show-overlay');
+            $(this).toggleClass('show-overlay');
         });
+
         $('#styleItemTable').on('mouseout', '.itemSelect', function() {
             $(this).removeClass('enlarged');
             if ($(this).hasClass('show-overlay')) {
                 $(this).removeClass('show-overlay');
             }
-          
         });
-
     });
-
-    function itemSelect(itemNum) {
-      
-    }
     </script>
 </body>
 </html>

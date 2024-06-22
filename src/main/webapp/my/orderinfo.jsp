@@ -9,10 +9,8 @@
 
 String id = (String)session.getAttribute("idKey");
 if (id == null) {
-//	response.sendRedirect("login.jsp");
+	response.sendRedirect("login.jsp");
 }
-
-id = "user1";
 String stateabout = "";
 %>
 <!DOCTYPE html>

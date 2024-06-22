@@ -13,7 +13,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-
+<jsp:include page="header_shop.jsp" />
 <form name="productForm" action="reviewproc.jsp?flag=insert" method="post"  enctype="multipart/form-data">
 
 <table>

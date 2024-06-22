@@ -27,6 +27,7 @@ if(b){
 
 </head>
 	<body>
+	<jsp:include page="header_user.jsp" />
 	  <!-- The Modal -->
   <div class="modal" id="myModal">
     <div class="modal-dialog">
