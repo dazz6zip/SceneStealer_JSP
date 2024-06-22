@@ -35,7 +35,7 @@ public class ScrapMrg {
 		
 		try {
 			conn = ds.getConnection();
-			String sql = "SELECT * FROM `character` WHERE character_num = (SELECT character_num FROM scrap WHERE user_id = ?)";
+			String sql = "SELECT * FROM characters WHERE character_num = (SELECT character_num FROM scrap WHERE user_id = ?)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, id);
 			rs = pstmt.executeQuery();

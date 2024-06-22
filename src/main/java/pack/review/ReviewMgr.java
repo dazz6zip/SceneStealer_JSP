@@ -138,6 +138,7 @@ public class ReviewMgr {
 		}
 		return list;
     }
+	
     public int newNum() {
         int num = 0;
         try {
@@ -159,9 +160,11 @@ public class ReviewMgr {
         }
         return num + 1;
      }
+    
     public boolean insertProduct(HttpServletRequest request) {
+    	int newNum = newNum();
         boolean isInserted = false;
-        String uploadDir = "/Users/bohyunkim/work/bobo123123/src/main/webapp/upload";
+        String uploadDir = "C:\\Users\\dazz6\\OneDrive\\Desktop\\study\\study\\scenestealer\\src\\main\\webapp\\upload";
         int maxFileSize = 5 * 1024 * 1024; // 5MB
 
         try {
@@ -174,16 +177,15 @@ public class ReviewMgr {
 
           
             
-            pstmt.setInt(1, Integer.parseInt(multi.getParameter("newNum")));
+            pstmt.setInt(1, newNum);
 
             pstmt.setString(2, multi.getParameter("user"));
             pstmt.setString(3, multi.getParameter("product"));
             pstmt.setString(4, multi.getParameter("contents"));
-            pstmt.setString(5, multi.getParameter("date"));
 
             // 이미지 파일이 업로드되지 않은 경우 기본 이미지 설정
             String pic = multi.getFilesystemName("pic") == null ? "ready.gif" : multi.getFilesystemName("pic");
-            pstmt.setString(6, pic);
+            pstmt.setString(5, pic);
 
             if (pstmt.executeUpdate() > 0) isInserted = true;
         } catch (Exception e) {
@@ -199,44 +201,40 @@ public class ReviewMgr {
         }
         return isInserted;
     }
-
-    public boolean updatetProduct(HttpServletRequest request) {
+    public boolean updateProduct(HttpServletRequest request) {
 		boolean b = false;
 		try {
 			//업로드할 이미지 경로 : upload 폴더(절대 경로)
-	        String uploadDir = "/Users/bohyunkim/work/bobo123123/src/main/webapp/upload";
+	        String uploadDir = "C:\\Users\\dazz6\\OneDrive\\Desktop\\study\\study\\scenestealer\\src\\main\\webapp\\upload";
 			MultipartRequest multi = new MultipartRequest(request, uploadDir,
 								5 * 1014 * 1024, "UTF-8",new DefaultFileRenamePolicy());
 	
 			conn=ds.getConnection();
 			if(multi.getFilesystemName("pic") == null) {
 				
-			String sql = "update review set user_id=?,product_name=?,review_contents=?,review_date=? where review_num=?"; 
+			String sql = "update product set product_price=?,product_contents=?,product_stock=?,product_category=? where product_name=?"; 
 			pstmt = conn.prepareStatement(sql);
 			
-			
-            pstmt.setString(1, multi.getParameter(("user")));
-           
-            pstmt.setString(2, multi.getParameter("product"));
-            pstmt.setString(3, multi.getParameter("contents"));
-            pstmt.setString(4, multi.getParameter("date"));
-            pstmt.setInt(5, Integer.parseInt(multi.getParameter("newNum")));
+			pstmt.setString(1, multi.getParameter("price"));
+			pstmt.setString(2, multi.getParameter("contents"));
+			pstmt.setString(3, multi.getParameter("stock"));
+			pstmt.setString(4, multi.getParameter("category"));
+			pstmt.setString(5, multi.getParameter("name"));
 				
 			
 			}else {
 				
-				String sql ="update review set user_id=?,product_name=?,review_contents=?,review_date=?,review_pic=?where review_num=?"; 
+				String sql ="update product set product_price=?,product_contents=?,product_stock=?,product_category=?,product_pic=? where product_name=?"; 
 				pstmt = conn.prepareStatement(sql);
 				pstmt = conn.prepareStatement(sql);
 			
-				pstmt.setString(1, multi.getParameter(("user")));
-		           
-	            pstmt.setString(2, multi.getParameter("product"));
-	            pstmt.setString(3, multi.getParameter("contents"));
-	            pstmt.setString(4, multi.getParameter("date"));
-	            pstmt.setInt(5, Integer.parseInt(multi.getParameter("newNum")));
-				pstmt.setString(6, multi.getFilesystemName("pic"));
-					}
+				pstmt.setString(1, multi.getParameter("price"));
+				pstmt.setString(2, multi.getParameter("contents"));
+				pstmt.setString(3, multi.getParameter("stock"));
+				pstmt.setString(4, multi.getParameter("category"));
+				pstmt.setString(5, multi.getFilesystemName("pic"));
+				pstmt.setString(6, multi.getParameter("name"));
+			}
 			if(pstmt.executeUpdate() > 0) b = true;
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -250,4 +248,6 @@ public class ReviewMgr {
 		}
 		return b;
 	}
+
+   
 }

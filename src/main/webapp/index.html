@@ -3,6 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script>
+function redirectDelay() {
+	setTimeout(() => {
+		window.location.href = 'main/main.jsp';
+	}, 3000);
+}
+</script>
 <style>
 html, body {
   height: 100%;
@@ -100,7 +107,7 @@ html, body {
 }
 </style>
 </head>
-<body>
+<body onload = 'redirectDelay()'>
 <div class="cell">
   <div class="card">
     <span class="flower-loader">Loading…</span>

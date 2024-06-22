@@ -21,7 +21,7 @@ int start, end;
 <meta charset="UTF-8">
 <title>상품 목록</title>
 <link href="../css/style.css" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="../js/script.js"></script>
+<script type="text/javascript" src="../js/reviewedit.js"></script>
 
 <script type="text/javascript">
 	// 특정 카테고리를 클릭하면 해당 카테고리에 대한 제품 목록을 볼 수 있는 페이지로 자동으로 이동함
@@ -33,7 +33,6 @@ int start, end;
 
 </head>
 <body>
-<jsp:include page="header_shop.jsp" />
 	<h1>*SS쇼핑*</h1>
 
 	<table>

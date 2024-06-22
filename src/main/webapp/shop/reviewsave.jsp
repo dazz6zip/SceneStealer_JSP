@@ -6,11 +6,6 @@
 <jsp:useBean id="reviewMgr" class="pack.review.ReviewMgr"></jsp:useBean>
 <%
  //클라이언트에 아이피 어드레스 등록
-
 int newNum = reviewMgr.newNum();
 bean.setNum(newNum);
-
-
-
-
 %>

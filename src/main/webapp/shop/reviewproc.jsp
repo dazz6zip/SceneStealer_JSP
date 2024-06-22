@@ -5,13 +5,14 @@
 <%
 request.setCharacterEncoding("utf-8");
 
+
 //controller 역할
 String flag = request.getParameter("flag");
 boolean result = false;
 if(flag.equals("insert")){
 	result = reviewMgr.insertProduct(request);
-}else if(flag.equals("update")){
-	result = reviewMgr.updatetProduct(request);  
+}else if(flag.equals("update")){ 
+	result = reviewMgr.updateProduct(request);  
 }else{
 	response.sendRedirect("productdetail_g.jsp");
 }

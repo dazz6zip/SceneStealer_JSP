@@ -36,7 +36,7 @@ public class MainMgr {
 		ArrayList<SeriesDto> list = new ArrayList<SeriesDto>();
 		try {
 			conn = ds.getConnection();
-			String sql = "SELECT s.series_num, s.series_title, s.series_pic, s.series_title, COUNT(sc.character_num) AS cou FROM series AS s INNER JOIN `character` AS c ON s.series_num = c.series_num LEFT OUTER JOIN scrap AS sc ON c.character_num = sc.character_num GROUP BY s.series_num, s.series_title ORDER BY cou DESC";
+			String sql = "SELECT s.series_num, s.series_title, s.series_pic, s.series_title, COUNT(sc.character_num) AS cou FROM series AS s INNER JOIN characters AS c ON s.series_num = c.series_num LEFT OUTER JOIN scrap AS sc ON c.character_num = sc.character_num GROUP BY s.series_num, s.series_title ORDER BY cou DESC";
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 
@@ -162,7 +162,7 @@ public class MainMgr {
 
 		try {
 			conn = ds.getConnection();
-			String sql = "SELECT * FROM `character` WHERE series_num = ?";
+			String sql = "SELECT * FROM characters WHERE series_num = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, series_num);
 //			pstmt.setInt(2, character_num);
@@ -279,7 +279,7 @@ public class MainMgr {
 		
 		try {
 			conn = ds.getConnection();
-			String sql = "SELECT * FROM `character` WHERE series_num = ? AND character_name = ?";
+			String sql = "SELECT * FROM characters WHERE series_num = ? AND character_name = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, num);
 			pstmt.setString(2, name);
@@ -318,7 +318,7 @@ public class MainMgr {
 		
 		try {
 			conn = ds.getConnection();
-			String sql = "SELECT * FROM scrap WHERE user_id = ? AND character_num = (SELECT character_num FROM `character` WHERE character_name = ?)";
+			String sql = "SELECT * FROM scrap WHERE user_id = ? AND character_num = (SELECT character_num FROM characters WHERE character_name = ?)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, id);
 			pstmt.setString(2, cname);
@@ -351,7 +351,7 @@ public class MainMgr {
 		String character_num;
 		try {
 			conn = ds.getConnection();
-			String sql = "SELECT character_num FROM `character` WHERE character_name = ?";
+			String sql = "SELECT character_num FROM characters WHERE character_name = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, cname);
 			rs = pstmt.executeQuery();
@@ -362,7 +362,7 @@ public class MainMgr {
 				pstmt.setString(1, character_num);
 				pstmt.setString(2, id);
 				if(pstmt.executeUpdate() > 0) {
-					sql = "UPDATE `character` SET character_like = (SELECT COUNT(*) FROM scrap WHERE character_num = ?) WHERE character_name = ?";
+					sql = "UPDATE characters SET character_like = (SELECT COUNT(*) FROM scrap WHERE character_num = ?) WHERE character_name = ?";
 					pstmt = conn.prepareStatement(sql);
 					pstmt.setString(1, character_num);
 					pstmt.setString(2, id);
@@ -394,7 +394,7 @@ public class MainMgr {
 		
 		try {
 			conn = ds.getConnection();
-			String sql = "DELETE FROM scrap WHERE character_num = (SELECT character_num FROM `character` WHERE character_name = ?) AND user_id = ?";
+			String sql = "DELETE FROM scrap WHERE character_num = (SELECT character_num FROM characters WHERE character_name = ?) AND user_id = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, cname);
 			pstmt.setString(2, id);
