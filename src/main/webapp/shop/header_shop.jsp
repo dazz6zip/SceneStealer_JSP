@@ -146,7 +146,7 @@ window.onload = () => {
                     out.print("placeholder='검색어를 입력하세요.'");
                 }
                 %>>
-                <button type="button" id="searchBtn" class="search__button">검색하기</button>
+                <button type="button" id="searchBtn" class="search__button">search</button>
             </div>
         </form>
     </div>

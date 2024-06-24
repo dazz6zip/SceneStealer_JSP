@@ -650,6 +650,40 @@ public class ProductMgr_u {
 			return stock;
 		}
 		
+	public boolean orderReview(String product_name, String id) {
+		boolean b = false;
+		
+		try {
+			conn = ds.getConnection();
+			String sql = "SELECT * FROM orders WHERE orders_num IN (SELECT orders_num FROM order_product WHERE product_name = ?) AND user_id = ?";				
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, product_name);
+			pstmt.setString(2, id);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				b = true;
+			}
+		}catch (Exception e) {
+			System.out.println("orderReview() ERROR : " + e);
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e2) {
+				System.out.println("orderReview() - finally ERROR : " + e2.getMessage());
+			}
+		}
+		
+		return b;
+	}
+		
 		
 	
 }

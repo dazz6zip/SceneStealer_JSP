@@ -1,3 +1,4 @@
+<%@page import="java.text.DecimalFormat"%>
 <%@page import="pack.review.ReviewMgr"%>
 <%@page import="pack.review.ReviewDto"%>
 <%@page import="java.util.Comparator"%>
@@ -9,8 +10,8 @@
 <jsp:useBean id="productMgr" class="pack.product.ProductMgr_u" />
 <jsp:useBean id="reviewMgr" class="pack.review.ReviewMgr"></jsp:useBean>
 
-
 <%
+DecimalFormat df = new DecimalFormat("#,###");
 int spage = 1, pageSu = 0;
 int start, end;
 
@@ -19,7 +20,7 @@ try {
 } catch (Exception e) {
 	spage = 1;
 }
-if(spage <= 0 ){
+if (spage <= 0) {
 	spage = 1;
 }
 String category = request.getParameter("category"); // 카테고리 파라미터 가져오기
@@ -31,68 +32,147 @@ String price = request.getParameter("price");
 <head>
 <meta charset="UTF-8">
 <title>SceneStealer</title>
+<style>
+#paging {
+	display: flex;
+	justify-content: center;
+	margin: 20px 0;
+}
 
+#paging b {
+	color: black;
+	font-weight: bold;
+	margin: 0 5px;
+}
+
+#paging a {
+	color: gray;
+	margin: 0 5px;
+	text-decoration: none;
+}
+
+#paging a:hover {
+	color: black;
+}
+/* body 스타일 */
+body {
+	font-family: Arial, sans-serif;
+	background-color: #f4f4f4;
+	margin: 0;
+	padding: 0;
+}
+
+.product-card {
+	background: #fff;
+	padding: 15px;
+	margin: 10px;
+	text-align: center;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	transition: transform 0.3s ease;
+}
+
+.product-card img {
+	max-width: 150px;
+	height: auto;
+	transition: transform 0.3s ease;
+}
+
+.product-card img:hover {
+	transform: scale(1.1);
+}
+
+.product-card p {
+	margin: 10px 0;
+}
+
+.product-card a {
+	display: block;
+	margin: 10px 0;
+	color: #333;
+	text-decoration: none;
+}
+
+.product-card a:hover {
+	color: #007BFF;
+}
+
+form#sortForm {
+	display: flex;
+	justify-content: flex-end;
+	margin: 20px;
+}
+
+form#sortForm select {
+	padding: 5px;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+}
+
+table {
+	width: 100%;
+	border-spacing: 30px;
+}
+
+#categorytable th {
+	background-color: black;
+	color: white;
+	border-radius: 80px;
+	padding: 10px;
+	width: 15%
+}
+
+#categorytable a {
+	display: block;
+	margin: 10px 0;
+	color: white;
+	text-decoration: none;
+}
+
+#categorytable a:hover {
+	font-size: 110%;
+}
+</style>
 <script type="text/javascript" src="../js/reviewedit.js"></script>
-
 <script type="text/javascript">
 	// 특정 카테고리를 클릭하면 해당 카테고리에 대한 제품 목록을 볼 수 있는 페이지로 자동으로 이동함
 	function showCategory(category) {
 		window.location.href = 'productlist.jsp?category=' + category;
 	}
+
+	function sortBy(option) {
+		document.getElementById('sortForm').submit();
+	}
 </script>
-
-
 </head>
 <body>
-<jsp:include page="header_shop.jsp"></jsp:include>
-	<h1>*SS쇼핑*</h1>
+	<jsp:include page="header_shop.jsp"></jsp:include>
 
-	<table>
+	<form action="productlist.jsp" method="get" id="sortForm">
+		<!--  value가 get방식으로 호출됨 -->
+		<input type="hidden" name="category" value="<%=category%>"> 
+		<select name="sort" onchange="sortBy(this.value)">
+			<option value="0">정렬순서</option>
+			<option value="1">높은 가격 순</option>
+			<option value="2">낮은 가격 순</option>
+			<option value="3">판매 순</option>
+			<option value="4">최신 순</option>
+		</select>
+	</form>
+	<table id="categorytable">
 		<tr style="text-align: center;">
 			<!--  클릭하면 함수가 호출됨 -->
-			<td><a href="javascript:showCategory('all')">전체 상품</a></td>
-			<td><a href="javascript:showCategory('category1')">상의</a></td>
-			<td><a href="javascript:showCategory('category10')">하의</a></td>
-			<td><a href="javascript:showCategory('category19')">신발</a></td>
-			<td><a href="javascript:showCategory('category9')">기타</a></td>
-
-			<td colspan="4" style="text-align: right;">
-			<script type="text/javascript">
-				function sortBy(option) {
-					document.getElementById('sortForm').submit();
-				}
-			</script>
-
-				<form action="productlist.jsp" method="get" id="sortForm">
-					<!--  value가 get방식으로 호출됨 -->
-					<input type="hidden" name="category" value="<%= category %>">
-					<select name="sort" onchange="sortBy(this.value)">
-						<option value="0">정렬순서</option>
-						<option value="1">높은 가격 순</option>
-						<option value="2">낮은 가격 순</option>
-						<option value="3">판매 순</option>
-						<option value="4">최신 순</option>
-					</select>
-				</form></td>
+			<th><a href="javascript:showCategory('all')">ALL</a></th>
+			<th><a href="javascript:showCategory('category1')">TOP</a></th>
+			<th><a href="javascript:showCategory('category10')">BOTTOM</a></th>
+			<th><a href="javascript:showCategory('category19')">SHOES</a></th>
+			<th><a href="javascript:showCategory('category9')">ETC</a></th>
 		</tr>
-		<tr>
-			<th>상품명</th>
-			<th>가격</th>
-			<th>재고량</th>
-			<th>상세보기</th>
-			<th>등록날짜</th>
-		</tr>
-
-
 		<%
-		
-		
-
 		ArrayList<ProductDto> plist = new ArrayList<>();
 		if (category == null || category.equals("all")) {
 			plist = productMgr.getProductAll(spage); // 전체 상품 목록 가져오기
 		} else {
-			plist = productMgr.getProductAll(spage,category); // 카테고리별 제품 가져오기
+			plist = productMgr.getProductAll(spage, category); // 카테고리별 제품 가져오기
 		}
 
 		String sort = request.getParameter("sort");
@@ -117,66 +197,71 @@ String price = request.getParameter("price");
 				break;
 			}
 		}
-
+		int count = 0;
 		for (ProductDto p : plist) {
+			if (count % 5 == 0 && count != 0) {
 		%>
-		<tr style="text-align: center;">
-			<td><img src="../upload/<%=p.getPic()%>" width="150" /> <%=p.getName()%>
+		<tr>
+			<%
+			}
+			%>
+			<td style="text-align: center;">
+				<div class="product-card">
+					<a href="javascript:productDetail_guest('<%=p.getName()%>')"
+						class="product-link"> <img src="../upload/<%=p.getPic()%>"
+						width="150" />
+					</a>
+					<p><%=p.getName()%></p>
+					<p><%=df.format(p.getPrice())%>원
+					</p>
+				</div>
 			</td>
-			<td><%=p.getPrice()%></td>
-			<td><%=p.getStock()%></td>
-
-
-			<td><a href="javascript:productDetail_guest('<%=p.getName()%>')">보기</a></td>
-			<td><%=p.getDate()%></td>
+			<%
+			count++;
+			}
+			if (count % 5 != 0) {
+			%>
 		</tr>
 		<%
 		}
 		%>
-		<%
-		if(category != null && !category.equals("all")){	
-			productMgr.totalcList(category);
-			pageSu = productMgr.getcPageSu();
-		} else if (category == null || category.equals("all")){
-			productMgr.totalList(); //전체 레코드 수계산
-			pageSu = productMgr.getPageSu(); //페이지수 받기
-		}
-		%>
-		<table style="width: 100%">
-				<tr>
-					<td style="text-align: center;">
-		<%
-		
-		for (int i = 1; i <= pageSu; i++) {
-		    if (i == spage) {
-		        out.print("<b style='font-size:15pt; color:red'>[" + i + "]</b>");
-		    } else {
-		        String queryString = "";
-		        if (category != null) {
-		            queryString += "&category=" + category;
-		        }
-		        if (sort != null) {
-		            queryString += "&sort=" + sort;
-		        }
-		        if (category != null && sort != null) {
-		        	queryString += "&category=" + category + "&sort=" + sort;
-		        }
-		        out.print("<a href='productlist.jsp?page=" + i + queryString + "'>[" + i + "]</a>");
-		    }
-		}
-
-		%>
-		</td>
-		</tr>
-		
-		</table>
 	</table>
-	<br>
 
+	<%
+	if (category != null && !category.equals("all")) {
+	    productMgr.totalcList(category);
+	    pageSu = productMgr.getcPageSu();
+	} else if (category == null || category.equals("all")) {
+	    productMgr.totalList(); // 전체 레코드 수계산
+	    pageSu = productMgr.getPageSu(); // 페이지수 받기
+	}
+	%>
+	<div id="paging">
+		<%
+	    for (int i = 1; i <= pageSu; i++) {
+	   
+	    if (i == spage) {
+	        out.print("<b>" + i + "</b>");
+	    } else {
+	        String queryString = "";
+	        if (category != null) {
+	            queryString += "&category=" + category;
+	        }
+	        if (sort != null) {
+	            queryString += "&sort=" + sort;
+	        }
+	        if (category != null && sort != null) {
+	            queryString += "&category=" + category + "&sort=" + sort;
+	        }
+	        out.print("<a href='productlist.jsp?page=" + i + queryString + "'>" + i + "</a>");
+	    }
+	    }
+	    %>
+	</div>
 
 	<form action="productdetail_g.jsp" name="detailFrm">
 		<input type="hidden" name="name" />
 	</form>
-<jsp:include page="../footer.jsp"></jsp:include>
+	<jsp:include page="../footer.jsp"></jsp:include>
 </body>
 </html>

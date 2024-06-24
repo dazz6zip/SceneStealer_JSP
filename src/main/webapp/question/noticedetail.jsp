@@ -19,8 +19,6 @@ String notice_title = ndto.getTitle();
 String notice_pic = ndto.getPic();
 String notice_contents = ndto.getContents();
 String notice_date = ndto.getDate();
-
-
 %>
 
 <!DOCTYPE html>
@@ -28,13 +26,57 @@ String notice_date = ndto.getDate();
 <head>
 <meta charset="UTF-8">
 <title>공지사항 상세 보기</title>
-<link href="../css/style.css" rel="stylesheet" type="text/css">
+<style>
+/* body 스타일 */
+body#notice-body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+/* 테이블 스타일 */
+#notice-table {
+    width: 100%;
+    border-spacing: 20px;
+    margin: 20px 0;
+}
+
+#notice-table th, #notice-table td {
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+
+#notice-table td img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+/* 링크 스타일 */
+#notice-links a {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 20px 0;
+    background-color: #000;
+    color: white;
+    text-decoration: none;
+    border-radius: 20px;
+    transition: background-color 0.3s ease;
+}
+
+#notice-links a:hover {
+    background-color: #444;
+}
+
+
+</style>
 <script type="text/javascript" src="../js/script.js"></script>
 </head>
-<body>
+<body id="notice-body">
 <jsp:include page="../user/header_user.jsp"></jsp:include>
-<h1>공지사항 상세 보기</h1>
-<table>
+<table id="notice-table">
     <tr>
         <th>제목</th>
         <td><%= notice_title %></td>
@@ -47,14 +89,16 @@ String notice_date = ndto.getDate();
         <th>내용</th>
         <td><%= notice_contents %></td>
     </tr>
-     <tr>
+    <tr>
         <th>사진</th>
-        	<td>
-			<img src="C:/HomeWork/scene_stealer/src/main/webapp/upload/<%=notice_pic %>" width="150"/>
-		</td>
+        <td>
+            <img src="C:/HomeWork/scene_stealer/src/main/webapp/upload/<%=notice_pic %>" width="150"/>
+        </td>
     </tr>
 </table>
-<a href="questionlist.jsp">목록으로</a>
+<div id="notice-links">
+    <a href="questionlist.jsp">목록으로</a>
+</div>
 <jsp:include page="../footer.jsp"></jsp:include>
 </body>
 </html>

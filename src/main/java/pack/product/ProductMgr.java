@@ -149,7 +149,7 @@ public class ProductMgr {
 
     public boolean insertProduct(HttpServletRequest request) {
         boolean isInserted = false;
-        String uploadDir = "C:/work/scene_stealer/src/main/webapp/upload/product";
+        String uploadDir = "c:/work/scene_stealer/src/main/webapp/upload/product";
         int maxFileSize = 5 * 1024 * 1024; // 5MB
 
         try {

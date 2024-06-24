@@ -171,7 +171,6 @@ table {
 			</td>
 		</tr>
 	</table>
-	<jsp:include page="../footer.jsp"></jsp:include>
 	<form action="sub.jsp" name="characterFrm" method="post">
 		<input type="hidden" name="character_name"> 
 		<input type="hidden" name="series_num" value="<%=series_num%>">

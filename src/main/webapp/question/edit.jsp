@@ -16,7 +16,56 @@ qdto = qmgr.getData2(num); //수정할 자료 읽기
 <head>
 <meta charset="UTF-8">
 <title>질문 수정 페이지</title>
-<link href="../css/style.css" rel="stylesheet" type="text/css">
+<style>
+/* body 스타일 */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+/* header 스타일 */
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+}
+
+/* 테이블 스타일 */
+table {
+    width: 100%;
+    border-spacing: 20px;
+    margin: 20px 0;
+}
+
+/* 입력 필드 스타일 */
+input[type="text"], input[type="file"], textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* 버튼 스타일 */
+input[type="button"] {
+    padding: 10px 20px;
+    margin: 10px 5px;
+    border: none;
+    background-color: #000;
+    color: white;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+input[type="button"]:hover {
+    background-color: #444;
+}
+
+</style>
 <script type="text/javascript" src="../js/script.js"></script>
 <script type="text/javascript">
 window.onload = () => {
@@ -33,7 +82,6 @@ window.onload = () => {
 </head>
 <body>
 <jsp:include page="../user/header_user.jsp"></jsp:include>
-	<h2>질문 글 수정 부분</h2>
 	<form action="editsave.jsp" method="post" name="qfrm">
 	<input type="hidden" name="num" value="<%=num %>">
 	<input type="hidden" name="page" value="<%=spage %>">
