@@ -10,6 +10,7 @@
 <%
 int spage = 1, pageSu = 0; //페이징을 하기 위한 변수
 int start, end;
+//String id = "user1";
 String id = (String)session.getAttribute("idKey");
 %>
 <!DOCTYPE html>
@@ -22,6 +23,7 @@ String id = (String)session.getAttribute("idKey");
 
 </head>
 <body>
+<jsp:include page="../user/header_user.jsp"></jsp:include>
 <table>
 <tr>
 <td colspan="2">공지사항</td>
@@ -122,5 +124,6 @@ for (int i = 0; i < list.size(); i++) {
 <form action="noticedetail.jsp" method="post" name="noticeForm">
 	<input type="hidden" name="num">
 </form>
+<jsp:include page="../footer.jsp"></jsp:include>
 </body>
 </html>

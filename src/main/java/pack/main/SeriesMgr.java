@@ -14,8 +14,8 @@ import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 public class SeriesMgr {
 	private Connection conn;
-	private PreparedStatement pstmt, pstmt1, pstmt2;
-	private ResultSet rs, rs1, rs2;
+	private PreparedStatement pstmt;
+	private ResultSet rs;
 	private DataSource ds;
 	private String sql;
 	
@@ -30,33 +30,26 @@ public class SeriesMgr {
 	
 	// 입력 키워드 기반 검색 결과 추천
 	public String series_suggest(String keyword){
-		String str = "";
+		// 시리즈명 중복 가능하므로 검색 결과 여부와 무관하게 무조건 새로 만들기 가능
+		String str = keyword + " <a href=\"javascript:series_insert('" + keyword + "')\">새로 만들기 ➕</a><hr>";
+		String sql = "select series_title, series_date, series_num from series where series_title like ?";
+		// 입력 키워드가 포함된 검색 결과가 있다면, 해당 결과들 편집 옵션 제시
 		try {
 			conn = ds.getConnection();
-			// 입력 키워드와 정확히 일치하는 검색 결과가 없다면, 새로 만들기 옵션 제시
-			sql = "select series_title from series where series_title = ?";
-			pstmt1 = conn.prepareStatement(sql);
-			pstmt1.setString(1, keyword);
-			rs1 = pstmt1.executeQuery();
-			if(!rs1.next()) str += keyword + " <a href=\"javascript:series_insert('" + keyword + "')\">새로 만들기</a><hr>";
-			
-			// 입력 키워드가 포함된 검색 결과가 있다면, 해당 결과들 편집 옵션 제시
-			sql = "select series_title, series_num from series where series_title like ?";
-			pstmt2 = conn.prepareStatement(sql);
-			pstmt2.setString(1, "%" + keyword + "%");
-			rs2 = pstmt2.executeQuery();
-			while(rs2.next()) {
-				str += rs2.getString(1) + " <a href=\"javascript:series_update('" + rs2.getInt(2) + "')\">편집하기</a><hr>";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, "%" + keyword.replaceAll(" ", "") + "%");
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				String seriesInfo = rs.getString(1) + " (" + rs.getString(2) +")"; // 같은 이름의 시리즈 구분하도록 공개일 옆에 적기
+				str += seriesInfo + " <a href=\"javascript:series_update('" + rs.getInt(3) + "')\">편집하기 ✏️</a><hr>";
 			}
 			// 띄어쓰기 해결 필요
 		} catch (Exception e) {
 			System.out.println("series_suggest err: " + e);
 		} finally {
 			try {
-				if(rs1 != null) rs1.close();
-				if(rs2 != null) rs2.close();
-				if(pstmt1 != null) pstmt1.close();
-				if(pstmt2 != null) pstmt2.close();
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
 				if(conn != null) conn.close();
 			} catch (Exception e) {
 				System.out.println("cannot close: " + e);

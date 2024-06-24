@@ -27,6 +27,10 @@ public class ProductMgr_u {
 	private int rectot;  		// tot : 전체 레코드 수
  	private int pList = 10;      // 페이지 당 출력 행 수 
  	private int pageSu;         // 전체 페이지 수 
+ 	
+ 	private int crectot;  		// tot : 전체 레코드 수
+ 	private int cpList = 10;      // 페이지 당 출력 행 수 
+ 	private int cpageSu;         // 전체 페이지 수 
 	
 	public ProductMgr_u() {
 		try { //DB연결 fooling사용
@@ -82,10 +86,8 @@ public class ProductMgr_u {
 				conn = ds.getConnection();
 				String sql = "select * from product";
 				
-				
 				pstmt = conn.prepareStatement(sql);
-				
-				rs=pstmt.executeQuery();
+				rs = pstmt.executeQuery();
 				
 				 for(int i=0; i< (page-1)* pList; i++) {
 			            rs.next(); //레코드 포인터 이동 0, 4, 9, 14, 19..
@@ -127,11 +129,11 @@ public class ProductMgr_u {
 			
 				rs=pstmt.executeQuery();
 				
-				 for(int i=0; i< (page-1)* pList; i++) {
+				 for(int i=0; i< (page-1)* cpList; i++) {
 			            rs.next(); //레코드 포인터 이동 0, 4, 9, 14, 19..
 			         }
 				 int k =0;
-				while(rs.next() && k < pList) {
+				while(rs.next() && k < cpList) {
 					ProductDto dto = new ProductDto();
 					dto.setName(rs.getString(1));
 					dto.setPic(rs.getString(2));
@@ -159,7 +161,7 @@ public class ProductMgr_u {
 
 	    public boolean insertProduct(HttpServletRequest request) {
 	        boolean isInserted = false;
-	        String uploadDir = "C:\\Users\\dazz6\\OneDrive\\Desktop\\study\\study\\scenestealer\\src\\main\\webapp\\upload";
+	        String uploadDir = "C:\\work\\scene_stealer\\src\\main\\webapp\\upload\\product";
 	        int maxFileSize = 5 * 1024 * 1024; // 5MB
 
 	        try {
@@ -236,7 +238,7 @@ public class ProductMgr_u {
 			boolean b = false;
 			try {
 				//업로드할 이미지 경로 : upload 폴더(절대 경로)
-		        String uploadDir = "/Users/bohyunkim/work/bobo123123/src/main/webapp/upload";
+		        String uploadDir = "C:\\work\\scene_stealer\\src\\main\\webapp\\upload\\product";
 				MultipartRequest multi = new MultipartRequest(request, uploadDir,
 									5 * 1014 * 1024, "UTF-8",new DefaultFileRenamePolicy());
 		
@@ -425,7 +427,6 @@ public class ProductMgr_u {
 			try {
 				conn = ds.getConnection();
 				pstmt = conn.prepareStatement(sql);
-				
 				rs = pstmt.executeQuery();
 				rs.next();
 				rectot = rs.getInt(1);
@@ -447,16 +448,16 @@ public class ProductMgr_u {
 			if(rectot % pList > 0) pageSu++; //자투리가 있으면 페이지 하나 플러스
 			return pageSu;
 		}
-		public void otalList(String category) { // 전체 레코드 수 구하기
-			String sql = "select count(*) from product";
+		
+		public void totalcList(String category) { // 카테고리별
+			String sql = "select count(*) from product where product_category = ?";
 			try {
 				conn = ds.getConnection();
 				pstmt = conn.prepareStatement(sql);
-				
+				pstmt.setString(1, category);
 				rs = pstmt.executeQuery();
 				rs.next();
-				rectot = rs.getInt(1);
-				System.out.println("전체 레코드수 " + rectot);
+				crectot = rs.getInt(1);
 			} catch (Exception e) {
 				System.out.println("totalList() err : " + e);
 			} finally {
@@ -469,6 +470,13 @@ public class ProductMgr_u {
 				}
 			}
 		}
+		public int getcPageSu() { 
+			cpageSu = crectot / cpList;
+			if(crectot % cpList > 0) cpageSu++; //자투리가 있으면 페이지 하나 플러스
+			return cpageSu;
+		}
+		
+	
 		public int getPageSu(String category) { //전체 페이지수 반환
 			pageSu = rectot / pList;
 			if(rectot % pList > 0) pageSu++; //자투리가 있으면 페이지 하나 플러스
@@ -551,7 +559,7 @@ public class ProductMgr_u {
 			return newnum + 1;
 		}
 		
-		public void insertCart(Order_productDto opdto, String id) {
+		public int insertOrder(String id) {
 			int orders_num = maxnum();
 			try {
 				conn = ds.getConnection();
@@ -559,14 +567,67 @@ public class ProductMgr_u {
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setInt(1, orders_num);
 				pstmt.setString(2, id);
-				if (pstmt.executeUpdate() > 0) {
-					pstmt.close();
-					sql = "INSERT INTO order_product VALUES (?, ?, ?)";				
-					pstmt = conn.prepareStatement(sql);
-					pstmt.setInt(1, orders_num);
-					pstmt.setString(2, opdto.getName());
-					pstmt.setInt(3, opdto.getQuantity());
-					pstmt.executeUpdate();
+				pstmt.executeUpdate();
+			}catch (Exception e) {
+				System.out.println("insertOrder() ERROR : " + e);
+			} finally {
+				try {
+					if (rs != null) {
+						rs.close();
+					}
+					if (pstmt != null) {
+						pstmt.close();
+					}
+					if (conn != null) {
+						conn.close();
+					}
+				} catch (Exception e2) {
+					System.out.println("insertOrder() - finally ERROR : " + e2.getMessage());
+				}
+			}
+			return orders_num;
+		}
+		
+		public void insertCart(Order_productDto opdto, String id, int orders_num) {
+			System.out.print("!!!!!!!!!!!!!확인 : " +opdto.getName() + opdto.getQuantity() + id + orders_num);
+			try {
+				conn = ds.getConnection();
+				String sql = "INSERT INTO order_product VALUES (?, ?, ?)";				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, orders_num);
+				pstmt.setString(2, opdto.getName());
+				pstmt.setInt(3, opdto.getQuantity());					
+				pstmt.executeUpdate();	
+			}catch (Exception e) {
+				System.out.println("insertCart() ERROR : " + e);
+			} finally {
+				try {
+					if (rs != null) {
+						rs.close();
+					}
+					if (pstmt != null) {
+						pstmt.close();
+					}
+					if (conn != null) {
+						conn.close();
+					}
+				} catch (Exception e2) {
+					System.out.println("insertCart() - finally ERROR : " + e2.getMessage());
+				}
+			}
+		}
+		
+		public int nowStock(String product_name) {
+			int stock = 0;
+			
+			try {
+				conn = ds.getConnection();
+				String sql = "SELECT product_stock FROM product WHERE product_name = ?";				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, product_name);
+				rs = pstmt.executeQuery();
+				if (rs.next()) {
+					stock = rs.getInt(1);
 				}
 			}catch (Exception e) {
 				System.out.println("insertCart() ERROR : " + e);
@@ -585,6 +646,8 @@ public class ProductMgr_u {
 					System.out.println("insertCart() - finally ERROR : " + e2.getMessage());
 				}
 			}
+			
+			return stock;
 		}
 		
 		

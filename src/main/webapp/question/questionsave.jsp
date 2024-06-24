@@ -9,11 +9,20 @@
 // qdto.setUser(request.getRemoteAddr()); //클라이언트에 ip주소 들어감
 
 int newNum = qmgr.currentMaxNum()+1;
-qdto.setNum(newNum);
+boolean result = false;
+if (request.getParameter("flag").equals("insert")) {
+	result = qmgr.saveData(request,newNum);   
+} else {  
+	%>
+	<script>
+	//alert("asfdasfd");
+	</script>
+	<%
+}
 
-qmgr.saveData(qdto);   
 
 response.sendRedirect("questionlist.jsp?page=1");
+
 
 
 %>

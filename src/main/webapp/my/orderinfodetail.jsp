@@ -35,6 +35,7 @@ OrdersDto odto = orderMgr.getOrderDataDetail(orders_num);
 <script type="text/javascript" src="../js/order.js"></script>
 </head>
 <body>
+<jsp:include page="../user/header_user.jsp" />
 <table border="1">
 	<tr>
 		<th colspan="2">상품 정보</th>
@@ -59,7 +60,7 @@ OrdersDto odto = orderMgr.getOrderDataDetail(orders_num);
 		
 		%>
 		<tr>
-			<td><%= pdto.getPic() %></td>
+			<td><img src="..\\upload\\product\\<%= pdto.getPic() %>"></td>
 			<td><%= pdto.getName() %></td>
 			<td><%= count %></td>
 			<td><%= pdto.getPrice() %></td>
@@ -73,5 +74,6 @@ OrdersDto odto = orderMgr.getOrderDataDetail(orders_num);
 <form action="review.jsp" name="detailFrm" method="post">
 	<input type="hidden" name="product_name">
 </form>
+<jsp:include page="../footer.jsp"></jsp:include>
 </body>
 </html>

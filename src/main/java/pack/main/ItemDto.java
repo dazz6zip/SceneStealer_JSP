@@ -2,7 +2,9 @@ package pack.main;
 
 public class ItemDto {
 	private int num, style;
-	private String pic;
+	private String pic, product;
+	
+	
 	public int getNum() {
 		return num;
 	}
@@ -21,6 +23,10 @@ public class ItemDto {
 	public void setPic(String pic) {
 		this.pic = pic;
 	} 
-	
-	
+	public String getProduct() {
+		return product;
+	}
+	public void setProduct(String product) {
+		this.product = product;
+	}		
 }

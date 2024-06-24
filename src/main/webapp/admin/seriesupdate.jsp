@@ -19,12 +19,11 @@ SeriesDto s = seriesMgr.getSeries(num);
 <body>
 <form action="seriesproc.jsp?flag=update&num=<%=num %>" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="num" value="<%=s.getNum() %>">
-	시리즈명 <input type="text" name="title" value="<%=s.getTitle() %>">
-	공개일자 <input type="date" name="date" value="<%=s.getDate() %>">
-	시리즈 대표사진 <img src="../upload/series/<%=s.getPic() %>">
-	대표사진 수정<input type="file" name="pic">
+	시리즈명 <input type="text" name="title" value="<%=s.getTitle() %>"><br>
+	공개일자 <input type="date" name="date" value="<%=s.getDate() %>"><br><br>
+	시리즈 대표사진 <br><img src="../upload/series/<%=s.getPic() %>"><br>
+	대표사진 수정 ➡️ <input type="file" name="pic"><br><br><br>
 	<input type="submit" value="수정하기">
 </form>
-<a href="#" onclick="window.close()">닫기</a>
 </body>
 </html>

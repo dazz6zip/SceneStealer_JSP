@@ -7,7 +7,7 @@
  <jsp:useBean id="productMgr" class="pack.product.ProductMgr_u" />
  <jsp:useBean id="reviewMgr" class="pack.review.ReviewMgr"></jsp:useBean>
  <%
- String name = request.getParameter("no");
+ String name = request.getParameter("name");
  
  ProductDto dto = productMgr.getProduct(name);
  %>
@@ -15,24 +15,21 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>상세 보기</title>
+<title>SceneStealer</title>
 
 
 <script type="text/javascript" src="../js/reviewedit.js"></script>
 <script type="text/javascript">
 function addToCart() {
-	if(!confirm("장바구니에 담겼습니다 계속 쇼핑하시겠습니까!")) {
-		location.href = 'cart';   	   
-	} else {
-		location.href = '../order/cartproc.jsp';
-	}
+	document.cartFrm.submit();
 }
 </script>
 </head>
 <body>
+<jsp:include page="../shop/header_shop.jsp"></jsp:include>
 <h2>**상품 상세 페이지*</h2>
    
-<form action="cartproc.jsp">
+<form action="../order/cartproc.jsp" name="cartFrm">
 <table >
 	<tr>
 		<td style="width: 30%">
@@ -62,7 +59,7 @@ function addToCart() {
 	<tr>
 		<td colspan="3" style="text-align: center;">
 			<br>
-			<input type="hidden" name="product_no" value="<%=dto.getName()%>">
+			<input type="hidden" name="name" value="<%=dto.getName()%>">
 			<input type="button" value="장바구니에 담기" onclick="addToCart()">
 			<input type="button" value="이전 페이지" onclick="history.back()">
 				[<a href="reviewinsert.jsp?pro=<%= dto.getName() %>">리뷰 등록</a>]
@@ -72,7 +69,7 @@ function addToCart() {
     	<tr>
         <th>닉네임</th><th>상품</th><th>컨텐츠</th><th>내용</th><th>이미지</th>
         <%
-        ArrayList<ReviewDto> rlist = reviewMgr.reviewAll(); 
+        ArrayList<ReviewDto> rlist = reviewMgr.reviewAll(name); 
         if(rlist.size() == 0){
     		%>
     		<tr>
@@ -85,7 +82,7 @@ function addToCart() {
     		<tr style="text-align: center;">
     			<td><%=r.getUser()%></td>
     			<td><%=r.getProduct() %></td>
-    			<td><%=r.getContents() %></td>
+    			<td><a href="javascript:reviewDetail('<%=r.getNum() %>')"><%=r.getContents() %></a></td>
     			<td><%=r.getPic() %></td>
     			<td><%=r.getDate() %></td>
     			<%
@@ -99,7 +96,10 @@ function addToCart() {
 
 </form>
 <hr>
+<form action="../my/reviewdetail.jsp" name="detailFrm">
+	<input type="hidden" name="review_num" />
+</form>
 
-
+<jsp:include page="../footer.jsp"></jsp:include>
 </body>
 </html>

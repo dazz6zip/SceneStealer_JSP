@@ -15,19 +15,10 @@ int spage = 1, pageSu = 0;
 <head>
 <title>상품관리</title>
 <script type="text/javascript" src="../js/productedit.js"></script>
-<script type="text/javascript">
-/* function productDetail(ss){
-	alert(ss);
-	document.detailForm.str.value = ss;
-	document.detailForm.submit();
-	
-} */
-</script>
-
 </head>
 <body>
-**관리자 전체 상품 목록 **<p/>
 <%@ include file="admin_top.jsp" %>
+<h2>상품 관리</h2>
 <table style="width: 90%">
 	<tr style="background-color: silver;">
 	

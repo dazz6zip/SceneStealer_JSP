@@ -19,7 +19,7 @@ if(bean == null){
 <html>
 <head>
 <meta charset="UTF-8">
-<title>회원탈퇴</title>
+<title>SceneStealer</title>
 <link href="css/style.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
 <script src="https://code.jquery.com/jquery-latest.js"></script>
@@ -32,6 +32,7 @@ window.onload = function(){
 </script>
 </head>
 <body>
+<jsp:include page="../shop/header_shop.jsp"></jsp:include>
 <form action="deleteProc.jsp" name="deleteForm" method="post">
 
 <div id="userId">@<%=bean.getId() %></div>
@@ -54,5 +55,6 @@ window.onload = function(){
     회원탈퇴
   </button>
 </div>
+<jsp:include page="../footer.jsp"></jsp:include>
 </body>
 </html>

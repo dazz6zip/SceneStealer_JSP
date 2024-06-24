@@ -13,16 +13,12 @@ ProductDto dto = productMgr.getProduct(request.getParameter("name"));
 <title>상품수정</title>
 <link href="../css/style.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="../js/productedit.js"></script> 
-
 </head>
 <body>
 <%@ include file="admin_top.jsp" %>
+<h2>상품 수정하기</h2>
 <form action="productproc.jsp?flag=update" name="ppfrm" method="post" enctype="multipart/form-data">
 <table>
-<tr>
-		<td colspan="2">**상품 등록**</td>
-		
-	</tr>
 	<tr>
 		<td>상품명</td>
 		<td><%=dto.getName()%></td>

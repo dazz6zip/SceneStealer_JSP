@@ -26,7 +26,7 @@
 </table>	
 </form>
 <br><br>
-<a href="../main/main.jsp">User's Main Page</a>
+<a href="main.jsp">User's Main Page</a>
 </body>
 </html>
 

@@ -26,7 +26,7 @@ String id = (String)session.getAttribute("idKey");
 if(id != null){		// 로그인 한 상태
 %>
 <script type="text/javascript">
-	location.href="../main/main.jsp";
+	history.back();
 </script>
 
 <%
@@ -51,7 +51,8 @@ if(id != null){		// 로그인 한 상태
 	<input type="button"class="btnRegister btn-16" value="Join Up" onclick="location.href='registerForm.html'">
 	</div>
 </form>
-
+<br>
+<a href='findPassForm.jsp'>비밀번호 찾기</a>
 <%
 }
 %>

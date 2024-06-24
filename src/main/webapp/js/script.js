@@ -391,35 +391,8 @@ $(document).ready(function() {
     });
 });
 
-//카트 처리용
-function cartUpdate(form){
-	form.flag.value = "update";
-	form.submit();
-}
 
-function cartDelete(form){
-	
-	form.flag.value = "del";
-	form.submit();
-}
 
-//Question 부분
-function check(){
-	if(qfrm.user.value==""){
-		alert("이름 쓰세요");
-		qfrm.user.focus();
-	}else if(qfrm.title.value ==""){
-		alert("제목 쓰세요");
-		qfrm.title.focus();
-	}else if(qfrm.pic.value ==""){
-		alert("사진 올리세요");
-		qfrm.pic.focus();
-	}else if(qfrm.contents.value ==""){
-		alert("내용 쓰세요");
-		qfrm.contents.focus();
-	}else
-		qfrm.submit();
-}
 
 function noticeget(num) {
 	document.noticeForm.num.value = num;
@@ -446,9 +419,40 @@ function productDelete(name){
 	}
 }
 
+//카트 처리용
+function cartUpdate(form){
+   form.flag.value = "update";
+   form.submit();
+}
+
+function cartDelete(form){
+   form.flag.value = "del";
+   form.submit();
+}
+
 //사용자에서 상품 처리
 
 function productDetail_guest(pname){ 
 	document.detailFrm.no.value = pname;
 	document.detailFrm.submit();
 }
+
+//Question 부분
+function check(){
+	if(qfrm.user.value==""){
+		alert("이름 쓰세요");
+		qfrm.user.focus();
+	}else if(qfrm.title.value ==""){
+		alert("제목 쓰세요");
+		qfrm.title.focus();
+	}else if(qfrm.pic.value ==""){
+		alert("사진 올리세요");
+		qfrm.pic.focus();
+	}else if(qfrm.contents.value ==""){
+		alert("내용 쓰세요");
+		qfrm.contents.focus();
+	}else
+		qfrm.submit();
+}
+
+

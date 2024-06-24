@@ -29,6 +29,7 @@ String answer_contents = qdto.getAnswer_contents();
 <script type="text/javascript" src="../js/script.js"></script>
 </head>
 <body>
+<jsp:include page="../user/header_user.jsp"></jsp:include>
 질문 상세 보기 페이지
 유저id 제목 사진 내용 날짜
 ( 수정 삭제 댓글 리스트)
@@ -45,14 +46,12 @@ String answer_contents = qdto.getAnswer_contents();
 		<td colspan="3" style="background-color: pink">제목 :<%=question_title %> </td>
 	</tr>
 	<tr>
-		<td>이미지 : <%=question_pic %></td>
+		<td>이미지 : <img src="../upload/<%=question_pic %>"></td>
 		<td><div>내용<%=question_contents %></div></td>
 	</tr>
-	
 </table>
 <table>
 <tr><!-- 관리자댓글보이기 -->
-
 	<td><div>관리자 : <%=answer_contents != null ? answer_contents : "댓글이 없습니다." %></div></td>
 </tr>
 	<tr>
@@ -66,6 +65,6 @@ String answer_contents = qdto.getAnswer_contents();
 		</td>
 	</tr>
 </table>
-
+<jsp:include page="../footer.jsp"></jsp:include>
 </body>
 </html>

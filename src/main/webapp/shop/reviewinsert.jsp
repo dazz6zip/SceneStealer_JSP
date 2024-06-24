@@ -12,10 +12,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>SceneStealer</title>
 </head>
 <body>
-
+<jsp:include page="../shop/header_shop.jsp"></jsp:include>
 <form name="productForm" action="reviewproc.jsp?flag=insert" method="post"  enctype="multipart/form-data">
 
 <table>
@@ -51,5 +51,6 @@
 <input type="hidden" name="product" value="<%= pname %>">
 </form>
 
+<jsp:include page="../footer.jsp"></jsp:include>
 </body>
 </html>

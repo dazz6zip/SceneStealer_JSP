@@ -52,47 +52,48 @@ if(user==null){
 <body>
 <%@ include file="admin_top.jsp" %>
 <%=top_element %>
+<%
+if(olist.size()==0){
+%>
+	<b>주문 내역이 없습니다.</b>
+<% 	
+}else{
+%>	
 <table style="width: 90%">
-	<tr style="background-color: silver;">
-		<th>주문번호</th><th>주문자</th><th>주문자명</th><th>이메일</th><th>주소</th><th>주문 내역</th><th>주문상태</th>
+	<tr style="background-color: lavender;">
+		<th>주문번호</th><th>주문자 정보</th><th>주문내역</th><th>주문상태</th>
 	</tr>
 	<% 
-	// 주문 내역 없을 시
-	if(olist.size()==0){
-	%>
-	<tr>
-		<td colspan="7">주문 내역이 없습니다.</td>
-	</tr>
-	<% 	
-	}else{
-		for(OrdersInfoDto oi : olist){
-			formName = "frm" + oi.getOrders();
+	for(OrdersInfoDto oi : olist){
+		formName = "frm" + oi.getOrders();
 	%>
 	<tr>
 		<td><b><%=oi.getOrders() %></b></td>
-		<td><%=oi.getId()%></td>
-		<td><%=oi.getName()%></td>
-		<td><%=oi.getEmail()%></td>
-		<td><%=oi.getAddress()%></td>
 		<td>
-		<table>
-			<tr style="background-color: beige;">
-				<th>상품명</th><th>주문수량</th>
-			</tr>
-	<%
-			ArrayList<Order_productDto> plist = orderMgr.getOrder(oi.getOrders());
-			for(Order_productDto op : plist){			
-	%>
-			<tr>
-				<td><%=op.getName() %></td>
-				<td><%=op.getQuantity() %>
-			</tr>
-	<%
-			}	
-	%>
-		</table>
+			ID: <b><%=oi.getId()%></b><br>
+			NAME: <b><%=oi.getName()%></b><br>
+			EMAIL: <b><%=oi.getEmail()%></b><br>
+			ADDRESS: <b><%=oi.getAddress()%></b><br>
 		</td>
 		<td>
+			<table style="width: 100%">
+				<tr style="background-color: lavenderblush;">
+					<th>상품명</th><th>주문수량</th>
+				</tr>
+			<%
+			ArrayList<Order_productDto> plist = orderMgr.getOrder(oi.getOrders());
+			for(Order_productDto op : plist){			
+			%>
+				<tr>
+					<td><%=op.getName() %></td>
+					<td><%=op.getQuantity() %></td>
+				</tr>
+			<%
+			}	
+			%>
+			</table>
+		</td>
+		<td style="text-align: center">
 		<form action="orderupdate.jsp" name="<%=formName %>" method="post">
 			<input type="hidden" name="num" value="<%=oi.getOrders() %>">
 			<input type="hidden" name="user" value="<%=oi.getId() %>">
@@ -108,17 +109,21 @@ if(user==null){
 				document.<%=formName %>.state.value = '<%=oi.getState() %>';
 				// 현재 주문 상태와 일치하는 옵션을 선택 상태로 설정
 			</script>
-			
 			<input type="submit" value="주문상태 수정">
 		</form>
 		</td>
 	</tr>
-	<%
-		}
+	<tr>
+		<td colspan="4"><hr></td>
+	</tr>
+<%
 	}
-	%>
-</table>
-<table style="width: 100%">
+}
+%>
+</table>	
+
+
+<table>
 	<tr>
 	<td style="text-align: center;">
 	<%

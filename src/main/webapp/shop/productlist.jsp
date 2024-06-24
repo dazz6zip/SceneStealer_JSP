@@ -13,14 +13,25 @@
 <%
 int spage = 1, pageSu = 0;
 int start, end;
+
+try {
+	spage = Integer.parseInt(request.getParameter("page"));
+} catch (Exception e) {
+	spage = 1;
+}
+if(spage <= 0 ){
+	spage = 1;
+}
+String category = request.getParameter("category"); // 카테고리 파라미터 가져오기
+String price = request.getParameter("price");
 %>
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>상품 목록</title>
-<link href="../css/style.css" rel="stylesheet" type="text/css">
+<title>SceneStealer</title>
+
 <script type="text/javascript" src="../js/reviewedit.js"></script>
 
 <script type="text/javascript">
@@ -33,6 +44,7 @@ int start, end;
 
 </head>
 <body>
+<jsp:include page="header_shop.jsp"></jsp:include>
 	<h1>*SS쇼핑*</h1>
 
 	<table>
@@ -44,8 +56,8 @@ int start, end;
 			<td><a href="javascript:showCategory('category19')">신발</a></td>
 			<td><a href="javascript:showCategory('category9')">기타</a></td>
 
-			<td colspan="4" style="text-align: right;"><script
-					type="text/javascript">
+			<td colspan="4" style="text-align: right;">
+			<script type="text/javascript">
 				function sortBy(option) {
 					document.getElementById('sortForm').submit();
 				}
@@ -53,6 +65,7 @@ int start, end;
 
 				<form action="productlist.jsp" method="get" id="sortForm">
 					<!--  value가 get방식으로 호출됨 -->
+					<input type="hidden" name="category" value="<%= category %>">
 					<select name="sort" onchange="sortBy(this.value)">
 						<option value="0">정렬순서</option>
 						<option value="1">높은 가격 순</option>
@@ -72,16 +85,8 @@ int start, end;
 
 
 		<%
-		try {
-			spage = Integer.parseInt(request.getParameter("page"));
-		} catch (Exception e) {
-			spage = 1;
-		}
-		if(spage <= 0 ){
-			spage = 1;
-		}
-		String category = request.getParameter("category"); // 카테고리 파라미터 가져오기
-		String price = request.getParameter("price");
+		
+		
 
 		ArrayList<ProductDto> plist = new ArrayList<>();
 		if (category == null || category.equals("all")) {
@@ -102,7 +107,6 @@ int start, end;
 				plist.sort(Comparator.comparing(ProductDto::getPrice));
 				break;
 			case "3":
-
 				plist.sort(Comparator.comparing(ProductDto::getCount).reversed());
 				break;
 			case "4":
@@ -130,11 +134,12 @@ int start, end;
 		}
 		%>
 		<%
-		
-		productMgr.totalList(); //전체 레코드 수계산
-		pageSu = productMgr.getPageSu(); //페이지수 받기
-		if(category != null){
-			
+		if(category != null && !category.equals("all")){	
+			productMgr.totalcList(category);
+			pageSu = productMgr.getcPageSu();
+		} else if (category == null || category.equals("all")){
+			productMgr.totalList(); //전체 레코드 수계산
+			pageSu = productMgr.getPageSu(); //페이지수 받기
 		}
 		%>
 		<table style="width: 100%">
@@ -153,6 +158,9 @@ int start, end;
 		        if (sort != null) {
 		            queryString += "&sort=" + sort;
 		        }
+		        if (category != null && sort != null) {
+		        	queryString += "&category=" + category + "&sort=" + sort;
+		        }
 		        out.print("<a href='productlist.jsp?page=" + i + queryString + "'>[" + i + "]</a>");
 		    }
 		}
@@ -167,7 +175,8 @@ int start, end;
 
 
 	<form action="productdetail_g.jsp" name="detailFrm">
-		<input type="hidden" name="no" />
+		<input type="hidden" name="name" />
 	</form>
+<jsp:include page="../footer.jsp"></jsp:include>
 </body>
 </html>

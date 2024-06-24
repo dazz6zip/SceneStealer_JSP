@@ -2,7 +2,8 @@ package pack.main;
 
 public class ItemBean {
 	private int num, style;
-	private String pic;
+	private String pic, product;
+	
 	public int getNum() {
 		return num;
 	}
@@ -22,5 +23,10 @@ public class ItemBean {
 		this.pic = pic;
 	} 
 	
-	
+	public String getProduct() {
+		return product;
+	}
+	public void setProduct(String product) {
+		this.product = product;
+	}
 }

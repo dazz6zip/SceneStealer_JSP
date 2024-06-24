@@ -11,9 +11,10 @@ ArrayList<ProductDto> plist = mgr.productSeacrh(searchword.replaceAll(" ", ""));
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>SceneStealer</title>
 </head>
 <body>
+<script type="text/javascript" src="../js/order.js"></script>
 <jsp:include page="header_shop.jsp">
 <jsp:param value="<%= searchword %>" name="val"/>
 </jsp:include>
@@ -31,7 +32,7 @@ if (plist != null && !plist.isEmpty()) {
 		pdto = plist.get(i);
 	%>
 		<td>
-			<table>
+			<table onclick="javascript:searchProductClick('<%= pdto.getName() %>')">
 				<tr>
 					<td><%= pdto.getPic() %></td>
 				</tr>
@@ -60,5 +61,8 @@ if (plist != null && !plist.isEmpty()) {
 }
 %>
 <jsp:include page="../footer.jsp"></jsp:include>
+<form action="productdetail_g.jsp" name="spcFrm" method="post">
+<input type="hidden" name="name">
+</form>
 </body>
 </html>

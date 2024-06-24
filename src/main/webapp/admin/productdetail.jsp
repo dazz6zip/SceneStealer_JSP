@@ -10,14 +10,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>상품 관리</title>
-
+<title>상품 상세 보기</title>
 <script type="text/javascript" src="../js/productedit.js"></script>
 </head>
-<body>
-**상품 상세 보기**<p/>
-
 <%@ include file="admin_top.jsp" %>
+<h2>상품 상세 보기</h2>
 <table>
 	<tr>
 		<td style="width: 20%">

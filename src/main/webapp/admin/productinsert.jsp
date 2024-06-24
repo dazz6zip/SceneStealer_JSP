@@ -20,6 +20,7 @@ function nameCheck(){
 </head>
 <body>
 <%@ include file="admin_top.jsp" %>
+<h2>상품 등록하기</h2>
 <form name="productForm" action="productproc.jsp?flag=insert" method="post"  enctype="multipart/form-data">
 
 <table>

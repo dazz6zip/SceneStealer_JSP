@@ -32,6 +32,7 @@ window.onload = () => {
 </script>
 </head>
 <body>
+<jsp:include page="../user/header_user.jsp"></jsp:include>
 	<h2>질문 글 수정 부분</h2>
 	<form action="editsave.jsp" method="post" name="qfrm">
 	<input type="hidden" name="num" value="<%=num %>">
@@ -65,6 +66,6 @@ window.onload = () => {
 		
 	</table>
 	</form>
-	
+<jsp:include page="../footer.jsp"></jsp:include>
 </body>
 </html>

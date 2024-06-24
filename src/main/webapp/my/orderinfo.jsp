@@ -9,9 +9,25 @@
 
 String id = (String)session.getAttribute("idKey");
 if (id == null) {
-	response.sendRedirect("login.jsp");
+	response.sendRedirect("../user/loginForm.jsp");
 }
 String stateabout = "";
+int spage = 1; // 현재 페이지 번호, 기본값은 1
+int pageSu = 0; // 전체 페이지 수
+
+// URL 파라미터에서 page 값을 가져와 현재 페이지 번호 설정
+try {   
+    spage = Integer.parseInt(request.getParameter("page"));
+} catch (Exception e) {
+    spage = 1;
+}
+
+if (spage <= 0) spage = 1; 
+
+ArrayList<OrdersDto> olist = orderMgr.getorders(id, spage); 
+orderMgr.totalList(id); // 전체 레코드 수 계산
+pageSu = orderMgr.getPageSu(); // 전체 페이지 수 계산
+
 %>
 <!DOCTYPE html>
 <html>
@@ -21,9 +37,7 @@ String stateabout = "";
 <script type="text/javascript" src="../js/order.js"></script>
 </head>
 <body>
-<input type="button" id="#orderBtn" value="ORDER">
-<input type="button" id="#reviewBtn" value="REVIEW">
-<input type="button" id="#qnaBtn" value="Q&A">
+<jsp:include page="../user/header_user.jsp" />
 <table border="1">
 	<tr>
 		<th>주문번호</th>
@@ -33,14 +47,13 @@ String stateabout = "";
 		<th>취소/환불/반품</th>
 	</tr>
 	<%
-	ArrayList<OrdersDto> olist = orderMgr.getOrderData(id);
 	for (int i = 0; i < olist.size(); i++) {
 		odto = olist.get(i);
 		pdto = orderMgr.getOPinfo(odto.getNum());
 		%>
 		<tr>
 			<td><%= odto.getNum() %></td>
-			<td><%= pdto.getPic() %></td>
+			<td><img src="..\\upload\\product\\<%= pdto.getPic() %>"></td>
 			<td><a href="javascript:orderinfo('<%= odto.getNum() %>', '<%= odto.getState() %>')"><%= pdto.getName() %> 
 			<% 
 			int count = orderMgr.countprocess(odto.getNum());
@@ -65,6 +78,21 @@ String stateabout = "";
 		}
 	%>
 </table>
+<table style="width: 100%">
+    <tr>
+        <td style="text-align: center;">
+            <%
+            for (int i = 1; i <= pageSu; i++) {
+                if (i == spage) {
+                    out.print("<b style='font-size:15pt; color:red'>[" + i + "]</b>");
+                } else {
+                    out.print("<a href='orderinfo.jsp?page=" + i + "'>[" + i + "]</a>");
+                }
+            }
+            %>
+        </td>
+    </tr>
+</table>
 <form action="orderinfodetail.jsp" method="post" name="orderFrm">
 	<input type="hidden" name="orders_num">
 	<input type="hidden" name="orders_state">
@@ -74,6 +102,6 @@ String stateabout = "";
 	<input type="hidden" name="orders_num">
 	<input type="hidden" name="product_name">
 </form>
-
+<jsp:include page="../footer.jsp"></jsp:include>
 </body>
 </html>

@@ -3,7 +3,6 @@ package pack.main;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -14,9 +13,6 @@ import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 public class CharacterMgr {
-	private Connection conn;
-	private PreparedStatement pstmt;
-	private ResultSet rs;
 	private DataSource ds;
 	
 	public CharacterMgr() {
@@ -35,33 +31,26 @@ public class CharacterMgr {
 	public CharacterDto[] getAllCharacters(String num){
 		CharacterDto[] array = new CharacterDto[4];
 		String sql = "select * from characters where series_num=?";
-		try {
-			conn = ds.getConnection();
-			pstmt = conn.prepareStatement(sql);
+		try(Connection conn = ds.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql)){
 			pstmt.setString(1, num);
-			rs = pstmt.executeQuery();
-			for(int i=0; i<4; i++) {
-				if(rs.next()){
-					CharacterDto dto = new CharacterDto();
-					dto.setNum(rs.getInt(1));
-					dto.setName(rs.getString(2));
-					dto.setLike(rs.getInt(3));
-					dto.setPic(rs.getString(4));
-					dto.setActor(rs.getInt(5));
-					dto.setSeries(rs.getInt(6));
-					array[i] = dto;
+			try(ResultSet rs = pstmt.executeQuery()){
+				for(int i=0; i<4; i++) {
+					if(rs.next()){
+						CharacterDto dto = new CharacterDto();
+						dto.setNum(rs.getInt(1));
+						dto.setName(rs.getString(2));
+						dto.setLike(rs.getInt(3));
+						dto.setPic(rs.getString(4));
+						dto.setActor(rs.getInt(5));
+						dto.setSeries(rs.getInt(6));
+						array[i] = dto;
+					}
 				}
+				
 			}
 		} catch (Exception e) {
 			System.out.println("getAllCharacters err: " + e);
-		} finally {
-			try {
-				if (rs != null) rs.close();
-		        if (pstmt != null) pstmt.close();
-		        if (conn != null) conn.close();
-			} catch (Exception e) {
-				System.out.println("cannot close: " + e);
-			}
 		}
 		return array;
 	}
@@ -71,26 +60,18 @@ public class CharacterMgr {
 		String sql = "select actor.actor_num, actor_name, actor_birth from characters inner join actor"
 				+ " on characters.actor_num = actor.actor_num where character_num=?";
 		ActorDto actor = new ActorDto();
-		try {
-			conn = ds.getConnection();
-			pstmt = conn.prepareStatement(sql);
+		try(Connection conn = ds.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql)){
 			pstmt.setInt(1, num);
-			rs = pstmt.executeQuery();
-			if (rs.next()) {
-				actor.setNum(rs.getInt(1));
-				actor.setName(rs.getString(2));
-				actor.setBirth(rs.getString(3));
+			try(ResultSet rs = pstmt.executeQuery()){
+				if (rs.next()) {
+					actor.setNum(rs.getInt(1));
+					actor.setName(rs.getString(2));
+					actor.setBirth(rs.getString(3));
+				}
 			}
 		} catch (Exception e) {
 			System.out.println("newNum err: " + e);
-		} finally {
-			try {
-				if (rs != null) rs.close();
-				if (pstmt != null) pstmt.close();
-				if (conn != null) conn.close();
-			} catch (Exception e) {
-				System.out.println("cannot close: " + e);
-			}
 		}
 		return actor;
 	}
@@ -100,93 +81,83 @@ public class CharacterMgr {
 	public int newNum() {
 		int num = 0;
 		String sql = "select max(character_num) from characters";
-		try {
-			conn = ds.getConnection();
-			pstmt = conn.prepareStatement(sql);
-			rs = pstmt.executeQuery();
-			if (rs.next()) num = rs.getInt(1);
+		try (Connection conn = ds.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(sql);
+				ResultSet rs = pstmt.executeQuery()) {
+
+			if (rs.next())
+				num = rs.getInt(1);
 		} catch (Exception e) {
 			System.out.println("newNum err: " + e);
-		} finally {
-			try {
-				if (rs != null) rs.close();
-				if (pstmt != null) pstmt.close();
-				if (conn != null) conn.close();
-			} catch (Exception e) {
-				System.out.println("cannot close: " + e);
-			}
 		}
 		return num + 1;
 	}
-	
+
 	// character 추가
 	public boolean insertCharacter(HttpServletRequest request) {
-	      boolean b = false;
-	      try {
-	         String uploadDir = "C:/work/scene_stealer/src/main/webapp/upload/character";
-	         MultipartRequest multi = new MultipartRequest(request, uploadDir, 5 * 1024 * 1024, "UTF-8", new DefaultFileRenamePolicy());
-	         String sql = "INSERT INTO characters(character_num, character_name, character_pic, actor_num, series_num) values(?,?,?,?,?)";
-	         conn = ds.getConnection();
-	         pstmt = conn.prepareStatement(sql);
-	         pstmt.setString(1, multi.getParameter("num"));
-	         pstmt.setString(2, multi.getParameter("name"));
-	         
-	         if (multi.getFilesystemName("pic") == null) pstmt.setString(3, "ready.jpg");
-	         else pstmt.setString(3, multi.getFilesystemName("pic"));
-	         
-	         pstmt.setString(4, multi.getParameter("actor"));
-	         pstmt.setString(5, multi.getParameter("series"));
-
-	         if (pstmt.executeUpdate() == 1) b = true;
-	      } catch (Exception e) {
-	         System.out.println("insertCharacter err : " + e);
-	      } finally {
-	         try {
-	            if (rs != null) rs.close();
-	            if (pstmt != null) pstmt.close();
-	            if (conn != null) conn.close();
-	         } catch (Exception e2) {}
-	      }
-	      return b;
-	}
-	
-	// character 수정
-	public boolean updateCharacter(HttpServletRequest request) {
 		boolean b = false;
+		String uploadDir = "C:/work/scene_stealer/src/main/webapp/upload/character";
 		try {
-			String uploadDir = "C:/work/scene_stealer/src/main/webapp/upload/character";
-			MultipartRequest multi = new MultipartRequest(request, uploadDir, 5 * 1024 * 1024, "UTF-8",
-					new DefaultFileRenamePolicy());
-			conn = ds.getConnection();
-
-			if (multi.getFilesystemName("pic") == null) {
-				String sql = "update characters set character_name=? where character_num=?";
-				pstmt = conn.prepareStatement(sql);
-				pstmt.setString(1, multi.getParameter("name"));
-				pstmt.setString(2, multi.getParameter("num"));
-			} else {
-				String sql = "update characters set character_name=?,character_pic=? where character_num=?";
-				pstmt = conn.prepareStatement(sql);
-				pstmt.setString(1, multi.getParameter("name"));
-				if (multi.getFilesystemName("pic") == null) { // 이미지를 선택하지 않은 경우
-					pstmt.setString(2, "ready.jpg");
-				} else { // 선택한 경우
-					pstmt.setString(2, multi.getFilesystemName("pic"));
-				}
-				pstmt.setString(3, multi.getParameter("num"));
+			MultipartRequest multi = new MultipartRequest(request, uploadDir, 5 * 1024 * 1024, "UTF-8", new DefaultFileRenamePolicy());
+			String sql = "INSERT INTO characters(character_num, character_name, character_pic, actor_num, series_num) values(?,?,?,?,?)";
+			try (Connection conn = ds.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+				pstmt.setString(1, multi.getParameter("num"));
+				pstmt.setString(2, multi.getParameter("name"));
+				if (multi.getFilesystemName("pic") == null) pstmt.setString(3, "ready.jpg");
+				else pstmt.setString(3, multi.getFilesystemName("pic"));
+				pstmt.setString(4, multi.getParameter("actor"));
+				pstmt.setString(5, multi.getParameter("series"));
+				if (pstmt.executeUpdate() == 1) b = true;
 			}
-			if (pstmt.executeUpdate() == 1) b = true;
 		} catch (Exception e) {
-			System.out.println("updateCharacter err : " + e);
-		} finally {
-			try {
-				if (rs != null) rs.close();
-				if (pstmt != null) pstmt.close();
-				if (conn != null) conn.close();
-			} catch (Exception e2) {
-			}
+			System.out.println("insertCharacter err : " + e);
 		}
 		return b;
 	}
 
+	// character 수정 (대표사진)
+	public boolean updateCharacter(HttpServletRequest request) {
+		boolean b = false;
+		String uploadDir = "C:/work/scene_stealer/src/main/webapp/upload/character";
+		try{
+			MultipartRequest multi = new MultipartRequest(request, uploadDir, 5 * 1024 * 1024, "UTF-8", new DefaultFileRenamePolicy());
+			if (multi.getFilesystemName("pic") == null) {
+				b = true; // 수정할 사진 선택 안했으면 업데이트 처리 완료로 바로 처리
+			} else {
+				String sql = "update characters set character_pic=? where character_num=?";
+				try (Connection conn = ds.getConnection(); 
+					 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+					pstmt.setString(1, multi.getFilesystemName("pic"));
+					pstmt.setString(2, multi.getParameter("num"));
+					if (pstmt.executeUpdate() == 1) b = true;
+				}
+			}
+		} catch (Exception e) {
+			System.out.println("updateCharacter err : " + e);
+		}
+		return b;
+	}
+	
+	// 캐릭터 반환
+	public CharacterDto getCharacter(String num) {
+		CharacterDto c = new CharacterDto();
+		String sql = "select * from characters where character_num = ?";
+		try(Connection conn = ds.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql);){
+			pstmt.setString(1, num);
+			try(ResultSet rs = pstmt.executeQuery()){
+				if(rs.next()) {
+					c.setNum(rs.getInt(1));
+					c.setName(rs.getString(2));
+					c.setLike(rs.getInt(3));
+					c.setPic(rs.getString(4));
+					c.setActor(rs.getInt(5));
+					c.setSeries(rs.getInt(6));
+				}
+			}
+		} catch (Exception e) {
+			System.out.println("getSeries err: " + e);
+		}
+		return c;
+	}
 }

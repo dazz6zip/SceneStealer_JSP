@@ -17,6 +17,9 @@ public class OrderMgr {
 	private PreparedStatement pstmt;
 	private ResultSet rs;
 	private DataSource ds;
+	private int rectot;  		// tot : 전체 레코드 수
+ 	private int pList = 5;      // 페이지 당 출력 행 수 
+ 	private int pageSu;  
 
 	// DB 연결을 위한 생성자
 	public OrderMgr() {
@@ -254,14 +257,14 @@ public class OrderMgr {
 		int count = 0;
 		try {
 			conn = ds.getConnection();
-			String sql = "SELECT COUNT(product_name) as count FROM order_product WHERE orders_num = ? AND product_name = ?";
+			String sql = "SELECT product_quantity FROM order_product WHERE orders_num = ? AND product_name = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, orders_num);
 			pstmt.setString(2, product_name);
 			rs = pstmt.executeQuery();
 			
 			if (rs.next()) {
-				count = rs.getInt("count");
+				count = rs.getInt(1);
 			}
 
 		}catch (Exception e) {
@@ -359,5 +362,80 @@ public class OrderMgr {
 		}
 		return b;
 	}
+	
+	public ArrayList<OrdersDto> getorders(String id,int page) {
+		ArrayList<OrdersDto> list = new ArrayList<OrdersDto>();
+		
+		try {
+			conn = ds.getConnection();
+			String sql = "SELECT * FROM orders WHERE user_id = ? ORDER BY orders_num DESC";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			
+			rs = pstmt.executeQuery();
+			 for(int i=0; i< (page-1)* pList; i++) {
+		            rs.next(); //레코드 포인터 이동 0, 4, 9, 14, 19..
+		         }
+			 int k =0;
+			while (rs.next()&& k < pList) {
+				OrdersDto dto = new OrdersDto();
+				dto.setNum(rs.getInt("orders_num"));
+				dto.setUser(rs.getString("user_id"));
+				dto.setState(rs.getString("orders_state"));
+				
+				list.add(dto);
+				
+				k++;
+			}
+		}catch (Exception e) {
+			System.out.println("getReviewAll() ERROR : " + e);
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e2) {
+				System.out.println("getReviewAll() - finally ERROR : " + e2.getMessage());
+			}
+		}
+
+		return list;
+	}
+	public void totalList(String id) { // 전체 레코드 수 구하기
+		String sql = "select count(*) from orders where user_id = ?";
+		try {
+			conn = ds.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			rs.next();
+			rectot = rs.getInt(1);
+			System.out.println("전체 레코드수 " + rectot);
+		} catch (Exception e) {
+			System.out.println("totalList() err : " + e);
+		} finally {
+			try {
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+			} catch (Exception e2) { 
+				
+			}
+		}
+	}
+	public int getPageSu() { //전체 페이지수 반환
+		pageSu = rectot / pList;
+		if(rectot % pList > 0) pageSu++; //자투리가 있으면 페이지 하나 플러스
+
+		return pageSu;
+	}
+	
+	
 	
 }

@@ -106,4 +106,25 @@ public class UserMgr {
 		} 
 		return b;
 	} 
+	
+	// 비밀번호 찾기
+    public String findPass(String user_id, String user_tel) {
+    	String pwd = null;
+    	try (Connection conn = ds.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement("select user_pwd from user where user_id=? and user_tel=?")) {
+            
+            pstmt.setString(1, user_id);
+            pstmt.setString(2, user_tel);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                pwd = rs.getString(1);
+            }
+            
+        } catch (Exception e) {
+            System.out.println("findPass err: " + e);
+        } 
+        return pwd;
+    }
 }

@@ -39,6 +39,16 @@ ArrayList<StyleDto> slist = mgr.getStyleData(cdto.getNum());
 <script type="text/javascript" src="../js/sub.js"></script>
 
 <style type="text/css">
+body {
+	width: 100%;
+	height: 100vh;
+}
+
+table {
+	width: 100%;
+	height: 100%;
+}
+
 .itemSelect {
     position: relative;
     transition: transform 0.3s ease;
@@ -66,13 +76,29 @@ ArrayList<StyleDto> slist = mgr.getStyleData(cdto.getNum());
     display: block;  
 }
 
+#infotable td {
+	text-align: center;
+}
+
+.character-btn {
+    background: none; /* 배경 제거 */
+    color: inherit; /* 부모 요소의 글자 색상 상속 */
+    font: inherit; /* 부모 요소의 글꼴 상속 */
+    cursor: pointer; /* 마우스를 올렸을 때 포인터 표시 */
+    padding: 8px; /* 여백 제거 */
+    margin: 0; /* 외부 여백 제거 */
+    outline: none; /* 포커스 시 생기는 외곽선 제거 */
+	border-radius: 10px;
+	height: 1px;
+	width: 10px;
+}
 </style>
 </head>
 <body>
 	<jsp:include page="header_main.jsp"></jsp:include>
-	<table>
+	<table id="infotable">
 		<tr>
-			<td width="40%" id="subpicdiv">
+			<td width="40%" id="subpicdiv" style="background-image: url('..\\upload\\character\\<%= cdto.getPic() %>')">
 				<table>
 					<tr>
 						<td colspan="2"><%=series_title%></td>
@@ -99,11 +125,6 @@ ArrayList<StyleDto> slist = mgr.getStyleData(cdto.getNum());
 						%>
 						</td>
 					</tr>
-					<tr>
-						<td colspan="2" id="characterLikeCount">
-						<%= mgr.getLikeCount(cdto.getNum()) %>
-						</td>
-					</tr>
  
 					<tr>
 						<%
@@ -111,7 +132,7 @@ ArrayList<StyleDto> slist = mgr.getStyleData(cdto.getNum());
 							cdto = clist.get(i);
 							%>
 							<td>
-								<button class="character-btn" data-character="<%= cdto.getName() %>">ㅇ</button>
+								<button class="character-btn" data-character="<%= cdto.getName() %>"></button>
 							</td>
 							<%
 						}
@@ -120,23 +141,23 @@ ArrayList<StyleDto> slist = mgr.getStyleData(cdto.getNum());
 				</table>
 			</td>
 			<td>
-				<table id="styleItemTable" border="1">
+				<table id="styleItemTable">
 					<%
 					for (int i = 0; i < slist.size(); i++) {
 						sdto = slist.get(i);
 						ArrayList<ItemDto> ilist = mgr.getItemData(sdto.getNum());
 					%>
 					<tr>
-						<td width="30%"><%=sdto.getPic()%></td>
+						<td width="30%"><img src="..\\upload\\style\\<%=sdto.getPic()%>"></td>
 						<%
 						for (int j = 0; j < ilist.size(); j++) {
 							idto = ilist.get(j);
 						%>
 						<td class="itemSelect">
-							<%=idto.getPic()%>
+							<img src="..\\upload\\item\\<%=idto.getPic()%>">
 							<div class="overlay-link">
-								<a href="#">유사 상품 보러 가기</a>
-								<a href="#">같은 상품 보러 가기</a>
+								<a href="#">같은 상품 보러 가기</a><br/>
+								<a href="../shop/productdetail_g.jsp?name=<%= idto.getProduct() %>">유사 상품 보러 가기</a>
 							</div>
 						</td>
 						<%
@@ -167,35 +188,38 @@ ArrayList<StyleDto> slist = mgr.getStyleData(cdto.getNum());
             $.ajax({
                 url: 'subproc.jsp',
                 type: 'GET',
-                data: {
+                data: { // 서버로 전송할 데이터
                     character_name: characterName,
                     series_num: seriesNum
                 },
-                dataType: 'json',
-                success: function(response) { 
-                    $('#characterName').text(response.character.name);
-                    $('#characterLikeCount').text(response.character.like);
+                dataType: 'json', // 서버에서 받을 데이터 타입
+                success: function(response) { // 요청 성공시
+                    $('#characterName').text(response.character.name); // 받은 캐릭터 이름 characterName에 넣음
+                    $('#characterLikeCount').text(response.character.like); // 받은 좋아요 수 characterLikeCount에 넣음
 
                     let styleItemTable = $('#styleItemTable');
-                    styleItemTable.empty();
+                    styleItemTable.empty(); // styleItemTable 비우기
 
                     $.each(response.styles, function(index, style) {
+                    	// 응답받은 스타일들을 전부 반복
                         let row = $('<tr></tr>');
                         row.append('<td width="30%">' + style.pic + '</td>');
 
                         $.each(style.items, function(i, item) {
+                        	// 응답받은 아이템들을 전부 반복
                             row.append(
                                 '<td class="itemSelect">' +
                                     item.pic +
                                     '<div class="overlay-link">' +
-                                        '<a href="#">유사 상품 보러 가기</a>' +
-                                        '<a href="#">같은 상품 보러 가기</a>' +
+                                    '<a href="#">같은 상품 보러 가기</a><br/>' +
+                                        '<a href="../shop/productdetail_g.jsp?name=' + item.num + '">유사 상품 보러 가기</a>' +
                                     '</div>' +
                                 '</td>'
                             );
                         });
 
                         styleItemTable.append(row);
+                         // 비웠던 styleItemTable에 추가함
                     });
                 }
             });
@@ -217,19 +241,18 @@ ArrayList<StyleDto> slist = mgr.getStyleData(cdto.getNum());
 
         $('#styleItemTable').on('mouseover', '.itemSelect', function() {
             $(this).addClass('enlarged');
-        });
-
-        $('#styleItemTable').on('click', '.itemSelect', function() {
             $(this).toggleClass('show-overlay');
         });
 
+     
+
         $('#styleItemTable').on('mouseout', '.itemSelect', function() {
             $(this).removeClass('enlarged');
-            if ($(this).hasClass('show-overlay')) {
-                $(this).removeClass('show-overlay');
-            }
+			$(this).removeClass('show-overlay');
+            
         });
     });
     </script>
+<jsp:include page="../footer.jsp"></jsp:include>
 </body>
 </html>

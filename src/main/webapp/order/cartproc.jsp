@@ -11,15 +11,12 @@ String flag = request.getParameter("flag");
 // 구매 목록을 보기위한 변수 설정 : 보기, 수정, 삭제 판단용 변수
 
 String id = (String)session.getAttribute("idKey");
-
 // 로그인을 해야지 들어갈수 있게 함
 // System.out.print(orders);
 if(id == null){ //로그인을 안했다면 로그인페이지로 가세요
     response.sendRedirect("../user/loginForm.jsp");
 } else {
-  
         if (flag == null) {
-        	
             csmgr.addCart(opdto);
 %>
             <script>

@@ -14,7 +14,6 @@ CharacterDto cdto = mgr.getCharacterByName(series_num, character_name);
 ArrayList<StyleDto> slist = mgr.getStyleData(cdto.getNum());
 
 StringBuilder json = new StringBuilder();
-String text = "";
 json.append("{\"character\": {");
 json.append("\"name\": \"").append(cdto.getName()).append("\",");
 json.append("\"like\": \"").append(cdto.getLike()).append("\"");
@@ -32,7 +31,8 @@ for (int i = 0; i < slist.size(); i++) {
         ItemDto idto = ilist.get(j);
         json.append("{");
         json.append("\"num\": \"").append(idto.getNum()).append("\",");
-        json.append("\"pic\": \"").append(idto.getPic()).append("\"");
+        json.append("\"pic\": \"").append(idto.getPic()).append("\",");
+        json.append("\"product\": \"").append(idto.getProduct()).append("\"");
         json.append("}");
         if (j < ilist.size() - 1) {
             json.append(",");

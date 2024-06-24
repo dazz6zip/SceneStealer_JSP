@@ -63,16 +63,18 @@ function series_update(num){
 }
 
 // 시리즈 선택
-// 조그만 창 닫고 선택한 시리즈 정보를 mainedit에 넘겨줌. 캐릭터 편집 영역 보이게하기
-function series_select(num){
-	opener.location.href = 'mainedit.jsp?num=' + num;
+// 조그만 창 닫고 선택한 시리즈 정보를 mainedit에 넘겨줌
+// series_num 들고 mainedit 접근 시 캐릭터 편집 페이지 보이게 됨
+function series_select(seriesNum){
+	opener.location.href = 'mainedit.jsp?series_num=' + seriesNum;
 	window.close();
 }
 
+
 // 캐릭터 추가에서 배우 선택 버튼 클릭 시
 //<해당 시리즈 번호>, <해당 캐릭터가 insert될 새 번호> 들고 가서 배우 찾기 창 띄우기
-function actor_search(series, character){
-	let url="actorsearch.jsp?series=" + series + "&character=" + character;
+function actor_search(){
+	let url="actorsearch.jsp";
 	window.open(url, "get", 
 	"toolbar=no, width=500,height=400,top=220,left=100,status=yes,scrollbars=yes,menubar=no");
 }
@@ -104,37 +106,41 @@ function sendActorKeyword() {
 	clearTimeout(sendActorFunc);
 }
 
-
-// 팝업창에서 배우를 검색하여 추가/편집 완료 후
-// 파라미터: actor_num, actor_name()
-// 해당 캐릭터 테이블에 들어갈 배우 번호 저장시키기
-// 캐릭터 추가/수정 시 characterproc 파일에서 characters 테이블과 actor_series을 같이 처리
-// 이때 필요할 actor_num를 <input type="hidden" name="actor">의 value로 저장해주자
-function actor_connect(num){ // 파라미터는 캐릭터번호
-	
-}
-
-
+// 배우 추가
 function actor_insert(keyword){
-	let url="actorinsert.jsp?name=" + keyword;
-	window.open(url, "get", 
-	"toolbar=no, width=500,height=400,top=200,left=100,status=yes,scrollbars=yes,menubar=no");
+	location.href="actorinsert.jsp?name=" + keyword;
 }
 
-function actor_update(num){
-	let url="actorupdate.jsp?num=" + num;
-	window.open(url, "get", 
-	"toolbar=no, width=500,height=400,top=200,left=100,status=yes,scrollbars=yes,menubar=no");	
+// 팝업창에서 배우를 검색하여 추가/선택(수정안됨) 완료 후
+// 해당 캐릭터 테이블에 들어갈 배우 번호 저장시키기
+// 캐릭터 추가 시 characterproc 파일에서 characters 테이블과 *actor_series*을 같이 처리
+// 이때 필요할 actor_num를 <input type="hidden" name="actor">의 value로 저장해주자
+function actor_connect(num, actorInfo){ // 파라미터는 배우 번호
+	// 해당 캐릭터 폼 태그의 배우번호 요소에 num주고, 연결된배우 val에 actorInfo 들어가게 하기
+	console.log("ok");
+	opener.document.forms["frm"].elements["selectedActorInfo"].value = actorInfo;
+	opener.document.forms["frm"].elements["actor"].value = num;
+	window.close();
 }
 
 
-
-function style_insert(){
-	
+// 캐릭터 선택
+// 선택한 캐릭터 정보를 mainedit에 넘겨줌
+// character_num 들고 mainedit 접근 시 스타일 편집 페이지 보이게 됨
+function character_select(characterNum){
+	if(opener!==null){ // 캐릭터 추가 시엔 팝업 창으로 작업했으므로 오프너 존재
+		opener.location.href = 'mainedit.jsp?character_num=' + characterNum;
+		window.close();
+	} else { // 캐릭터 수정 시엔 현재 창에서
+		location.href = 'mainedit.jsp?character_num=' + characterNum;
+	}
 }
 
-function style_update(){
-	
+// 스타일 선택
+// 선택한 스타일 정보를 mainedit에 넘겨줌
+// style_num 들고 mainedit 접근 시 아이템 편집 페이지 보이게 됨
+function style_select(styleNum){
+	location.href = 'mainedit.jsp?style_num=' + styleNum;
 }
 
 function item_insert(){

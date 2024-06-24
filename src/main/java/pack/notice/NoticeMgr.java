@@ -161,7 +161,7 @@ public class NoticeMgr {
 	public boolean insertNotice(HttpServletRequest request) {
 	      boolean b = false;
 	      try {
-	         String uploadDir = "C:\\Users\\dazz6\\OneDrive\\Desktop\\study\\study\\scenestealer\\src\\main\\webapp\\upload";
+	         String uploadDir = "C:\\work\\scene_stealer\\src\\main\\webapp\\upload";
 	         MultipartRequest multi = new MultipartRequest(request, uploadDir, 5 * 1024 * 1024, "UTF-8", new DefaultFileRenamePolicy());
 	         String sql = "insert into notice values(?,?,?,?,now())";
 	         conn = ds.getConnection();

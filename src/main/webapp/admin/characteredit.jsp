@@ -15,44 +15,39 @@
 <body>
 <%
 	String series_num = request.getParameter("series_num"); // 시리즈 번호
-	SeriesDto series = seriesMgr.getSeries(series_num);
+	SeriesDto series = seriesMgr.getSeries(series_num); // 선택한 시리즈의 정보를 보여주기 위함
 	CharacterDto[] clist = characterMgr.getAllCharacters(series_num);
 	// ** opener인 mainedit에 id가 reselectseries 같은 영역도 숨겨놨다 보이게 해서 
 	// ** 캐릭터 편집 중 처음 시리즈 검색으로 다시 돌아갈 수 있는 방법이 필요함
 %>
+<h4>1️⃣Series: [<%=series.getTitle() %>] 선택완료</h4>
+<img src="../upload/series/<%=series.getPic() %>">
+
 <h2>2️⃣Character & Actor</h2>
-<table>
-	<tr>
-		<td>
-			선택된 시리즈: <b>[<%=series.getTitle() %>]</b>
-		</td>
-	<tr>
-	<tr>
-		<td>
-			<img src="../upload/<%=series.getPic() %>">
-		</td>
-	<tr>
-		<td>	
+<table>	
 <%
 for(int i=0; i<4; i++){
 	CharacterDto c = clist[i];
 	if(c==null){
 		int newNum = characterMgr.newNum(); // insert 시 저장될 PK character_num;		
 %>
-		<form action="characterproc.jsp?flag=insert" method="post" enctype="multipart/form-data">
-		<table style="width: 100%">
+	<tr>
+	<td>
+		<form name="frm" action="characterproc.jsp?flag=insert&character_num=<%=newNum %>&" method="post" enctype="multipart/form-data">
+		<table>
 		<tr>
 			<td colspan="2"><b>➕<%=i+1 %>번째 캐릭터 추가하기</b></td>
 		</tr>
 		<tr>
-			<td>캐릭터명</td>
+			<td>배역 이름</td>
 			<td><input type="text" name="name"></td>
 		</tr>
 		<tr>
 			<td>배우</td>
 			<td>
-				<input type="text" name="actor" id="connectedActor" readonly>
-				<input type="button" onclick="actor_search('<%=series_num %>', '<%=newNum %>')" value="배우 찾기">
+				<input type="button" onclick="actor_search()" value="배우 찾기">
+				선택배우정보<input type="text" name="selectedActorInfo" readonly>
+				선택배우번호<input type="text" name="actor" id="selectedActorNum" readonly>
 			</td>
 		</tr>
 		<tr>
@@ -61,56 +56,54 @@ for(int i=0; i<4; i++){
 		</tr>
 		</table>
 		<input type="hidden" name="num" value="<%=newNum %>">
-		<input type="hidden" name="series" value="seriesNum">
+		<input type="hidden" name="character">
+		<input type="hidden" name="series" value=<%=series_num %>>
 		<input type="submit" value="캐릭터 추가">
 		<input type="reset" value="새로 작성">
 		</form>
 		<hr>
+	</td>
+	</tr>
 <%
 	} else {
 		// 캐릭터 수정은 character_name, character_pic만 가능
 		ActorDto actor = characterMgr.getActor(c.getNum());
 %>
-		<form action="characterproc.jsp?flag=update" method="post" enctype="multipart/form-data">
-		<table style="width: 100%">
+	<tr>
+	<td>
+		<form action="characterproc.jsp?flag=update&character_num=<%=c.getNum() %>" method="post" enctype="multipart/form-data">
+		<table>
 		<tr>
-			<td colspan="2">
+			<td>
 				<b>✏️<%=i+1 %>번째 캐릭터 수정하기</b>
 			</td>
 		</tr>
 		<tr>
-			<td colspan="2">
-				<input type="text" name="name" value="<%=c.getName() %>"> 역</b>
-			</td>
-		</tr>
-		<tr>
-			<td>배우정보:</td>
 			<td>
+				<b><%=c.getName() %></b> 역
 				<b>
-				<%=actor.getName() %>&nbsp;
+				: 배우 <%=actor.getName() %>&nbsp;
 				(<%=actor.getBirth() %>)
-				<!-- 배우 다시 선택 버튼 추가해야 할 지 고민-->
 				</b>
 			</td>
 		</tr>
 		<tr>
-			<td colspan="2">
-				<img src="../upload/character/<%=c.getPic() %>">
-				<input type="file" name="pic">
+			<td>
+				<img src="../upload/character/<%=c.getPic() %>"><br>
+				대표사진 변경➡️<input type="file" name="pic">
 			</td>
 		</tr>
 		</table>
 		<input type="hidden" name="num" value="<%=c.getNum() %>">
 		<input type="submit" value="캐릭터 수정">
-		<input type="reset" value="새로 작성">
 		</form>
 		<hr>
+	</td>
+	</tr>
 <%
 	}
 }
 %>
-		</td>
-	</tr>
 </table>
 </body>
 </html>

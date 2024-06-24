@@ -19,8 +19,6 @@ public class MainMgr {
 	private ResultSet rs;
 	private DataSource ds;
 	
-	
-
 	// DB 연결을 위한 생성자
 	public MainMgr() {
 		try {
@@ -36,7 +34,8 @@ public class MainMgr {
 		ArrayList<SeriesDto> list = new ArrayList<SeriesDto>();
 		try {
 			conn = ds.getConnection();
-			String sql = "SELECT s.series_num, s.series_title, s.series_pic, s.series_title, COUNT(sc.character_num) AS cou FROM series AS s INNER JOIN characters AS c ON s.series_num = c.series_num LEFT OUTER JOIN scrap AS sc ON c.character_num = sc.character_num GROUP BY s.series_num, s.series_title ORDER BY cou DESC";
+			String sql = "SELECT s.series_num, s.series_title, s.series_pic, s.series_date, COUNT(sc.character_num) AS cou FROM series AS s INNER JOIN characters AS c ON s.series_num = c.series_num LEFT OUTER JOIN scrap AS sc ON c.character_num = sc.character_num GROUP BY s.series_num, s.series_title ORDER BY cou DESC";
+			// 시리즈별 캐릭터 스크랩 수의 합으로 내림차순 정렬
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 
@@ -46,6 +45,7 @@ public class MainMgr {
 				dto.setTitle(rs.getString("series_title"));
 				dto.setPic(rs.getString("series_pic"));
 				dto.setNum(rs.getInt("series_num"));
+				dto.setDate(rs.getString("series_date"));
 				list.add(dto);
 			}
 		}catch (Exception e) {
@@ -75,6 +75,7 @@ public class MainMgr {
 		try {
 			conn = ds.getConnection();
 			String sql = "SELECT * FROM review ORDER BY review_num DESC LIMIT 3";
+			// review_num으로 내림차순 (최신순)
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 
@@ -121,6 +122,7 @@ public class MainMgr {
 			} else if (searchSelect.equals("actor")) {
 				// 배우 검색일 경우 SQL문
 				sql = "SELECT * FROM series WHERE series_num IN (SELECT series_num FROM series_actor WHERE actor_num IN (SELECT actor_num FROM actor WHERE actor_name LIKE ?))";				
+				// 해당 배우가 나오는 작품을 검색
 			}
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, "%" + searchword + "%");
@@ -131,6 +133,7 @@ public class MainMgr {
 				dto.setPic(rs.getString("series_pic"));
 				dto.setNum(rs.getInt("series_num"));
 				dto.setTitle(rs.getString("series_title"));
+				dto.setDate(rs.getString("series_date"));
 				list.add(dto);
 			}
 			
@@ -165,7 +168,6 @@ public class MainMgr {
 			String sql = "SELECT * FROM characters WHERE series_num = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, series_num);
-//			pstmt.setInt(2, character_num);
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
@@ -250,6 +252,7 @@ public class MainMgr {
 				ItemDto dto = new ItemDto();
 				dto.setPic(rs.getString("item_pic"));
 				dto.setNum(rs.getInt("item_num"));
+				dto.setProduct(rs.getString("product_name"));
 				list.add(dto);
 			}
 		} catch (Exception e) {
@@ -313,6 +316,8 @@ public class MainMgr {
 		return dto;
 	}
 	
+	
+	// 특정 유저의 특정 배역 스크랩 여부 확인
 	public boolean getScrapCheck(String id, String cname) {
 		boolean b = false;
 		
@@ -347,6 +352,7 @@ public class MainMgr {
 		return b;
 	}
 	
+	// scrap 테이블에 해당 정보가 없을 경우 -> 새로 등록
 	public void newScrap(String cname, String id) {
 		String character_num;
 		try {
@@ -390,6 +396,7 @@ public class MainMgr {
 	
 	}
 	
+	// scrap 테이블에 해당 정보가 있을 경우 -> 해당 정보 삭제
 	public void delScrap(String cname, String id) {
 		
 		try {
@@ -420,6 +427,8 @@ public class MainMgr {
 	
 	}
 	
+	/*
+	// 해당 배역의 스크랩 수 
 	public String getLikeCount(int cnum) {
 		int likeCount = 0;
 		
@@ -454,7 +463,7 @@ public class MainMgr {
 		
 		return Integer.toString(likeCount);
 	}
-	
+	*/
 	
 
 }

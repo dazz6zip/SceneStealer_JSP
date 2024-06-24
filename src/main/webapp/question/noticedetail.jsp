@@ -32,6 +32,7 @@ String notice_date = ndto.getDate();
 <script type="text/javascript" src="../js/script.js"></script>
 </head>
 <body>
+<jsp:include page="../user/header_user.jsp"></jsp:include>
 <h1>공지사항 상세 보기</h1>
 <table>
     <tr>
@@ -48,9 +49,12 @@ String notice_date = ndto.getDate();
     </tr>
      <tr>
         <th>사진</th>
-        <td><%= notice_pic %></td>
+        	<td>
+			<img src="C:/HomeWork/scene_stealer/src/main/webapp/upload/<%=notice_pic %>" width="150"/>
+		</td>
     </tr>
 </table>
 <a href="questionlist.jsp">목록으로</a>
+<jsp:include page="../footer.jsp"></jsp:include>
 </body>
 </html>

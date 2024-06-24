@@ -7,7 +7,11 @@ import java.util.ArrayList;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
+
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 import pack.notice.NoticeDto;
 
@@ -128,32 +132,41 @@ public class QuestionMgr_u {
 		}
 	}
 	
-	public void saveData(QuestionDto qdto) { //데이터 db저장 용
-		String sql = "INSERT INTO question(question_num,user_id, question_title, question_pic, question_contents, question_date) values(?,?,?,?,?,now())";
-		
-		try {
-			conn = ds.getConnection();
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, qdto.getNum());
-			System.out.println(qdto.getUser());
-			pstmt.setString(2, qdto.getUser());
-			pstmt.setString(3, qdto.getTitle());
-			pstmt.setString(4, qdto.getPic());
-			pstmt.setString(5, qdto.getContents());
-			
-			pstmt.executeUpdate();
-		} catch (Exception e) {
-			System.out.println("saveData err: " + e);
-		} finally {
-			try {
-				if(rs !=null) rs.close();
-				if(pstmt !=null) pstmt.close();
-				if(conn !=null) conn.close();
-			} catch (Exception e2) {
-				// TODO: handle exception
-			}
-		}
-	}
+	// 이미지 경로 추가하기
+	   public boolean saveData(HttpServletRequest request,int newNum) { //데이터 db저장 용
+	      boolean b = false;
+	      
+	      try {
+	         // 업로드할 이미지 경로 : upload 폴더(절대 경로)
+	         String uploadDir = "c:/work/scene_stealer/src/main/webapp/upload";
+	         MultipartRequest multi = new MultipartRequest(request, uploadDir,  5*1024*1024, "UTF-8", new DefaultFileRenamePolicy());
+	         
+	         conn = ds.getConnection();
+	         String sql = "INSERT INTO question(question_num,user_id, question_title, question_pic, question_contents, question_date) values(?,?,?,?,?,now())";
+	         pstmt = conn.prepareStatement(sql);
+	         
+	         pstmt.setInt(1, newNum);
+	         pstmt.setString(2, multi.getParameter("id"));
+	         pstmt.setString(3, multi.getParameter("title"));
+	         pstmt.setString(4, multi.getFilesystemName("pic"));
+	         pstmt.setString(5, multi.getParameter("contents"));
+	         if(pstmt.executeUpdate()> 0) {
+	            b = true;
+	         }
+	         
+	      } catch (Exception e) {
+	         System.out.println("saveData err: " + e);
+	      } finally {
+	         try {
+	            if(rs !=null) rs.close();
+	            if(pstmt !=null) pstmt.close();
+	            if(conn !=null) conn.close();
+	         } catch (Exception e2) {
+	            // TODO: handle exception
+	         }
+	      }
+	      return b;
+	   }
 	
 	public QuestionDto getData2(String num) { // 글 상세보기 위한 것
 		QuestionDto qdto = null;

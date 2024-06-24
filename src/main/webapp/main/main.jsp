@@ -1,16 +1,18 @@
 <%@page import="pack.review.ReviewDto"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="pack.main.SeriesDto"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <jsp:useBean id="mgr" class="pack.main.MainMgr"></jsp:useBean>
 <jsp:useBean id="sdto" class="pack.main.SeriesDto"></jsp:useBean>
 <jsp:useBean id="rdto" class="pack.review.ReviewDto"></jsp:useBean>
 
 <%
 ArrayList<SeriesDto> slist = mgr.getSeriesDataforMain();
+// 메인에 보일 시리즈 정보 (시리즈별 스크랩 추 합산하여 내림차순)
 ArrayList<ReviewDto> rlist = mgr.getReviewDataAll();
+// 메인에 보일 리뷰 정보 (review_num 내림차순으로 최신순 3개)
 String searchword = request.getParameter("searchword");
+// 검색시 받아옴
 %>
 
 <!DOCTYPE html>
@@ -18,10 +20,9 @@ String searchword = request.getParameter("searchword");
 <head>
 <meta charset="UTF-8">
 <title>SceneStealer</title>
-<link rel="stylesheet" type="text/css" href="mainstyle.css">
+<link rel="stylesheet" type="text/css" href="../css/main.css">
 <script type="text/javascript" src="../js/main.js"></script>
-<script type="text/javascript"
-	src="https://code.jquery.com/jquery-latest.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-latest.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 		$('.series-pic').on('mouseover', function() { // series-pic 클래스에 mouseover
@@ -48,25 +49,49 @@ String searchword = request.getParameter("searchword");
 	z-index: 10;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
+
+body {
+    margin: 0;
+}
+
+#maindiv {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url(../image/mainphoto-01.png) no-repeat;
+    background-size: cover;
+    height: 120vh;
+    width: 100%;
+    overflow: hidden;
+}
+
+.main {
+	width: 100%;
+}
+
+.main table {
+	width: 100%;
+}
+
+.main table td {
+	text-align: center;
+}
+
+#main_rv img {
+	width: 30%;
+}
 </style>
 </head>
 <body>
-	<%
-	request.setAttribute("val", searchword);
-	%>
 	<jsp:include page="../main/header_main.jsp"></jsp:include>
 	<div id="maindiv">
 		<table>
-			<tr style="height: 800px"></tr>
 			<tr>
-				<th><h2>SceneStealer</h2></th>
-			</tr>
-			<tr>
-				<td>페이지 설명하는 글 어쩌구 저쩌구...</td>
+				<th></th>
 			</tr>
 		</table>
 	</div>
-	<div>
+	<div class="main">
 		<form name="mainFrm1">
 			<table>
 				<tr>
@@ -91,12 +116,14 @@ String searchword = request.getParameter("searchword");
 					<td>
 						<table class="cysSelect">
 							<tr>
-								<th><a
-									href="sub.jsp?series_num=<%=sdto.getNum()%>&series_title=<%=sdto.getTitle()%>"><img
-										src="<%=sdto.getPic()%>" class="series-pic"></a></th>
+								<th>
+									<a href="sub.jsp?series_num=<%=sdto.getNum()%>&series_title=<%=sdto.getTitle()%>">
+										<img src="..\\upload\\series\\<%=sdto.getPic()%>" class="series-pic">
+									</a>
+								</th>
 							</tr>
 							<tr>
-								<td><%=sdto.getTitle()%></td>
+								<td><%=sdto.getTitle()%>(<%= sdto.getDate().substring(0, 4) %>)</td>
 							</tr>
 						</table>
 					</td>
@@ -114,8 +141,8 @@ String searchword = request.getParameter("searchword");
 			<input type="hidden" name="series_title" value="<%=sdto.getTitle()%>">
 		</form>
 	</div>
-	<div>
-		<form action="../shop/review.jsp" method="get" name="mainFrm2">
+	<div class="main">
+		<form action="../my/reviewdetail.jsp" method="get" name="mainFrm2">
 			<table id="main_rv">
 			    <tr>
 			        <th colspan="2">NEW REVIEW</th>
@@ -124,7 +151,7 @@ String searchword = request.getParameter("searchword");
 			        <td rowspan="2">
 			            <%
 			            rdto = rlist.get(0);
-			            out.print("<a href=\"javascript:mainreview('" + rdto.getNum() + "')\">" + rdto.getPic() + "</a>");
+			            out.print("<a href=\"javascript:mainreview('" + rdto.getNum() + "')\">" + "<img src='..\\upload\\" +rdto.getPic()  +"'>" +"</a>");
 			            %>
 			            <br>
 			            <%
@@ -159,5 +186,6 @@ String searchword = request.getParameter("searchword");
 		</form>
 	</div>
 	<jsp:include page="../footer.jsp"></jsp:include>
+	<a href="../admin/admin_index.jsp" style="opacity: 20%">admin</a>
 </body>
 </html>

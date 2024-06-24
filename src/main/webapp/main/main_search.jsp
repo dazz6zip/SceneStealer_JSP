@@ -5,7 +5,7 @@
 <jsp:useBean id="sdto" class="pack.main.SeriesDto"></jsp:useBean>
 <jsp:useBean id="mgr" class="pack.main.MainMgr"></jsp:useBean>
 <%
-
+request.setCharacterEncoding("utf-8");
 String searchword = request.getParameter("searchword");
 String searchSelect = request.getParameter("searchSelect");
 %>
@@ -13,8 +13,9 @@ String searchSelect = request.getParameter("searchSelect");
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>SceneStealer</title>
 <link rel="stylesheet" type="text/css" href="mainstyle.css">
+<script type="text/javascript" src="../js/main.js"></script>
 </head>
 <body>
 <jsp:include page="../main/header_main.jsp">
@@ -51,12 +52,12 @@ if (list != null && !list.isEmpty()) {
 		sdto = list.get(i);
 	%>
 		<td>
-			<table>
+			<table onclick="javascript:searchSeriesClick('<%= sdto.getTitle() %>', '<%= sdto.getNum() %>')">
 				<tr>
-					<td><%= sdto.getPic() %></td>
+					<td><img src="..\upload\series\<%= sdto.getPic() %>"></td>
 				</tr>
 				<tr>
-					<td><%= sdto.getTitle() %></td>
+					<td><%= sdto.getTitle() %>(<%= sdto.getDate().substring(0, 4) %>)</td>
 				</tr>
 			</table>
 		</td>
@@ -77,5 +78,9 @@ if (list != null && !list.isEmpty()) {
 }
 %>
 <jsp:include page="../footer.jsp"></jsp:include>
+<form action="sub.jsp" method="post" name="sscFrm">
+<input type="hidden" name="series_num">
+<input type="hidden" name="series_title">
+</form>
 </body>
 </html>

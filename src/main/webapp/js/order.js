@@ -30,3 +30,7 @@ function orderReturn(num, name) {
 	document.orderflagFrm.submit();
 }
 
+function searchProductClick(name) {
+	document.spcFrm.name.value = name;
+	document.spcFrm.submit();
+}
