@@ -26,23 +26,83 @@ String answer_contents = qdto.getAnswer_contents();
 <meta charset="UTF-8">
 <title>SceneStealer</title>
 <style>
+/* Question Detail Page Styles */
+.question-page h1 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.question-page table {
+    width: 80%;
+    margin: 20px auto;
+    border-spacing: 0;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.question-page th, .question-page td {
+    padding: 15px;
+    text-align: center;
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+}
+
+.question-page th {
+    background-color: #333;
+    color: white;
+}
+
+.question-page td img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.question-page .links {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.question-page .links a {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #000;
+    color: white;
+    text-decoration: none;
+    border-radius: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.question-page .links a:hover {
+    background-color: #444;
+}
+
+.question-page textarea {
+    width: 99%;
+    border: none;
+    resize: none;
+}
 </style>
 <script type="text/javascript" src="../js/script.js"></script>
 </head>
 <body class="question-page">
 <jsp:include page="../user/header_user.jsp"></jsp:include>
-<h1>질문 상세 보기 페이지</h1>
 <table>
 	<tr>
+		<td colspan="2"><b><%=question_title %></b></td>
+	</tr>
+	<tr>
 		<td>작성자 : <%=user_id %></td>
-		<td>작성일 : <%=question_date %></td>
+		<td><%=question_date %></td>
 	</tr>
 	<tr>
-		<td colspan="3">제목 : <%=question_title %></td>
+		<td colspan="2"><img src="../upload/<%=question_pic %>"></td>
 	</tr>
 	<tr>
-		<td>이미지 : <img src="../upload/<%=question_pic %>"></td>
-		<td><div>내용 : <%=question_contents %></div></td>
+		<td colspan="2"><%=question_contents %></td>
 	</tr>
 </table>
 <table>
@@ -50,7 +110,7 @@ String answer_contents = qdto.getAnswer_contents();
 	<td><div>관리자 : <%=answer_contents != null ? answer_contents : "댓글이 없습니다." %></div></td>
 </tr>
 <tr>
-	<td>
+	<td class="links">
 		<a href="edit.jsp?num=<%=num %>&page=<%=spage %>">수정하기</a>
 		<a href="delete.jsp?num=<%=num %>&page=<%=spage %>">삭제하기</a>
 		<a href="questionlist.jsp?page=<%=spage %>">목록가기</a>

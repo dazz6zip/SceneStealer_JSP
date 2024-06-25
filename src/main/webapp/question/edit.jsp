@@ -70,7 +70,6 @@ input[type="button"]:hover {
 <script type="text/javascript">
 window.onload = () => {
 	document.querySelector("#btnUpOk").onclick = function() {
-		//alert("a");
 		if(confirm("정말 수정할까요?")){
 			qfrm.submit();
 			return;

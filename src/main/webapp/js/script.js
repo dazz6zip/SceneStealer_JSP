@@ -440,16 +440,16 @@ function productDetail_guest(pname){
 //Question 부분
 function check(){
 	if(qfrm.user.value==""){
-		alert("이름 쓰세요");
+		alert("이름을 입력해 주세요.");
 		qfrm.user.focus();
 	}else if(qfrm.title.value ==""){
-		alert("제목 쓰세요");
+		alert("제목을 입력해 주세요.");
 		qfrm.title.focus();
 	}else if(qfrm.pic.value ==""){
-		alert("사진 올리세요");
+		alert("사진을 업로드해 주세요.");
 		qfrm.pic.focus();
 	}else if(qfrm.contents.value ==""){
-		alert("내용 쓰세요");
+		alert("내용을 입력해 주세요.");
 		qfrm.contents.focus();
 	}else
 		qfrm.submit();

@@ -20,7 +20,6 @@ if(id == null){
 <head>
 <meta charset="UTF-8">
 <title>회원탈퇴</title>
-<link href="css/style.css" rel="stylesheet" type="text/css">
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 <script src="../js/script.js"></script>
 <script type="text/javascript">

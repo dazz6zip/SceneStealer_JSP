@@ -36,6 +36,15 @@ String id = (String)session.getAttribute("idKey");
     color: white;
 }
 
+#mypage-notice-table a {
+    color: #000; /* 검정색 글씨 */
+    text-decoration: none; /* 밑줄 제거 */
+}
+
+#mypage-notice-table a:hover {
+    font-size: 110%; /* 마우스 오버 시 글씨 크기 증가 */
+}
+
 /* 질문 테이블 스타일 */
 #mypage-table {
     width: 100%;

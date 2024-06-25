@@ -162,10 +162,10 @@ table {
 		<tr style="text-align: center;">
 			<!--  클릭하면 함수가 호출됨 -->
 			<th><a href="javascript:showCategory('all')">ALL</a></th>
-			<th><a href="javascript:showCategory('category1')">TOP</a></th>
-			<th><a href="javascript:showCategory('category10')">BOTTOM</a></th>
-			<th><a href="javascript:showCategory('category19')">SHOES</a></th>
-			<th><a href="javascript:showCategory('category9')">ETC</a></th>
+			<th><a href="javascript:showCategory('상의')">TOP</a></th>
+			<th><a href="javascript:showCategory('하의')">BOTTOM</a></th>
+			<th><a href="javascript:showCategory('신발')">SHOES</a></th>
+			<th><a href="javascript:showCategory('잡화')">ETC</a></th>
 		</tr>
 		<%
 		ArrayList<ProductDto> plist = new ArrayList<>();

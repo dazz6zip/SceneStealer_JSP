@@ -21,7 +21,7 @@ if(actorMgr.insertActor(actorBean)){
 	// 성공. actorsearch 창 닫고 opener인 characteredit의 연결된 배우 칸에 값 적히게
 %>
 	<script>
-	alert("배우 추가 완료! 해당 배우를 연결하여 계속해서 캐릭터 추가 작업을 수행하겠습니다.");
+	alert("배우 추가 완료!\n해당 배우를 연결하여 계속해서 캐릭터 추가 작업을 수행하겠습니다.");
 	actor_connect(<%=num%>,"<%=userInfo%>");
 	</script>
 <%

@@ -124,12 +124,12 @@ window.onload = () => {
 		const searchWordInput = document.querySelector("input[name='searchword']").value;
 		const korOnly = /^[가-힣]+$/;
 
-	//	if (!korOnly.test(searchWordInput)) {
-	//		alert("한글만 입력 가능합니다.");
-	//		document.querySelector("input[name='searchword']").focus();
-	//		return;
-	//	}
-	//	else 
+		if (!korOnly.test(searchWordInput)) {
+			alert("한글만 입력 가능합니다.");
+			document.querySelector("input[name='searchword']").focus();
+			return;
+		}
+		else 
 			if (searchWordInput.length < 2) {
 			alert("두 글자 이상 입력해 주세요.");
 			document.querySelector("input[name='searchword']").focus();

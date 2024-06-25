@@ -93,6 +93,24 @@ table {
 	height: 1px;
 	width: 10px;
 }
+
+#infotable #info {
+	color: white;
+}
+
+#infotable #info button {
+	border-color: white;
+}
+
+.ahrefproduct {
+	color: gray;
+    text-decoration: none; /* 밑줄 제거 */
+}
+
+.ahrefproduct:hover {
+	color: #000; /* 검정색 글씨 */
+	
+}
 </style>
 </head>
 <body>
@@ -100,7 +118,8 @@ table {
 	<table id="infotable">
 		<tr>
 			<td width="40%" id="subpicdiv" style="background-image: url('..\\upload\\character\\<%= cdto.getPic() %>')">
-				<table>
+				<table id="info">
+					<tr style="height: 60%"></tr>
 					<tr>
 						<td colspan="2"><%=series_title%></td>
 					</tr>
@@ -157,8 +176,8 @@ table {
 						<td class="itemSelect">
 							<img src="..\\upload\\item\\<%=idto.getPic()%>">
 							<div class="overlay-link">
-								<a href="#">같은 상품 보러 가기</a><br/>
-								<a href="../shop/productdetail_g.jsp?name=<%= idto.getProduct() %>">유사 상품 보러 가기</a>
+								<a href="#" class="ahrefproduct">상품 보러 가기</a><br/><br/>
+								<a href="../shop/productdetail_g.jsp?name=<%= idto.getProduct() %>" class="ahrefproduct">이 상품은 어때요?</a>
 							</div>
 						</td>
 						<%
@@ -211,8 +230,8 @@ table {
                                 '<td class="itemSelect">' +
                                     item.pic +
                                     '<div class="overlay-link">' +
-                                    '<a href="#">같은 상품 보러 가기</a><br/>' +
-                                        '<a href="../shop/productdetail_g.jsp?name=' + item.num + '">유사 상품 보러 가기</a>' +
+                                    '<a href="#" class="ahrefproduct">같은 상품 보러 가기</a><br/>' +
+                                        '<a href="../shop/productdetail_g.jsp?name=' + item.num + '" class="ahrefproduct">이 상품은 어때요?</a>' +
                                     '</div>' +
                                 '</td>'
                             );

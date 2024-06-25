@@ -33,6 +33,7 @@ String notice_date = ndto.getDate();
     width: 100%;
     border-spacing: 20px;
     margin: 20px 0;
+    text-align: center;
 }
 
 #notice-table th, #notice-table td {
@@ -70,19 +71,15 @@ String notice_date = ndto.getDate();
 <jsp:include page="../user/header_user.jsp"></jsp:include>
 <table id="notice-table">
     <tr>
-        <th width="10%">제목</th>
-        <td><%= notice_title %></td>
+        <td><b><%= notice_title %></b></td>
     </tr>
     <tr>
-        <th>작성일</th>
-        <td><%= notice_date %></td>
+    	<td><%= notice_date %></td>
     </tr>
     <tr>
-        <th>내용</th>
         <td><%= notice_contents %></td>
     </tr>
     <tr>
-        <th>사진</th>
         <td>
             <img src="C:/HomeWork/scene_stealer/src/main/webapp/upload/<%=notice_pic %>" width="150"/>
         </td>

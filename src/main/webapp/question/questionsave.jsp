@@ -15,7 +15,7 @@ if (request.getParameter("flag").equals("insert")) {
 } else {  
 	%>
 	<script>
-	//alert("asfdasfd");
+	alert("질문 등록에 실패했습니다.");
 	</script>
 	<%
 }

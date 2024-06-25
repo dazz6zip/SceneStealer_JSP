@@ -21,7 +21,7 @@ if (b) {
 </head>
 <body>
   <script>
-    alert("회원가입 실패");
+    alert("회원가입에 실패했습니다.\n다시 시도해 주세요.");
     history.back();
   </script>
 </body>

@@ -18,12 +18,12 @@ if(flag.equals("insert")){
 if(result){
 %>
  <script>
- 	alert("정상 처리되었다");
+ 	alert("정상 처리되었습니다.");
  	location.href="productlist.jsp";
  </script>	
 <% }else{%>
 	<script>
-		alert("오류오류오류 처리되었다");
+		alert("처리 실패되었습니다.");
  		location.href="productlist.jsp";
 	</script>
 <% 	

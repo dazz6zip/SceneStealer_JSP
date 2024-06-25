@@ -20,7 +20,7 @@ if(flag.equals("insert")){
 if(result){
 %>
  <script>
- 	alert("정상 처리되었다");
+ 	alert("정상 처리되었습니다.");
  	location.href="productlist.jsp";
  </script>	
 <% 
@@ -28,7 +28,7 @@ if(result){
 	System.out.println("a");
 %>
 <script>
-	alert("오류오류오류 처리되었다");
+	alert("처리에 실패했습니다.");
  	location.href="productlist.jsp";
 </script>
 <% 	

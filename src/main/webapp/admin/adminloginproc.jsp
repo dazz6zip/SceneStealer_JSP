@@ -15,7 +15,7 @@ if(b){
 }else{
 %>
    <script>
-   alert("관리자 로그인 입력 오류!!!");
+   alert("관리자 로그인에 실패했습니다.");
    location.href = "adminlogin.jsp";
    </script>
 <%   

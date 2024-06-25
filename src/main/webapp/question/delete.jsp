@@ -15,7 +15,6 @@ String spage = request.getParameter("page");
 <script type="text/javascript" src="../js/script.js"></script>
 <script type="text/javascript">
 function check(){
-	//alert("a");
 	if(confirm("정말 삭제할까요?")){
 		qfrm.submit();
 	}

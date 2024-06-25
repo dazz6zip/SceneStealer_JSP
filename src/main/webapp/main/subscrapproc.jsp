@@ -13,7 +13,7 @@ if (flag.equals("insert")) {
 } else {
 	%>
 	<script>
-		alert("scrap error");
+		alert("스크랩에 실패하였습니다.");
 	</script>
 	<%
 }

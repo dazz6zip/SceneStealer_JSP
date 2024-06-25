@@ -144,7 +144,7 @@ input[type="button"]:hover {
             <input type="hidden" name="orders" value="<%=opdto.getOrders() %>">
             <tr>
                 <td><%=opdto.getName() %></td>
-                <td><%=subTotal %></td>
+                <td><%= df.format(subTotal) %></td>
                 <td><input type="text" name="quantity" size="5" value="<%=quantity %>"></td>
                 <td>
                     <input type="button" value="수정" onclick="javascript:cartUpdate(this.form)">
