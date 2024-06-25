@@ -23,7 +23,7 @@ if(bean == null){
 <title>회원수정</title>
 <link href="css/style.css" rel="stylesheet" type="text/css">
 <script src="https://code.jquery.com/jquery-latest.js"></script>
-<script src="js/script.js"></script>
+<script src="../js/script.js"></script>
 <!-- button bootstrap -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
 <!-- Daum PostcodeAddress API -->

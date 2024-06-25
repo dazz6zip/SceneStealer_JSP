@@ -13,8 +13,8 @@
         Class.forName("org.mariadb.jdbc.Driver");
 
         // 데이터베이스 연결 설정
-        String url = "jdbc:mariadb://localhost:3306/ptest";
-        conn = DriverManager.getConnection(url, "root", "9112");
+        String url = "jdbc:mariadb://192.168.0.3:3306/ss";
+        conn = DriverManager.getConnection(url, "root", "daracle");
 
         // SQL 쿼리 작성 (아이디 중복 체크)
         String sql = "UPDATE user SET user_pwd = NULL WHERE user_id = ? AND user_pwd = ?";

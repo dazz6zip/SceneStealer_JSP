@@ -1,8 +1,11 @@
-
 <%@page import="pack.main.ItemDto"%>
 <%@page import="pack.main.StyleDto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%
+// 아이템은 수정불가이므로 추가처리만 해주는 파일
+request.setCharacterEncoding("utf-8");
+%>
 <jsp:useBean id="styleMgr" class="pack.main.StyleMgr" />
 <jsp:useBean id="itemMgr" class="pack.main.ItemMgr" />
 <!-- mainedit에 스타일 선택 후 include되는 파일 -->
@@ -11,6 +14,10 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-latest.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script type="text/javascript" src="../js/mainedit.js"></script>
+
 </head>
 <body>
 <%
@@ -23,9 +30,11 @@
 <h2>4️⃣Item & Product</h2>
 <table>
 	<tr>
-		<td>
+		<td colspan="3">
 		<img src="../upload/style/<%=style.getPic() %>">
-		</td>		
+		</td>
+	</tr>
+	<tr>	
 <%
 for(int i=0; i<3; i++){
 	ItemDto item = ilist[i];
@@ -33,7 +42,7 @@ for(int i=0; i<3; i++){
 		int newNum = itemMgr.newNum(); // insert 시 저장될 PK item_num;		
 %>
 		<td>
-		<form action="iteminsert.jsp&?num=<%=newNum %>" method="post" enctype="multipart/form-data">
+		<form name="frm2" action="itemproc.jsp?num=<%=newNum %>" method="post" enctype="multipart/form-data">
 		<table>
 			<tr>
 				<td colspan="2"><b>➕<%=i+1 %>번째 아이템 추가하기</b></td>
@@ -42,7 +51,7 @@ for(int i=0; i<3; i++){
 				<td>연결 상품</td>
 				<td>
 					<input type="text" name="product" id="connectedProduct" readonly>
-					<input type="button" onclick="product_search('<%=style_num %>', '<%=newNum %>')" value="연결할 상품 찾기">
+					<input type="button" onclick="product_search()" value="연결할 상품 찾기">
 				</td>
 			</tr>
 			<tr>
@@ -51,7 +60,7 @@ for(int i=0; i<3; i++){
 			</tr>
 		</table>
 		<input type="hidden" name="num" value="<%=newNum %>">
-		<input type="hidden" name="style" value="style_num">
+		<input type="hidden" name="style" value="<%=style_num %>">
 		<input type="submit" value="아이템 추가">
 		</form>
 		<hr>

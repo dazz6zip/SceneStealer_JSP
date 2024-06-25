@@ -9,6 +9,7 @@
 <jsp:useBean id="sdto" class="pack.main.StyleDto"></jsp:useBean>
 <jsp:useBean id="idto" class="pack.main.ItemDto"></jsp:useBean>
 <%
+request.setCharacterEncoding("utf-8");
 String id = (String)session.getAttribute("idKey");
 
 

@@ -33,12 +33,70 @@ pageSu = orderMgr.getPageSu(); // 전체 페이지 수 계산
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>주문 내역</title>
+<style>
+
+
+/* 테이블 스타일 */
+table {
+    width: 100%;
+    border-spacing: 10px;
+    margin-bottom: 20px;
+    background-color: #fff;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+    background-color: #fff;
+    border: none;
+}
+
+th {
+    background-color: #333;
+    color: white;
+    
+}
+
+td img {
+    max-width: 100px;
+    height: auto;
+    border-radius: 10px;
+}
+
+/* 링크 스타일 */
+a {
+    color: #000; /* 검정색 글씨 */
+    text-decoration: none; /* 밑줄 제거 */
+}
+
+/* 페이지네이션 스타일 */
+#pagination {
+    text-align: center;
+    margin: 20px 0;
+}
+
+#pagination b {
+    color: black;
+    font-weight: bold;
+    margin: 0 5px;
+}
+
+#pagination a {
+    color: gray;
+    margin: 0 5px;
+    text-decoration: none;
+}
+
+#pagination a:hover {
+    color: black;
+}
+</style>
 <script type="text/javascript" src="../js/order.js"></script>
 </head>
 <body>
 <jsp:include page="../user/header_user.jsp" />
-<table border="1">
+<table>
 	<tr>
 		<th>주문번호</th>
 		<th>이미지</th>
@@ -65,11 +123,13 @@ pageSu = orderMgr.getPageSu(); // 전체 페이지 수 계산
 			<td><%= odto.getState() %></td>
 			<%
 			if (odto.getState().equals("결제완료") || odto.getState().equals("배송준비중")) {
-				stateabout = "<a href=\"javascript:orderDelete('" + odto.getNum() + "','" + pdto.getName() + "')\">취소</a>";
+				stateabout = "<a href=\"javascript:orderDelete('" + odto.getNum() + "','" + pdto.getName() + "')\">취소 신청</a>";
 			} else if (odto.getState().equals("배송중")) {			
-				stateabout = "<a href=\"javascript:orderRefund('" + odto.getNum() + "','" + pdto.getName() + "')\">환불</a>";
+				stateabout = "<a href=\"javascript:orderRefund('" + odto.getNum() + "','" + pdto.getName() + "')\">환불 신청</a>";
 			} else if (odto.getState().equals("배송완료")) {
-				stateabout = "<a href=\"javascript:orderReturn('" + odto.getNum() + "','" + pdto.getName() + "')\">반품</a>";
+				stateabout = "<a href=\"javascript:orderReturn('" + odto.getNum() + "','" + pdto.getName() + "')\">반품 신청</a>";
+			} else if (odto.getState().equals("취소완료")) {
+				stateabout = "";
 			}
 			%>
 			<td><%= stateabout %></td>
@@ -78,21 +138,17 @@ pageSu = orderMgr.getPageSu(); // 전체 페이지 수 계산
 		}
 	%>
 </table>
-<table style="width: 100%">
-    <tr>
-        <td style="text-align: center;">
-            <%
-            for (int i = 1; i <= pageSu; i++) {
-                if (i == spage) {
-                    out.print("<b style='font-size:15pt; color:red'>[" + i + "]</b>");
-                } else {
-                    out.print("<a href='orderinfo.jsp?page=" + i + "'>[" + i + "]</a>");
-                }
-            }
-            %>
-        </td>
-    </tr>
-</table>
+<div id="pagination">
+    <%
+    for (int i = 1; i <= pageSu; i++) {
+        if (i == spage) {
+            out.print("<b>" + i + "</b>");
+        } else {
+            out.print("<a href='orderinfo.jsp?page=" + i + "'>" + i + "</a>");
+        }
+    }
+    %>
+</div>
 <form action="orderinfodetail.jsp" method="post" name="orderFrm">
 	<input type="hidden" name="orders_num">
 	<input type="hidden" name="orders_state">

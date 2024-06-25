@@ -19,9 +19,11 @@ public class ProductMgr {
     private DataSource ds;
  // paging 처리
  	private int rectot;  		// tot : 전체 레코드 수
- 	private int pList = 10;      // 페이지 당 출력 행 수 
+ 	private int pList = 15;      // 페이지 당 출력 행 수 
  	private int pageSu;         // 전체 페이지 수 
-    
+ 	 private int totalRecord;
+     private int numPerPage = 15; // 페이지 당 레코드 수
+
     public ProductMgr() {
         try {
             Context context = new InitialContext();
@@ -149,7 +151,7 @@ public class ProductMgr {
 
     public boolean insertProduct(HttpServletRequest request) {
         boolean isInserted = false;
-        String uploadDir = "c:/work/scene_stealer/src/main/webapp/upload/product";
+        String uploadDir = "C:/work/scene_stealer/src/main/webapp/upload/product";
         int maxFileSize = 5 * 1024 * 1024; // 5MB
 
         try {
@@ -225,13 +227,13 @@ public class ProductMgr {
 		boolean b = false;
 		try {
 			//업로드할 이미지 경로 : upload 폴더(절대 경로)
-	        String uploadDir = "C:/work/scene_stealer/src/main/webapp/upload/product";
+	        String uploadDir = "C:/work/scene_stealer/src/main/webapp/upload";
 			MultipartRequest multi = new MultipartRequest(request, uploadDir,
 								5 * 1014 * 1024, "UTF-8",new DefaultFileRenamePolicy());
 	
 			conn=ds.getConnection();
 			if(multi.getFilesystemName("pic") == null) {
-				
+			
 			String sql = "update product set product_price=?,product_contents=?,product_stock=?,product_category=? where product_name=?"; 
 			pstmt = conn.prepareStatement(sql);
 			
@@ -463,8 +465,65 @@ public class ProductMgr {
 		if(rectot % pList > 0) pageSu++; //자투리가 있으면 페이지 하나 플러스
 		return pageSu;
 	}
-	
+	public void totalList1() {
+        try {
+            conn = ds.getConnection();
+            String sql = "SELECT COUNT(*) FROM product";
+            pstmt = conn.prepareStatement(sql);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                totalRecord = rs.getInt(1);
+            }
+        } catch (Exception e) {
+            System.out.println("totalList() 에러: " + e);
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (Exception e2) {
+            }
+        }
+        
+    }
+	public int getPageSu1() {
+        int pageSu = totalRecord / numPerPage;
+        if (totalRecord % numPerPage != 0) {
+            pageSu++;
+        }
+        return pageSu;
+    }
 
+	// 입력 키워드 기반 검색 결과 추천
+	public String product_suggest(String keyword) {
+		String str = "";
+		// 상품명은 PK이므로 정확히 일치하는 결과가 없는 경우에만 새로 만들기를 추가
+		String sql = "select * from product where product_name = ?";
+		try (Connection conn = ds.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			pstmt.setString(1, keyword.replaceAll(" ", ""));
+			try(ResultSet rs = pstmt.executeQuery()) {
+				if(!rs.next()) str = "<a href='productinsert.jsp'>상품 추가 페이지로 이동</a><hr>";
+			}
+		} catch (Exception e) {
+			System.out.println("product_suggest err: " + e);
+		}
+		
+		sql = "select product_name from product where product_name like ?";
+		// 입력 키워드가 포함된 검색 결과가 있으면 선택 가능
+		try (Connection conn = ds.getConnection(); 
+			PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			pstmt.setString(1, "%" + keyword.replaceAll(" ", "") + "%");
+			try (ResultSet rs = pstmt.executeQuery()) {
+				while (rs.next()) {
+					str += rs.getString(1) + " <a href=\"javascript:product_connect('" + rs.getString(1) + "')\">선택하기 ✔️</a><hr>";
+				}
+			}
+		} catch (Exception e) {
+			System.out.println("product_suggest err: " + e);
+		}
+		return str;
+	}
 	
 	
 }

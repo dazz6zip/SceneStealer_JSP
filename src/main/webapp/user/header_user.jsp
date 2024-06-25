@@ -37,6 +37,14 @@ if (id == null) {
 	width: 80px;
 	text-align: center;
 }
+#topSearch {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+    flex-grow: 1;
+}
+
 
 .top {
 	width: 100px;
@@ -52,6 +60,7 @@ if (id == null) {
     <div id="logo"><a href="../main/main.jsp"><img src="../image/logo-01.png" width="100%"></a></div>
     <div class="top"><a href="../main/main.jsp">HOME</a></div>
     <div class="top"><a href="../shop/productlist.jsp">SHOP</a></div>
-    <div></div>
+     <div id="topSearch">
+    </div>
     <div class="top"><%= log %></div>
 </div>

@@ -161,7 +161,7 @@ body {
 			        <td>
 			            <%
 			            rdto = rlist.get(1);
-			            out.print("<a href=\"javascript:mainreview('" + rdto.getNum() + "')\">" + rdto.getPic() + "</a>");
+			            out.print("<a href=\"javascript:mainreview('" + rdto.getNum() + "')\">" + "<img src='..\\upload\\" +rdto.getPic()  +"'>" + "</a>");
 			            %>
 			            <br>
 			            <%
@@ -173,7 +173,7 @@ body {
 			        <td>
 			            <%
 			            rdto = rlist.get(2);
-			            out.print("<a href=\"javascript:mainreview('" + rdto.getNum() + "')\">" + rdto.getPic() + "</a>");
+			            out.print("<a href=\"javascript:mainreview('" + rdto.getNum() + "')\">" + "<img src='..\\upload\\" +rdto.getPic()  +"'>" + "</a>");
 			            %>
 			            <br>
 			            <%

@@ -27,13 +27,6 @@ String notice_date = ndto.getDate();
 <meta charset="UTF-8">
 <title>공지사항 상세 보기</title>
 <style>
-/* body 스타일 */
-body#notice-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
-}
 
 /* 테이블 스타일 */
 #notice-table {
@@ -45,7 +38,6 @@ body#notice-body {
 #notice-table th, #notice-table td {
     padding: 10px;
     background-color: #fff;
-    border: 1px solid #ddd;
 }
 
 #notice-table td img {
@@ -78,7 +70,7 @@ body#notice-body {
 <jsp:include page="../user/header_user.jsp"></jsp:include>
 <table id="notice-table">
     <tr>
-        <th>제목</th>
+        <th width="10%">제목</th>
         <td><%= notice_title %></td>
     </tr>
     <tr>

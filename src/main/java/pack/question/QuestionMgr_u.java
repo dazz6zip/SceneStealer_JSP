@@ -298,7 +298,7 @@ public class QuestionMgr_u {
 		  
 		try {
 			conn = ds.getConnection();
-			String sql = "select * from notice";
+			String sql = "select * from notice limit 3";
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			

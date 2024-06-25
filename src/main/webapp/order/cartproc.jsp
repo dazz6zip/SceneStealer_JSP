@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <jsp:useBean id="csmgr" class="pack.orders.CartSessionMgr" scope="session"/>
 <jsp:useBean id="opdto" class="pack.orders.Order_productDto" />
 <jsp:setProperty property="*" name="opdto"/>
@@ -25,7 +24,6 @@ if(id == null){ //로그인을 안했다면 로그인페이지로 가세요
             </script>
 <%
         } else if (flag.equals("update")) {
-           
             csmgr.updateCart(opdto);
 %>
             <script>

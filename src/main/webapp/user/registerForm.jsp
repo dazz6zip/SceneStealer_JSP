@@ -6,13 +6,6 @@
 <meta charset="UTF-8">
 <title>SceneStealer</title>
 <link href="css/style.css" rel="stylesheet" type="text/css">
-<!-- 구글 폰트 -->
-<link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
-<!-- ======= -->
-
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 <script src="../js/script.js"></script>
 

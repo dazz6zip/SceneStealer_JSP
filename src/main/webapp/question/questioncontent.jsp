@@ -26,54 +26,6 @@ String answer_contents = qdto.getAnswer_contents();
 <meta charset="UTF-8">
 <title>SceneStealer</title>
 <style>
-/* body 스타일 */
-body.question-page {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
-}
-
-/* 테이블 스타일 */
-.question-page table {
-    width: 100%;
-    border-spacing: 20px;
-    margin: 20px 0;
-}
-
-.question-page th, .question-page td {
-    padding: 10px;
-    background-color: #fff;
-    border: 1px solid #ddd;
-}
-
-.question-page td img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 10px;
-}
-
-/* 링크 스타일 */
-.question-page a {
-    display: inline-block;
-    padding: 10px 20px;
-    margin: 20px 0;
-    background-color: #000;
-    color: white;
-    text-decoration: none;
-    border-radius: 20px;
-    transition: background-color 0.3s ease;
-}
-
-.question-page a:hover {
-    background-color: #444;
-}
-
-/* 제목 스타일 */
-.question-page h1 {
-    text-align: center;
-    color: #333;
-}
 </style>
 <script type="text/javascript" src="../js/script.js"></script>
 </head>

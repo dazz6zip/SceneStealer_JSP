@@ -10,7 +10,7 @@
 <script type="text/javascript">
 function nameCheck(){
 	if(productForm.productName.value === ""){
-		confirm("상품 이름을 해주세요?")
+		confirm("상품 이름을 입력하세요.")
 	}else{
 		url = "productnamecheck.jsp?name=" + productForm.productName.value;
 		window.open(url,"id","width=550,height=300,top=200,left=100");
@@ -22,7 +22,6 @@ function nameCheck(){
 <%@ include file="admin_top.jsp" %>
 <h2>상품 등록하기</h2>
 <form name="productForm" action="productproc.jsp?flag=insert" method="post"  enctype="multipart/form-data">
-
 <table>
 
 <tr>
@@ -36,7 +35,7 @@ function nameCheck(){
 		
 	</tr>
 	<tr>
-		<td>가 격</td>
+		<td>가격</td>
 		<td><input type="text" name="price"></td>
 	</tr>
 	<tr>

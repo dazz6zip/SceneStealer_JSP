@@ -36,7 +36,7 @@ String pwd = userMgr.findPass(user_id, user_tel);
 	    </div>
 	    <div class = "found-login">
 			<input type="button" id="btnback" value="다시 찾기" onClick="history.back()"/>
- 		    <input type="button" id="btnjoin" value="회원가입" onClick="location.href='registerForm.html'"/>
+ 		    <input type="button" id="btnjoin" value="회원가입" onClick="location.href='registerForm.jsp'"/>
        	</div>
 	</div>
 <%

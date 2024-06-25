@@ -5,7 +5,6 @@
 <%
 request.setCharacterEncoding("utf-8");
 
-
 //controller 역할
 String flag = request.getParameter("flag");
 boolean result = false;

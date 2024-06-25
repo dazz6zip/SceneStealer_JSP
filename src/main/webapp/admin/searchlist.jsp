@@ -3,6 +3,8 @@
     pageEncoding="UTF-8"%>
 <jsp:useBean id="seriesMgr" class="pack.main.SeriesMgr" />
 <jsp:useBean id="actorMgr" class="pack.main.ActorMgr" />
+<jsp:useBean id="productMgr" class="pack.product.ProductMgr" />
+
 <%
 // series나 actor에서 키워드 검색 시 suggest 목록 값을 반환해주는 비즈니스 로직용 파일
 String option = request.getParameter("option");
@@ -12,6 +14,8 @@ if(option.equals("series")){
 	str = seriesMgr.series_suggest(keyword);
 } else if(option.equals("actor")){
 	str = actorMgr.actor_suggest(keyword);
+} else if(option.equals("product")){ 
+	str = productMgr.product_suggest(keyword);
 }
 response.setContentType("text/plain");
 response.getWriter().write(str);

@@ -6,46 +6,46 @@ String id = (String)session.getAttribute("idKey");
 String log = "";
 
 if (id == null) {
-   log = "<a href='../user/loginForm.jsp'>로그인</a>";
+	log = "<a href='../user/loginForm.jsp'>로그인</a>";
 } else {
-   log = "<a href='../my/mypage.jsp'><img src='../image/profileicon.png' width='100%'></a>";
+	log = "<a href='../my/mypage.jsp'><img src='../image/profileicon.png' width='100%'></a>";
 }
 %>
 
 <style>
 #headertable a {
-   text-decoration: none; /* 밑줄 제거 */
-   color: inherit; /* 부모 요소의 글씨 색상 상속 */
+	text-decoration: none; /* 밑줄 제거 */
+	color: inherit; /* 부모 요소의 글씨 색상 상속 */
 }
 
 /* 마우스를 올렸을 때 색상 변경 (선택 사항) */
 #headertable a:hover {
-   font-size: 120%;
+	font-size: 120%;
 }
 
 #headertable {
-   top: 0;
-   left: 0;
-   width: 100%;
-   background-color: white; /* 필요에 따라 배경색을 지정 */
-   z-index: 1000; /* 다른 요소들 위에 표시되도록 설정 */
-   display: flex;
-   align-items: center;
-   justify-content: space-between;
+	top: 0;
+	left: 0;
+	width: 100%;
+	background-color: white; /* 필요에 따라 배경색을 지정 */
+	z-index: 1000; /* 다른 요소들 위에 표시되도록 설정 */
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 }
 
 #logo {
-   width: 80px;
-   text-align: center;
+	width: 80px;
+	text-align: center;
 }
 
 .top{
-   width: 100px;
-   text-align: center;
+	width: 100px;
+	text-align: center;
 }
 
 .top img {
-   width: 50%;
+	width: 50%;
 }
 
 #topSearch {
@@ -109,26 +109,26 @@ if (id == null) {
 
 <script>
 window.onload = () => {
-   document.querySelector("#searchBtn").onclick = () => {
-      const searchWordInput = document.querySelector("input[name='searchword']").value;
-      const korOnly = /^[가-힣]+$/;
+	document.querySelector("#searchBtn").onclick = () => {
+		const searchWordInput = document.querySelector("input[name='searchword']").value;
+		const korOnly = /^[가-힣]+$/;
 
-   //   if (!korOnly.test(searchWordInput)) {
-   //      alert("한글만 입력 가능합니다.");
-   //      document.querySelector("input[name='searchword']").focus();
-   //      return;
-   //   }
-   //   else 
-         if (searchWordInput.length < 2) {
-         alert("두 글자 이상 입력해 주세요.");
-         document.querySelector("input[name='searchword']").focus();
-         return;
-      }
-      else {
-         document.querySelector("form").submit();
-      }
-   
-   }
+	//	if (!korOnly.test(searchWordInput)) {
+	//		alert("한글만 입력 가능합니다.");
+	//		document.querySelector("input[name='searchword']").focus();
+	//		return;
+	//	}
+	//	else 
+			if (searchWordInput.length < 2) {
+			alert("두 글자 이상 입력해 주세요.");
+			document.querySelector("input[name='searchword']").focus();
+			return;
+		}
+		else {
+			document.querySelector("form").submit();
+		}
+	
+	}
 }
 </script>
 

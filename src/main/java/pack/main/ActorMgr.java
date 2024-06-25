@@ -32,7 +32,7 @@ public class ActorMgr {
 		// 시리즈명 중복 가능하므로 검색 결과 여부와 무관하게 무조건 새로 만들기 가능
 		String str = keyword + " <a href=\"javascript:actor_insert('" + keyword + "')\">새로 만들기 ➕</a><hr>";
 		String sql = "select actor_name, actor_birth, actor_num from actor where actor_name like ?";
-		// 입력 키워드가 포함된 검색 결과가 있다면, 해당 결과들 편집 옵션 제시
+		// 입력 키워드가 포함된 검색 결과가 있으면 선택 가능
 		try (Connection conn = ds.getConnection();
 			PreparedStatement pstmt = conn.prepareStatement(sql)){
 			pstmt.setString(1, "%" + keyword.replaceAll(" ", "") + "%");

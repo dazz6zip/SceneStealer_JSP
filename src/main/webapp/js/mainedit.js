@@ -1,5 +1,6 @@
 let checkFirst1 = loopSend1 = false; 
 let checkFirst2 = loopSend2 = false; 
+let checkFirst3 = loopSend3 = false; 
 let sendFunc; // setTimeout 메소드 처리를 위함
 let keyWordSeries, keyWordCharacter; // 검색한 키워드
 let para; // get 방식으로 jsp 파일 호출 시 추가될 파라미터
@@ -9,16 +10,11 @@ $(document).ready(function() {
     // 시리즈
     $("#keywordSeries").on("keydown", startSeries);
     
-	$("#keywordSeries").click(function() {
-        $("#suggestSeries").hide(); // 검색 이후에도 시리즈 키워드 검색창을 다시 클릭하면 검색 결과는 다시 가려줘야 함
-    });
-    
     // 배우
     $("#keywordActor").on("keydown", startActor);
     
-	$("#keywordActor").click(function() {
-        $("#suggestActor").hide(); // 검색 이후에도 시리즈 키워드 검색창을 다시 클릭하면 검색 결과는 다시 가려줘야 함
-    });
+	// 상품
+	$("#keywordProduct").on("keydown", startProduct);
 });
 
 // 시리즈 검색창 키보드 누를 때마다 호출됨
@@ -71,8 +67,7 @@ function series_select(seriesNum){
 }
 
 
-// 캐릭터 추가에서 배우 선택 버튼 클릭 시
-//<해당 시리즈 번호>, <해당 캐릭터가 insert될 새 번호> 들고 가서 배우 찾기 창 띄우기
+// 캐릭터 추가에서 배우 선택 버튼 클릭 시 배우 찾기 창 띄우기
 function actor_search(){
 	let url="actorsearch.jsp";
 	window.open(url, "get", 
@@ -143,11 +138,50 @@ function style_select(styleNum){
 	location.href = 'mainedit.jsp?style_num=' + styleNum;
 }
 
-function item_insert(){
-	
+// 아이템 추가에서 상품 선택 버튼 클릭 시 상품 찾기 창 띄우기
+function product_search(){
+	let url="productsearch.jsp";
+	window.open(url, "get", 
+	"toolbar=no, width=500,height=400,top=220,left=100,status=yes,scrollbars=yes,menubar=no");
 }
 
-function item_update(){
+// 상품 검색창 키보드 누를 때마다 호출됨
+function startProduct() {
+	if (checkFirst3 === false) { // input에서 입력이 시작되고 있다는 것을 의미(빈 상태에서 한 글자 입력)
+		sendProductFunc = setTimeout("sendProductKeyword()", 100); // 0.1초 후 sendkeyword를 호출
+		loopSend3 = true;
+	}
+}
+
+// 상품 검색어 추천
+function sendProductKeyword() {
+	keyWordProduct = $("#keywordProduct").val();
+	if (keyWordProduct === "") $("#suggestProduct").hide(); 
+	else {
+		axios.get('searchlist.jsp',{
+			params: {option:'product', keyword: keyWordProduct}
+		})
+		.then(function(response) {
+			$("#suggestProductList").html(response.data);
+        		$("#suggestProduct").show();
+		})
+		.catch(function(error) {
+			console.log("sendProductKeyword err: " + error);
+		})
+	}
+	clearTimeout(sendProductFunc);
+}
+
+
+// 팝업창에서 상품을 검색하여 선택 완료 후
+// 해당 아이템 테이블에 들어갈 상품명 저장시키기
+function product_connect(productName){ // 파라미터는 상품명
+	// 해당 아이템 폼 태그의 상품명 요소에 productName주기
+	opener.document.forms["frm2"].elements["product"].value = productName;
+	window.close();
+}
+
+function item_insert(){
 	
 }
 

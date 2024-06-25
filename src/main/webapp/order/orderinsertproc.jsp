@@ -10,6 +10,7 @@
 <jsp:setProperty property="*" name="opdto"/>
 <jsp:useBean id="pdto" class="pack.product.ProductDto" />
 <%
+request.setCharacterEncoding("utf-8");
 String id = (String)session.getAttribute("idKey");
 
 Hashtable<String, Order_productDto> hCart = (Hashtable<String, Order_productDto>)csmgr.getCartList(); 
@@ -34,7 +35,6 @@ if (hCart.isEmpty()) {
 	hCart.clear();
 	%>
 	<script>
-		alert("주문이 완료되었습니다.\n감사합니다.");
 		location.href = "../my/orderfinish.jsp";
 	</script>	
 	<%

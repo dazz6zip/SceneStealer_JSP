@@ -14,8 +14,8 @@
         Class.forName("org.mariadb.jdbc.Driver");
 
         // 데이터베이스 연결 설정
-        String url = "jdbc:mariadb://localhost:3306/sample";
-        conn = DriverManager.getConnection(url, "root", "0205");
+        String url = "jdbc:mariadb://192.168.0.3:3306/ss";
+        conn = DriverManager.getConnection(url, "root", "daracle");
 
         // SQL 쿼리 작성 (아이디 중복 체크)
         String checkSql = "SELECT COUNT(*) FROM user WHERE user_id = ?";

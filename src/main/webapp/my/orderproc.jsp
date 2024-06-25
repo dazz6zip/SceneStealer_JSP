@@ -26,7 +26,7 @@ if (flag.equals("delete")) {
 	%>
 		<script type="text/javascript">
 			alert("Q&A 페이지로 이동합니다.");
-			location.href = "questionlist.jsp";
+			location.href = "../question/questionlist.jsp";
 		</script>
 	<%
 } 

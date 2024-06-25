@@ -11,7 +11,7 @@ SeriesDto s = seriesMgr.getSeries(num);
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Insert title here</title>ㅋ
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script type="text/javascript" src="../js/mainedit.js"></script>

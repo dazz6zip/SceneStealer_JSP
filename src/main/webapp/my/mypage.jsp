@@ -24,17 +24,17 @@ body {
 
 #mypage table {
     text-align: center;
-    border-spacing: 30px;
+    border-spacing: 20px;
     border-collapse: separate;
 }
 
 #mypage td {
     background-color: black;
-    padding: 60px;
+    padding: 50px;
     border-radius: 100px;
     color: #FFFFEA;
     text-align: center;
-    width: 110px;
+    width: 120px;
     opacity: 0;
     animation: fadeInUp 2s ease-in-out forwards;
 }
@@ -45,7 +45,7 @@ body {
 }
 
 #mypage a:hover {
-    font-size: 120%;
+    font-size: 110%;
 }
 
 @keyframes fadeInUp {

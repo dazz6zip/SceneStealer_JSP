@@ -1,3 +1,4 @@
+<%@page import="java.text.DecimalFormat"%>
 <%@page import="pack.orders.OrdersDto"%>
 <%@page import="pack.product.ProductDto"%>
 <%@page import="java.util.ArrayList"%>
@@ -5,6 +6,7 @@
 <jsp:useBean id="orderMgr" class="pack.orders.OrderMgr"></jsp:useBean>
 <jsp:useBean id="pdto" class="pack.product.ProductDto"></jsp:useBean>
 <%
+DecimalFormat df = new DecimalFormat("#,###");
 request.setCharacterEncoding("utf-8");
 /* 
 1. 로그인 세션 확인 작업
@@ -31,12 +33,49 @@ OrdersDto odto = orderMgr.getOrderDataDetail(orders_num);
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>주문 상세 내역</title>
+<style>
+/* 테이블 스타일 */
+table {
+    width: 100%;
+    border-spacing: 10px;
+    margin-bottom: 20px;
+    background-color: #fff;
+}
+
+th, td {
+    padding: 10px;
+    background-color: #fff;
+    border: none;
+    text-align: center;
+}
+
+th {
+    background-color: #333;
+    color: white;
+}
+
+td img {
+    max-width: 100px;
+    height: auto;
+    border-radius: 10px;
+}
+
+/* 링크 스타일 */
+a {
+    color: #000; /* 검정색 글씨 */
+    text-decoration: none; /* 밑줄 제거 */
+}
+
+a:hover {
+    font-size: 110%; /* 마우스 오버 시 글씨 크기 증가 */
+}
+</style>
 <script type="text/javascript" src="../js/order.js"></script>
 </head>
 <body>
 <jsp:include page="../user/header_user.jsp" />
-<table border="1">
+<table>
 	<tr>
 		<th colspan="2">상품 정보</th>
 		<th>주문수량</th>
@@ -63,8 +102,8 @@ OrdersDto odto = orderMgr.getOrderDataDetail(orders_num);
 			<td><img src="..\\upload\\product\\<%= pdto.getPic() %>"></td>
 			<td><%= pdto.getName() %></td>
 			<td><%= count %></td>
-			<td><%= pdto.getPrice() %></td>
-			<td><%= count * pdto.getPrice() %></td>
+			<td><%= df.format(pdto.getPrice()) %>원</td>
+			<td><%= df.format(count * pdto.getPrice()) %>원</td>
 			<td><%= reviewabout %></td>
 		</tr>
 		<%

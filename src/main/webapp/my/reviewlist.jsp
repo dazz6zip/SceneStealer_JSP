@@ -27,13 +27,96 @@ ArrayList<ReviewDto> rlist = reviewMgr.getReview(id, spage);
 reviewMgr.totalList(id); // 전체 레코드 수 계산
 pageSu = reviewMgr.getPageSu(); // 전체 페이지 수 계산
 
- 
 %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>리뷰 리스트</title>
+<style>
+#selectAllReview, #delReview {
+    margin: 10px;
+    padding: 10px 20px;
+    border: none;
+    background-color: #000;
+    color: white;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#selectAllReview:hover, #delReview:hover {
+    background-color: #444;
+}
+
+/* 테이블 스타일 */
+table {
+    width: 100%;
+    border-spacing: 10px;
+    margin-bottom: 20px;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border: none;
+}
+
+td img {
+    max-width: 100px;
+    height: auto;
+    border-radius: 10px;
+}
+
+/* 링크 스타일 */
+a {
+    color: #000; /* 검정색 글씨 */
+    text-decoration: none; /* 밑줄 제거 */
+}
+
+a:hover {
+    font-size: 110%; /* 마우스 오버 시 글씨 크기 증가 */
+}
+
+/* 페이지네이션 스타일 */
+#pagination {
+    text-align: center;
+    margin: 20px 0;
+}
+
+#pagination b {
+    color: black;
+    font-weight: bold;
+    margin: 0 5px;
+}
+
+#pagination a {
+    color: gray;
+    margin: 0 5px;
+    text-decoration: none;
+}
+
+#pagination a:hover {
+    color: black;
+}
+
+.product-card {
+	background: #fff;
+	padding: 15px;
+	margin: 10px;
+	text-align: center;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	transition: transform 0.3s ease;
+	border-radius: 10px; /* 요소마다 배경에 둥근 모서리 추가 */
+	display: inline-block; 
+	width: 15%; 
+	margin: 1%;
+}
+
+#buttons {
+	text-align: right;
+}
+</style>
 <script type="text/javascript" src="../js/reviewedit.js"></script>
 <script type="text/javascript">
 window.onload = () => {
@@ -61,58 +144,53 @@ window.onload = () => {
 		}
 	};
 }
-
 </script>
 </head>
 <body>
-<jsp:include page="../user/header_user.jsp" />s
-<input type="checkbox" id="selectAllReview"> 전체 선택
+<jsp:include page="../user/header_user.jsp" />
+<div id="buttons">
+<input type="checkbox" id="selectAllReview"> ALL
 <input type="button" value="삭제" id="delReview">
-
-<table border="1">
-<tr>
+</div>
+<div>
 <%
+int count = 0;
 for(ReviewDto r : rlist) {
+	if (count % 5 == 0 && count != 0) {
+		%>
+		</div><div>
+		<%
+	}
 	%>
-	<td>
-		<table border="1">
-			<tr>
-				<td><input type="checkbox" name="reviewcheck" value="<%= r.getNum() %>"></td>
-				<td rowspan="4"><a href="javascript:reviewDetail('<%=r.getNum() %>')"><img src="..\\upload\\<%= r.getPic() %>"></a></td>
-				
-			</tr>
-			<tr>
-				<td><%= r.getProduct() %></td>
-			</tr>
-			<tr>
-				<td><%= r.getContents().substring(0, 8)%>...</td>
-			</tr>
-			<tr>
-				<td><%= r.getUser() %></td>
-			</tr>
-		</table>
-	</td>
+	<div class="product-card">
+		<input type="checkbox" name="reviewcheck" value="<%= r.getNum() %>">
+		<a href="javascript:reviewDetail('<%=r.getNum() %>')"><img src="..\\upload\\<%= r.getPic() %>"></a>
+		<p><%= r.getProduct() %></p>
+		<p><%
+		try{
+			out.print(r.getContents().substring(0, 8));					
+		}catch(Exception e){
+			out.print(r.getContents());										
+		}
+		%>...</p>
+		<p><%= r.getUser() %></p>
+	</div>
 	<%
+	count++;
 }
 %>
-	
-</tr>
-</table>
-<table style="width: 100%">
-    <tr>
-        <td style="text-align: center;">
-            <%
-            for (int i = 1; i <= pageSu; i++) {
-                if (i == spage) {
-                    out.print("<b style='font-size:15pt; color:red'>[" + i + "]</b>");
-                } else {
-                    out.print("<a href='reviewlist.jsp?page=" + i + "'>[" + i + "]</a>");
-                }
-            }
-            %>
-        </td>
-    </tr>
-</table>
+</div>
+<div id="pagination">
+    <%
+    for (int i = 1; i <= pageSu; i++) {
+        if (i == spage) {
+            out.print("<b>" + i + "</b>");
+        } else {
+            out.print("<a href='reviewlist.jsp?page=" + i + "'>" + i + "</a>");
+        }
+    }
+    %>
+</div>
 <form action="reviewdelete.jsp" method="post" name="reviewFrm">
 <input type="hidden" name="review_num">
 </form>
