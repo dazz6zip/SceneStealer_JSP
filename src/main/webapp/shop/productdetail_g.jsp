@@ -49,8 +49,7 @@ table {
 
 /* 이미지 스타일 */
 img {
-	max-width: 150px;
-	height: auto;
+	size: 80%
 	transition: transform 0.3s ease;
 }
 
@@ -132,8 +131,9 @@ table.review-table td a:hover {
 	<form action="../order/cartproc.jsp" name="cartFrm">
 		<table>
 			<tr>
-				<td style="width: 30%"><img src="../upload/<%=dto.getPic()%>"
-					width="150" /></td>
+				<td style="width: 30%; text-align: center;" >
+					<img src="../upload/product/<%=dto.getPic()%>" width="300" />
+				</td>
 				<td style="width: 50%; vertical-align: top">
 					<table style="width: 100%">
 						<tr>

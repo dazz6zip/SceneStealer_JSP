@@ -6,9 +6,9 @@ String id = (String)session.getAttribute("idKey");
 String log = "";
 
 if (id == null) {
-	log = "<a href='../user/loginForm.jsp'>로그인</a>";
+	log = "<a href='../user/loginForm.jsp'>로그인</a>"; // 세션에 로그인 정보가 없을 때 로그인 페이지로 이동할 수 있도록 설정
 } else {
-	log = "<a href='../my/mypage.jsp'><img src='../image/profileicon.png' width='100%'></a>";
+	log = "<a href='../my/mypage.jsp'><img src='../image/profileicon.png' width='100%'></a>"; // 세션에 로그인 정보가 있을 때 마이페이지로 이동할 수 있도록 설정
 }
 %>
 <style>
@@ -122,14 +122,14 @@ if (id == null) {
 window.onload = () => {
 	document.querySelector("#searchBtn").onclick = () => {
 		const searchWordInput = document.querySelector("input[name='searchword']").value;
-		const korOnly = /^[가-힣]+$/;
-
+		const korOnly = /^[가-힣]+$/; // 정규표현식
+		/*
 		if (!korOnly.test(searchWordInput)) {
 			alert("한글만 입력 가능합니다.");
 			document.querySelector("input[name='searchword']").focus();
 			return;
-		}
-		else 
+		}else 
+			*/
 			if (searchWordInput.length < 2) {
 			alert("두 글자 이상 입력해 주세요.");
 			document.querySelector("input[name='searchword']").focus();

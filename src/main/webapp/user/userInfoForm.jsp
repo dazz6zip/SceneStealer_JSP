@@ -1,7 +1,6 @@
 <%@page import="pack.user.UserBean"%>
 <%@page import="pack.user.UserMgr"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <jsp:useBean id="userMgr" class="pack.user.UserMgr" />
 
@@ -23,8 +22,19 @@ if(bean == null){
 <title>회원수정</title>
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 <script src="../js/script.js"></script>
-
+<!-- Daum PostcodeAddress API -->
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <style>
+body {
+	font-family: Arial, sans-serif;
+	background-color: #f4f4f4;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
 #userId {
     font-size: 24px;
     font-weight: bold;
@@ -44,7 +54,7 @@ if(bean == null){
 }
 
 .user_info input {
-    width: 500px;
+    width: 100%;
     padding: 8px;
     margin-bottom: 10px;
     border: 1px solid #ddd;
@@ -85,6 +95,16 @@ textarea {
     border-radius: 5px;
     box-sizing: border-box;
     resize: none;
+}
+
+.flex-row {
+    flex-direction: row;
+    align-items: center;
+}
+
+.flex-row input {
+    flex: 1;
+    margin-right: 10px;
 }
 </style>
 
@@ -129,12 +149,10 @@ window.onload = function(){
     <input type="text" name="tel" value="<%=bean.getTel() %>">
 </div>
 
-<div class="user_info" style="width: 400px;">
+<div class="user_info flex-row">
     <label>Postcode</label> 
-    <div>
-        <input type="text" value="<%=bean.getZipcode() %>" maxlength="6" name="zipcode" id="zipcode_display" disabled="disabled">
-        <button type="button" id="btnAddr" onclick="daum_AddressAPI()">Search</button>
-    </div>
+    <input type="text" value="<%=bean.getZipcode() %>" maxlength="6" name="zipcode" id="zipcode_display" disabled="disabled">
+    <button type="button" id="btnAddr" onclick="daum_AddressAPI()">Search</button>
 </div>
 		
 <input type="hidden" id="user_zipcode" name="zipcode" value="">

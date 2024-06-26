@@ -110,8 +110,8 @@ a:hover {
 	}
 	%>
 </table>
-<form action="review.jsp" name="detailFrm" method="post">
-	<input type="hidden" name="product_name">
+<form action="../shop/reviewinsert.jsp" name="detailFrm" method="post">
+	<input type="hidden" name="pro">
 </form>
 <jsp:include page="../footer.jsp"></jsp:include>
 </body>

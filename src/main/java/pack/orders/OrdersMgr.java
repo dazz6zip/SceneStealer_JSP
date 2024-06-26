@@ -60,20 +60,44 @@ public class OrdersMgr {
 	}
 	
 	// 전체 레코드 수를 구해서 지정한 페이지당 개수로 나눠 전체 페이지 수 반환
-	public int getTotalPage(String id) { // type: 조회옵션(전체보기/미답변글보기)
+	// 상단메뉴에서 접근 시 호출
+	public int getTotalPage() {
 		String sql = "select count(*) from orders";
-		if (id!=null) sql += " where user_id =" + id;
-		// id가 null 이면 전체 주문, 있으면 해당 user 주문만 반환
 		try {
 			conn = ds.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
-			rs.next();
-			recTot = rs.getInt(1);
+			if(rs.next()) recTot = rs.getInt(1);
 			totalPage = recTot / pList;
 			if (recTot % pList > 0) totalPage++;
 		} catch (Exception e) {
-			System.out.println("getTotalPage err: " + e);
+			System.out.println("getTotalPage() err: " + e);
+		} finally {
+			try {
+				if (rs != null) rs.close();
+				if (pstmt != null) pstmt.close();
+				if (conn != null) conn.close();
+			} catch (Exception e2) {
+
+			}
+		}
+		return totalPage;
+	}
+	
+	// 위 메소드 오버로딩
+	// Q&A 상세보기에서 유저 클릭 시 호출
+	public int getTotalPage(String id) {
+		String sql = "select count(*) from orders where user_id = ?";
+		try {
+			conn = ds.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			if(rs.next()) recTot = rs.getInt(1);
+			totalPage = recTot / pList;
+			if (recTot % pList > 0) totalPage++;
+		} catch (Exception e) {
+			System.out.println("getTotalPage(id) err: " + e);
 		} finally {
 			try {
 				if (rs != null) rs.close();

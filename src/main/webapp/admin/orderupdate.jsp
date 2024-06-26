@@ -16,7 +16,7 @@ if(b==true){
 %>
 	<script>
 	alert("수정 완료");
-	history.back();
+	location.href="orderlist.jsp";
 	</script>
 <%	 
 }

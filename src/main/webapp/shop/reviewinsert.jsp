@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
     <jsp:useBean id="reviewMgr" class="pack.review.ReviewMgr"></jsp:useBean>
     <%
+    request.setCharacterEncoding("utf-8");
     String id = (String)session.getAttribute("idKey");
     if (id == null) {
     	id = "user1";
@@ -79,7 +80,7 @@ input[type="submit"]:hover, input[type="reset"]:hover {
 </head>
 <body>
 <jsp:include page="../shop/header_shop.jsp"></jsp:include>
-<form name="productForm" action="reviewproc.jsp?flag=insert" method="post"  enctype="multipart/form-data">
+<form name="productForm" action="reviewproc.jsp?flag=insert&product=<%= pname %>" method="post"  enctype="multipart/form-data">
 
 <table>
 	<tr>

@@ -17,12 +17,13 @@ public class ProductMgr {
     private PreparedStatement pstmt;
     private ResultSet rs;
     private DataSource ds;
- // paging 처리
- 	private int rectot;  		// tot : 전체 레코드 수
- 	private int pList = 15;      // 페이지 당 출력 행 수 
- 	private int pageSu;         // 전체 페이지 수 
- 	 private int totalRecord;
-     private int numPerPage = 15; // 페이지 당 레코드 수
+    
+    // paging 처리
+ 	private int rectot;	// tot : 전체 레코드 수
+ 	private int pList = 15;  // 페이지 당 출력 행 수 
+ 	private int pageSu;  // 전체 페이지 수 
+ 	private int totalRecord;
+    private int numPerPage = 15; // 페이지 당 레코드 수
 
     public ProductMgr() {
         try {
@@ -32,17 +33,14 @@ public class ProductMgr {
             System.out.println("DB 연결 실패 : " + e);
         }
     }
+    
     public ArrayList<ProductDto> getProductAll(){
  		ArrayList<ProductDto> list = new ArrayList<ProductDto>();
  		try {
  			conn = ds.getConnection();
- 			String sql = "select * from product";
- 			
- 			
+ 			String sql = "select * from product order by product_date desc";
  			pstmt = conn.prepareStatement(sql);
- 			
  			rs=pstmt.executeQuery();
- 			
  			 
  			while(rs.next() ) {
  				ProductDto dto = new ProductDto();
@@ -53,10 +51,8 @@ public class ProductMgr {
  				dto.setStock(rs.getInt(5));
  				dto.setDate(rs.getString(6));
  				dto.setCategory(rs.getString(7));
- 				list.add(dto);
- 				
+ 				list.add(dto);	
  			}
- 			
  		} catch (Exception e) {
  			System.out.println("getProductAll() err : " + e);
  		} finally {
@@ -68,22 +64,20 @@ public class ProductMgr {
  		}
  		return list;
  	} 
+    
     public ArrayList<ProductDto> getProductAll(int page){
 		ArrayList<ProductDto> list = new ArrayList<ProductDto>();
 		try {
 			conn = ds.getConnection();
-			String sql = "select * from product";
-			
-			
+			String sql = "select * from product order by product_date desc";
 			pstmt = conn.prepareStatement(sql);
-			
 			rs=pstmt.executeQuery();
 			
 			 for(int i=0; i< (page-1)* pList; i++) {
 		            rs.next(); //레코드 포인터 이동 0, 4, 9, 14, 19..
-		         }
+		     }
 			 int k =0;
-			while(rs.next() && k < pList) {
+			 while(rs.next() && k < pList) {
 				ProductDto dto = new ProductDto();
 				dto.setName(rs.getString(1));
 				dto.setPic(rs.getString(2));
@@ -94,8 +88,7 @@ public class ProductMgr {
 				dto.setCategory(rs.getString(7));
 				list.add(dto);
 				k++;
-			}
-			
+			}	
 		} catch (Exception e) {
 			System.out.println("getProductAll() err : " + e);
 		} finally {
@@ -106,23 +99,20 @@ public class ProductMgr {
 			} catch (Exception e2) { }
 		}
 		return list;
-	} 
+	}
+    
     public ArrayList<ProductDto> getProductAll(int page, String category){
 		ArrayList<ProductDto> list = new ArrayList<ProductDto>();
 		try {
 			conn = ds.getConnection();
-			String sql = "select * from product where product_category=?";
-			
-			
+			String sql = "select * from product where product_category=? order by product_date desc";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, category);
-		
 			rs=pstmt.executeQuery();
-			
-			 for(int i=0; i< (page-1)* pList; i++) {
+			for(int i=0; i< (page-1)* pList; i++) {
 		            rs.next(); //레코드 포인터 이동 0, 4, 9, 14, 19..
-		         }
-			 int k =0;
+		    }
+			int k =0;
 			while(rs.next() && k < pList) {
 				ProductDto dto = new ProductDto();
 				dto.setName(rs.getString(1));
@@ -134,8 +124,7 @@ public class ProductMgr {
 				dto.setCategory(rs.getString(7));
 				list.add(dto);
 				k++;
-			}
-			
+			}	
 		} catch (Exception e) {
 			System.out.println("getProductAll() err : " + e);
 		} finally {
@@ -156,14 +145,12 @@ public class ProductMgr {
 
         try {
             MultipartRequest multi = new MultipartRequest(request, uploadDir, maxFileSize, "UTF-8", new DefaultFileRenamePolicy());
-
             conn = ds.getConnection();
             String sql = "INSERT INTO product(product_name,product_price,product_contents,product_stock,product_date,product_category,product_pic) values(?, ?, ?, ?, now(), ?, ?)";
             pstmt = conn.prepareStatement(sql);
 
             pstmt.setString(1, multi.getParameter("name"));
             pstmt.setInt(2, Integer.parseInt(multi.getParameter("price")));
-           
             pstmt.setString(3, multi.getParameter("contents"));
             pstmt.setInt(4,Integer.parseInt( multi.getParameter("stock")));
             pstmt.setString(5, multi.getParameter("category"));
@@ -171,7 +158,6 @@ public class ProductMgr {
             // 이미지 파일이 업로드되지 않은 경우 기본 이미지 설정
             String pic = multi.getFilesystemName("pic") == null ? "ready.gif" : multi.getFilesystemName("pic");
             pstmt.setString(6, pic);
-
             if (pstmt.executeUpdate() > 0) isInserted = true;
         } catch (NumberFormatException e) {
             System.out.println("입력 값이 숫자 형식이 아닙니다: " + e.getMessage());
@@ -188,6 +174,7 @@ public class ProductMgr {
         }
         return isInserted;
     }
+    
     public ProductDto getProduct(String name) {
 		ProductDto dto = null;
 		try {
@@ -199,30 +186,26 @@ public class ProductMgr {
 			
 			if(rs.next()) {
 				dto = new ProductDto();
-				
 				dto.setName(rs.getString("product_name"));
 				dto.setPrice(rs.getInt("product_price"));
 				dto.setContents(rs.getString("product_contents"));
 				dto.setStock(rs.getInt("product_stock"));
 				dto.setDate(rs.getString("product_date"));
 				dto.setCategory(rs.getString("product_category"));
-				dto.setPic(rs.getString("product_pic"));
-				
-				
-			}
-			
+				dto.setPic(rs.getString("product_pic"));	
+			}	
 		} catch (Exception e) {
-			System.out.println("insertProduct() err : " + e);
+			System.out.println("getProduct() err : " + e);
 		} finally {
 			try {
 				if(rs != null) rs.close();
 				if(pstmt != null) pstmt.close(); 
-			
 				if(conn != null) conn.close();
 			} catch (Exception e2) { }
 		}
 		return dto;
 	}
+    
 	public boolean updateProduct(HttpServletRequest request) {
 		boolean b = false;
 		try {
@@ -230,22 +213,16 @@ public class ProductMgr {
 	        String uploadDir = "C:/work/scene_stealer/src/main/webapp/upload";
 			MultipartRequest multi = new MultipartRequest(request, uploadDir,
 								5 * 1014 * 1024, "UTF-8",new DefaultFileRenamePolicy());
-	
 			conn=ds.getConnection();
 			if(multi.getFilesystemName("pic") == null) {
-			
-			String sql = "update product set product_price=?,product_contents=?,product_stock=?,product_category=? where product_name=?"; 
-			pstmt = conn.prepareStatement(sql);
-			
-			pstmt.setString(1, multi.getParameter("price"));
-			pstmt.setString(2, multi.getParameter("contents"));
-			pstmt.setString(3, multi.getParameter("stock"));
-			pstmt.setString(4, multi.getParameter("category"));
-			pstmt.setString(5, multi.getParameter("name"));
-				
-			
-			}else {
-				
+				String sql = "update product set product_price=?,product_contents=?,product_stock=?,product_category=? where product_name=?"; 
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, multi.getParameter("price"));
+				pstmt.setString(2, multi.getParameter("contents"));
+				pstmt.setString(3, multi.getParameter("stock"));
+				pstmt.setString(4, multi.getParameter("category"));
+				pstmt.setString(5, multi.getParameter("name"));
+			} else {
 				String sql ="update product set product_price=?,product_contents=?,product_stock=?,product_category=?,product_pic=? where product_name=?"; 
 				pstmt = conn.prepareStatement(sql);
 				pstmt = conn.prepareStatement(sql);
@@ -270,15 +247,14 @@ public class ProductMgr {
 		}
 		return b;
 	}
+	
 	public boolean deleteProduct(String name) {
 		boolean b = false;
-		
 		try {
 			conn = ds.getConnection();
 			String sql = "delete from product where product_name=?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, name);
-			
 			if(pstmt.executeUpdate() > 0) b= true;
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -286,15 +262,14 @@ public class ProductMgr {
 			try {
 				if(rs != null) rs.close();
 				if(pstmt != null) pstmt.close(); 
-			
 				if(conn != null) conn.close();
 			} catch (Exception e2) { }
 		}
 		return b;
 	}
-	public boolean  idCheckProcess(String name) {
+	
+	public boolean idCheckProcess(String name) {
 		boolean b =false;
-		
 		try {
 			conn = ds.getConnection();
 			String sql = "select count(*) from product where product_name=?";
@@ -319,6 +294,7 @@ public class ProductMgr {
 		}
 		return b;
 	}
+	
 	public boolean updateStockToZero(String productName) {
 	    boolean updated = false;
 	    try {
@@ -375,8 +351,8 @@ public class ProductMgr {
             }
         }
         return list;
-
 	}
+	
 	public ArrayList<ProductDto> getProductPice(String pice) {
         ArrayList<ProductDto> list = new ArrayList<>();
         try {
@@ -411,6 +387,7 @@ public class ProductMgr {
         }
         return list;
 	}
+	
 	public void totalList() { // 전체 레코드 수 구하기
 		String sql = "select count(*) from product";
 		try {
@@ -433,11 +410,13 @@ public class ProductMgr {
 			}
 		}
 	}
+	
 	public int getPageSu() { //전체 페이지수 반환
 		pageSu = rectot / pList;
 		if(rectot % pList > 0) pageSu++; //자투리가 있으면 페이지 하나 플러스
 		return pageSu;
 	}
+	
 	public void otalList(String category) { // 전체 레코드 수 구하기
 		String sql = "select count(*) from product";
 		try {
@@ -460,11 +439,13 @@ public class ProductMgr {
 			}
 		}
 	}
+	
 	public int getPageSu(String category) { //전체 페이지수 반환
 		pageSu = rectot / pList;
 		if(rectot % pList > 0) pageSu++; //자투리가 있으면 페이지 하나 플러스
 		return pageSu;
 	}
+	
 	public void totalList1() {
         try {
             conn = ds.getConnection();
@@ -486,6 +467,7 @@ public class ProductMgr {
         }
         
     }
+	
 	public int getPageSu1() {
         int pageSu = totalRecord / numPerPage;
         if (totalRecord % numPerPage != 0) {
@@ -494,6 +476,7 @@ public class ProductMgr {
         return pageSu;
     }
 
+	// mainedit>아이템 편집에서 호출되는 메소드
 	// 입력 키워드 기반 검색 결과 추천
 	public String product_suggest(String keyword) {
 		String str = "";
@@ -523,7 +506,5 @@ public class ProductMgr {
 			System.out.println("product_suggest err: " + e);
 		}
 		return str;
-	}
-	
-	
+	}	
 }

@@ -10,6 +10,7 @@
 <body>
   <script>
  alert("탈퇴 완료되었습니다.");
+ location.href = "../main/main.jsp";
   </script>
 </body>
 </html>

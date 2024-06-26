@@ -11,7 +11,7 @@
 boolean b = userMgr.userInsert(userBean);
 
 if (b) {
-    response.sendRedirect("registerSuccess.jsp");
+    response.sendRedirect("../user/registerSuccess.jsp");
 } else {
 %>
 <!DOCTYPE html>

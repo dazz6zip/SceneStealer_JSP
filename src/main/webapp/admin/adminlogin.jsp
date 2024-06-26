@@ -62,7 +62,7 @@ input[type="submit"]:hover {
     background-color: #ff69b4;
 }
 
-button {
+input[type="button"] {
     width: 100%;
     padding: 10px;
     border: none;
@@ -74,8 +74,8 @@ button {
     text-align: center;
 }
 
-button:hover {
-    background-color: #33FFFF;
+input[type="button"]:hover {
+    background-color: #33FFFF; 
 }
 </style>
 </head>
@@ -97,7 +97,7 @@ button:hover {
   </tr>
   <tr>
   	<td colspan="2">
-		<button onclick="location.href='main.jsp'">User's Main Page</button>
+		<input type="button" onclick="location.href='../main/main.jsp'" value="User's Main Page">
   	</td>
   </tr>
 </table>	

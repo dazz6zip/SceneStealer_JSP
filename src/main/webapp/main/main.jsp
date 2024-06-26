@@ -20,7 +20,6 @@ String searchword = request.getParameter("searchword");
 <head>
 <meta charset="UTF-8">
 <title>SceneStealer</title>
-<link rel="stylesheet" type="text/css" href="../css/main.css">
 <script type="text/javascript" src="../js/main.js"></script>
 <script type="text/javascript" src="https://code.jquery.com/jquery-latest.js"></script>
 <script type="text/javascript">
@@ -37,17 +36,19 @@ String searchword = request.getParameter("searchword");
 <style>
 /* Series Picture Styles */
 .series-pic {
-	width: 100%;
-	max-width: 200px;
-	height: auto;
-	transition: transform 0.3s ease, box-shadow 0.3s ease;
-	cursor: pointer;
+    width: 100%;
+    max-width: 200px;
+    height: 300px; /* 원하는 고정 높이 */
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
 }
 
 .series-pic.enlarged {
-	transform: scale(1.3);
-	z-index: 10;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transform: scale(1.3);
+    z-index: 10;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 body {
@@ -66,19 +67,22 @@ body {
 }
 
 .main {
-	width: 100%;
+    width: 100%;
 }
 
 .main table {
-	width: 100%;
+    width: 100%;
 }
 
 .main table td {
-	text-align: center;
+    text-align: center;
 }
 
 #main_rv img {
-	width: 30%;
+    width: 30%;
+    height: 200px; /* 원하는 고정 높이 */
+    object-fit: cover;
+    object-position: center;
 }
 </style>
 </head>
@@ -95,7 +99,7 @@ body {
 		<form name="mainFrm1">
 			<table>
 				<tr>
-					<th colspan="4">CHOOSE YOUR SCENE!</th>
+					<th colspan="4" height="200px">CHOOSE YOUR SCENE!</th>
 				</tr>
 				<%
 				if (slist.isEmpty()) {
@@ -145,40 +149,19 @@ body {
 		<form action="../my/reviewdetail.jsp" method="get" name="mainFrm2">
 			<table id="main_rv">
 			    <tr>
-			        <th colspan="2">NEW REVIEW</th>
-			    </tr>
-			    <tr>
-			        <td rowspan="2">
-			            <%
-			            rdto = rlist.get(0);
-			            out.print("<a href=\"javascript:mainreview('" + rdto.getNum() + "')\">" + "<img src='..\\upload\\" +rdto.getPic()  +"'>" +"</a>");
-			            %>
-			            <br>
-			            <%
-			            out.print(rdto.getProduct());
-			            %>
-			        </td>
-			        <td>
-			            <%
-			            rdto = rlist.get(1);
-			            out.print("<a href=\"javascript:mainreview('" + rdto.getNum() + "')\">" + "<img src='..\\upload\\" +rdto.getPic()  +"'>" + "</a>");
-			            %>
-			            <br>
-			            <%
-			            out.print(rdto.getProduct());
-			            %>
-			        </td>
+			        <th colspan="3" height="200px">NEW REVIEW</th>
 			    </tr>
 			    <tr>
 			        <td>
 			            <%
-			            rdto = rlist.get(2);
-			            out.print("<a href=\"javascript:mainreview('" + rdto.getNum() + "')\">" + "<img src='..\\upload\\" +rdto.getPic()  +"'>" + "</a>");
-			            %>
-			            <br>
-			            <%
-			            out.print(rdto.getProduct());
-			            %>
+			            for (ReviewDto r : rlist) {
+							out.print("<a href=\"javascript:mainreview('" + r.getNum() + "')\">" + "<img src='..\\upload\\" +r.getPic()  +"'>" +"</a>");
+							%>
+								<br>
+							<%
+							out.print(r.getProduct() + "<br/>");
+						}
+						%>
 			        </td>
 			    </tr>
 			</table>

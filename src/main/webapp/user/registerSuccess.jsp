@@ -9,7 +9,8 @@
 <body>
 <jsp:include page="header_user.jsp" />
 <script type="text/javascript">
-alert("회원가입에 성공했습니다.");
+	alert("회원가입에 성공했습니다.");
+	location.href = "loginForm.jsp";
 </script>
 </body>
 </html>

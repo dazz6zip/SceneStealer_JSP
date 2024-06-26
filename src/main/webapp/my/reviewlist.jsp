@@ -4,7 +4,7 @@
 <jsp:useBean id="reviewMgr" class="pack.review.ReviewMgr"></jsp:useBean>
 <jsp:useBean id="redto" class="pack.review.ReviewDto"></jsp:useBean>
 <%
-
+request.setCharacterEncoding("utf-8");
 String id = (String)session.getAttribute("idKey");
 if (id == null) {
 	id = "user1";
@@ -112,7 +112,9 @@ a:hover {
 	width: 15%; 
 	margin: 1%;
 }
-
+.product-card img {
+	max-width: 150px;
+}
 #buttons {
 	text-align: right;
 }
@@ -164,7 +166,7 @@ for(ReviewDto r : rlist) {
 	%>
 	<div class="product-card">
 		<input type="checkbox" name="reviewcheck" value="<%= r.getNum() %>">
-		<a href="javascript:reviewDetail('<%=r.getNum() %>')"><img src="..\\upload\\<%= r.getPic() %>"></a>
+		<p><a href="javascript:reviewDetail('<%=r.getNum() %>')"><img src="..\\upload\\<%= r.getPic() %>"></a></p>
 		<p><%= r.getProduct() %></p>
 		<p><%
 		try{

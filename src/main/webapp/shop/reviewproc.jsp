@@ -19,12 +19,12 @@ if(result){
 %>
  <script>
  	alert("정상 처리되었습니다.");
- 	location.href="productlist.jsp";
+ 	location.href="../my/reviewlist.jsp";
  </script>	
 <% }else{%>
 	<script>
 		alert("처리 실패되었습니다.");
- 		location.href="productlist.jsp";
+ 		location.href="../my/reviewlist.jsp";
 	</script>
 <% 	
 }

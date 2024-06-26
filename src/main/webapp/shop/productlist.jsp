@@ -24,6 +24,10 @@ if (spage <= 0) {
 	spage = 1;
 }
 String category = request.getParameter("category"); // 카테고리 파라미터 가져오기
+if (category == null) {
+	category = "all";
+}
+
 String price = request.getParameter("price");
 %>
 
@@ -54,6 +58,7 @@ String price = request.getParameter("price");
 #paging a:hover {
 	color: black;
 }
+
 /* body 스타일 */
 body {
 	font-family: Arial, sans-serif;
@@ -69,11 +74,27 @@ body {
 	text-align: center;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	transition: transform 0.3s ease;
+	width: 200px; /* 고정 너비 */
+	height: 300px; /* 고정 높이 */
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.product-card .image-container {
+	width: 100%;
+	height: 200px; /* 이미지 영역 고정 높이 */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	overflow: hidden; /* 이미지가 영역을 벗어나지 않도록 설정 */
 }
 
 .product-card img {
-	max-width: 150px;
-	height: auto;
+	width: 100%;
+	height: 100%;
+	object-fit: contain; /* 이미지 비율 유지 및 잘리지 않게 설정 */
 	transition: transform 0.3s ease;
 }
 
@@ -207,13 +228,13 @@ table {
 			%>
 			<td style="text-align: center;">
 				<div class="product-card">
-					<a href="javascript:productDetail_guest('<%=p.getName()%>')"
-						class="product-link"> <img src="../upload/<%=p.getPic()%>"
-						width="150" />
+					<a href="javascript:productDetail_guest('<%=p.getName()%>')" class="product-link">
+						<div class="image-container">
+							<img src="../upload/product/<%=p.getPic()%>" />
+						</div>
 					</a>
 					<p><%=p.getName()%></p>
-					<p><%=df.format(p.getPrice())%>원
-					</p>
+					<p><%=df.format(p.getPrice())%>원</p>
 				</div>
 			</td>
 			<%
@@ -236,6 +257,7 @@ table {
 	    pageSu = productMgr.getPageSu(); // 페이지수 받기
 	}
 	%>
+	
 	<div id="paging">
 		<%
 	    for (int i = 1; i <= pageSu; i++) {

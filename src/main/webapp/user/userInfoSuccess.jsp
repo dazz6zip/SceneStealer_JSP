@@ -12,35 +12,9 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-  <!-- The Modal -->
-  <div class="modal" id="myModal">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <!-- Modal Header -->
-        <div class="modal-header">
-          <h4 class="modal-title">회원가입 실패</h4>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-        <!-- Modal body -->
-        <div class="modal-body">
-          회원가입 실패
-        </div>
-        <!-- Modal footer -->
-        <div class="modal-footer">
-          <button type="button" id="closeBtn" class="btn btn-danger" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <script>
-    $(document).ready(function(){
-      $("#myModal").modal('show');
-    });
 
-    $("#closeBtn").click(function(){
-      history.back(); // 모달 닫기 버튼 클릭 시 이전 페이지로 이동
-    });
+  <script>
+      location.href = "../my/mypage.jsp";
   </script>
 </body>
 </html>

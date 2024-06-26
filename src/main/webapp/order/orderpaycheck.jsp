@@ -156,7 +156,8 @@ input[type="button"]:hover {
         <tr>
            <td><%=pdto.getName() %></td>
            <td>
-              <input type="text" name="quantity" size="5" value="<%=quantity %>">
+              <input type="hidden" name="quantity" size="5" value="<%=quantity %>">
+              <%=quantity %>
            </td>
            <td><%= df.format(subTotal) %>원</td>
         </tr>

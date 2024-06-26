@@ -5,7 +5,7 @@ function orderinfo (num, state) {
 }
 
 function newReview (name) {
-	document.detailFrm.product_name.value = name;
+	document.detailFrm.pro.value = name;
 	document.detailFrm.submit();
 }
 

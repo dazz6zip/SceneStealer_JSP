@@ -14,7 +14,76 @@ String searchSelect = request.getParameter("searchSelect");
 <head>
 <meta charset="UTF-8">
 <title>SceneStealer</title>
-<link rel="stylesheet" type="text/css" href="mainstyle.css">
+<style>
+/* Series Picture Styles */
+.series-pic {
+    width: 200px; /* 고정 너비 */
+    height: 300px; /* 고정 높이 */
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.series-pic.enlarged {
+    transform: scale(1.3);
+    z-index: 10;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+}
+
+#maindiv {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url(../image/mainphoto-01.png) no-repeat;
+    background-size: cover;
+    height: 120vh;
+    width: 100%;
+    overflow: hidden;
+}
+
+.main {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.main table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.main table td {
+    text-align: center;
+    padding: 10px;
+}
+
+#main_rv img {
+    width: 200px; /* 고정 너비 */
+    height: 200px; /* 고정 높이 */
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+td img {
+    width: 200px; /* 고정 너비 */
+    height: 300px; /* 고정 높이 */
+    object-fit: cover;
+    object-position: center;
+}
+</style>
 <script type="text/javascript" src="../js/main.js"></script>
 </head>
 <body>
@@ -57,7 +126,7 @@ if (list != null && !list.isEmpty()) {
 					<td><img src="..\upload\series\<%= sdto.getPic() %>"></td>
 				</tr>
 				<tr>
-					<td><%= sdto.getTitle() %>(<%= sdto.getDate().substring(0, 4) %>)</td>
+					<td style="text-align: center;"><%= sdto.getTitle() %>(<%= sdto.getDate().substring(0, 4) %>)</td>
 				</tr>
 			</table>
 		</td>

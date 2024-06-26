@@ -11,7 +11,7 @@ SeriesDto s = seriesMgr.getSeries(num);
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>ㅋ
+<title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script type="text/javascript" src="../js/mainedit.js"></script>
@@ -23,7 +23,7 @@ SeriesDto s = seriesMgr.getSeries(num);
 	공개일자 <input type="date" name="date" value="<%=s.getDate() %>"><br><br>
 	시리즈 대표사진 <br><img src="../upload/series/<%=s.getPic() %>"><br>
 	대표사진 수정 ➡️ <input type="file" name="pic"><br><br><br>
-	<input type="submit" value="수정하기">
+	<input type="submit" value="시리즈 수정 및 선택하기">
 </form>
 </body>
 </html>

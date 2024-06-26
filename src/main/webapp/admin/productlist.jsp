@@ -130,7 +130,6 @@ function productDetail(ss){
         <th>가격</th>
         <th>등록일</th>
         <th>재고량</th>
-        <th>판매량</th>
         <th>카테고리</th>
     </tr>
     <%
@@ -148,7 +147,6 @@ function productDetail(ss){
         <td><%= p.getPrice() %></td>
         <td><%= p.getDate() %></td>
         <td><%= p.getStock() %></td>
-        <td><%= p.getCount() %></td>
         <td><%= p.getCategory() %></td>
     </tr>
     <%
