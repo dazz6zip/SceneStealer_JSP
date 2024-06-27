@@ -196,7 +196,7 @@ button:hover, .btnRegister:hover {
 	<div class="error_message" id="user_addr_check"></div>
 	<input type="hidden" id="full_addr" name="address" value="">
 	
-	<input type="button"class="btnRegister btn-16" value="Join Up" id="btnRegister">
+	<input type="button" class="btnRegister btn-16" value="Join Up" id="btnRegister">
 </form>
 </body>
 </html>

@@ -90,11 +90,7 @@ td img {
 <jsp:include page="../main/header_main.jsp">
 <jsp:param value="<%= searchword %>" name="val"/>
 </jsp:include>
-<script>
-window.onload = () => {
-	document.querySelector("#searchFrm").style.display = "block";
-}
-</script>
+
 <%
 if (searchword == null && searchSelect == null) {
 	%>
@@ -123,7 +119,7 @@ if (list != null && !list.isEmpty()) {
 		<td>
 			<table onclick="javascript:searchSeriesClick('<%= sdto.getTitle() %>', '<%= sdto.getNum() %>')">
 				<tr>
-					<td><img src="..\upload\series\<%= sdto.getPic() %>"></td>
+					<td><img src="..\upload\series\<%= sdto.getPic() %>" class="series-pic"></td>
 				</tr>
 				<tr>
 					<td style="text-align: center;"><%= sdto.getTitle() %>(<%= sdto.getDate().substring(0, 4) %>)</td>

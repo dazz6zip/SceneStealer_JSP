@@ -29,14 +29,15 @@ String name = characterMgr.getCharacter(num).getName();
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script type="text/javascript" src="../js/mainedit.js"></script>
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script type="text/javascript" src="../js/mainedit.js"></script>
+
 </head>
 <body>
 <h3><%=msg %></h3><br>
 <b>🛍️<%=name %></b> 배역의 스타일 목록🛍️‍‍으로 이동하겠습니다.<br>
-<input type="button" value="3️⃣단계 스타일 편집 시작" onclick="character_select('<%=num %>')">
+<input type="button" value="3️단계 스타일 편집 시작" onclick="javascript:character_select('<%=num %>')">
 </body>
 </html>
 

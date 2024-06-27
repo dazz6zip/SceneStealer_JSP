@@ -122,32 +122,31 @@ if (id == null) {
 window.onload = () => {
 	document.querySelector("#searchBtn").onclick = () => {
 		const searchWordInput = document.querySelector("input[name='searchword']").value;
-		const korOnly = /^[가-힣]+$/; // 정규표현식
+		// const korOnly = /^[가-힣]+$/; // 정규표현식 (주석 처리)
 		/*
 		if (!korOnly.test(searchWordInput)) {
 			alert("한글만 입력 가능합니다.");
 			document.querySelector("input[name='searchword']").focus();
 			return;
 		}else 
-			*/
-			if (searchWordInput.length < 2) {
+		*/
+		if (searchWordInput.length < 2) {
 			alert("두 글자 이상 입력해 주세요.");
 			document.querySelector("input[name='searchword']").focus();
 			return;
+		} else {
+			document.querySelector("#searchForm").submit(); // 폼 제출
 		}
-		else {
-			document.querySelector("form").submit();
-		}
-	
 	}
 }
 </script>
+
 <div id="headertable">
     <div id="logo"><a href="main.jsp"><img src="../image/logo-01.png" width="100%"></a></div>
     <div class="top"><a href="main.jsp">HOME</a></div>
     <div class="top"><a href="../shop/productlist.jsp">SHOP</a></div>
     <div id="topSearch">
-        <form action="../main/main_search.jsp">
+        <form id="searchForm" action="../main/main_search.jsp" method="GET">
             <div class="search">
                 <select name="searchSelect" class="search__select">
                     <option value="series" selected="selected">작품 제목</option>
@@ -160,8 +159,8 @@ window.onload = () => {
                     out.print("placeholder='검색어를 입력하세요.'");
                 }
                 %>>
-                <button type="button" id="searchBtn" class="search__button">search</button>
-            </div>
+                <button type="button" id="searchBtn" class="search__button">search</button>	
+			</div>
         </form>
     </div>
     <div class="top"><%= log %></div>

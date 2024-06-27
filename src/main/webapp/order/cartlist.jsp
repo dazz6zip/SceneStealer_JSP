@@ -121,7 +121,7 @@ input[type="button"]:hover {
     if(hCart.isEmpty() || hCart.size() == 0){
     %>
         <tr>
-            <td colspan="5">주문 건수가 없어요.</td>
+            <td colspan="5">장바구니에 담은 상품이 없습니다.</td>
         </tr>
     <%    
     }else{

@@ -12,7 +12,7 @@ session.removeAttribute("adminOk");
 //session.invalidate();
 %>
 <script type="text/javascript">
-	location.href="admin_index.jsp";
+	location.href="../main/main.jsp";
 </script>
 </body>
 </html>
