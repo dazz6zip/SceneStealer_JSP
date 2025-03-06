@@ -13,7 +13,7 @@ end("2024-06-27");
 
 ## MEMBER
 <a href="https://github.com/dazz6zip" target="_blank">
-    <img src="https://img.shields.io/badge/GitHub-@dazz6zip-181717?style=flat-square&logo=GitHub&logoColor=white&label=READER"/>
+    <img src="https://img.shields.io/badge/GitHub-@dazz6zip-181717?style=flat-square&logo=GitHub&logoColor=white&label=LEADER"/>
 </a>
 <br/>
 <a href="https://github.com/hyoseonlim" target="_blank">
