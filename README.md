@@ -17,17 +17,17 @@ end("2024-06-27");
 </a>
 <br/>
 <a href="https://github.com/hyoseonlim" target="_blank">
-    <img src="https://img.shields.io/badge/GitHub-@hyoseonlim-181717?style=flat-square&logo=GitHub&logoColor=white&label=ADMIN PART"/>
+    <img src="https://img.shields.io/badge/GitHub-@hyoseonlim-181717?style=flat-square&logo=GitHub&logoColor=white&label=ADMIN"/>
 </a>
 <br/>
 <a href="https://github.com/kimbobo1" target="_blank">
-    <img src="https://img.shields.io/badge/GitHub-@kimbobo1-181717?style=flat-square&logo=GitHub&logoColor=white&label=ADMIN PART"/>
+    <img src="https://img.shields.io/badge/GitHub-@kimbobo1-181717?style=flat-square&logo=GitHub&logoColor=white&label=ADMIN"/>
 </a>
 <br/>
 <a href="https://github.com/rosetta47" target="_blank">
-   <img src="https://img.shields.io/badge/GitHub-@rosetta47-181717?style=flat-square&logo=GitHub&logoColor=white&label=USER PART"/>
+   <img src="https://img.shields.io/badge/GitHub-@rosetta47-181717?style=flat-square&logo=GitHub&logoColor=white&label=USER"/>
 </a>
 <br/>
 <a href="https://github.com/deevchoe" target="_blank">
-   <img src="https://img.shields.io/badge/GitHub-@deevchoe-181717?style=flat-square&logo=GitHub&logoColor=white&label=USER PART"/>
+   <img src="https://img.shields.io/badge/GitHub-@deevchoe-181717?style=flat-square&logo=GitHub&logoColor=white&label=USER"/>
 </a>
